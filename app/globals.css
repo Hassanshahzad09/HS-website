@@ -1,0 +1,277 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ---------------------------------------------------------------- tokens */
+
+:root {
+  --bg: #f7f5f0;
+  --bg-2: #efece4;
+  --surface: #ffffff;
+  --ink: #0e1418;
+  --muted: #5a656e;
+  --line: rgba(14, 20, 24, 0.11);
+  --brand: #05649a;
+  --brand-2: #2e9bd1;
+  --gold: #a87c42;
+  --glass: rgba(247, 245, 240, 0.74);
+  --on-brand: #ffffff;
+}
+
+[data-theme="dark"],
+.on-dark {
+  --bg: #0b0d0f;
+  --bg-2: #101316;
+  --surface: #161a1e;
+  --ink: #f2efe9;
+  --muted: #9ba5ad;
+  --line: rgba(255, 255, 255, 0.11);
+  --brand: #3ba4db;
+  --brand-2: #86cdf1;
+  --gold: #d9b27a;
+  --glass: rgba(11, 13, 15, 0.68);
+  --on-brand: #06121a;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand2: var(--brand-2);
+  --color-gold: var(--gold);
+  --color-onbrand: var(--on-brand);
+  --font-sans: "Inter Tight Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-brand: "Cinzel", Georgia, serif;
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ------------------------------------------------------------------ base */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  background: var(--bg);
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Smooth light/dark swap — only while the toggle is switching. */
+html.theme-transition,
+html.theme-transition * {
+  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease !important;
+}
+
+::selection {
+  background: var(--brand);
+  color: #fff;
+}
+
+/* In the base layer so `outline-none` on text inputs (which show focus via their border) can override it. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 3px;
+  }
+}
+
+/* Film grain over the whole page. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Preloader is skipped on repeat visits within a session (flag set in <head>). */
+html[data-loaded] .preloader {
+  display: none;
+}
+
+/* ------------------------------------------------------------- utilities */
+
+@utility container-x {
+  width: 100%;
+  max-width: 1480px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 4rem);
+}
+
+@utility text-gradient {
+  background-image: linear-gradient(100deg, var(--brand) 0%, var(--brand-2) 30%, var(--gold) 58%, var(--brand) 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 9s ease-in-out infinite alternate;
+  padding-bottom: 0.12em;
+}
+
+@utility glass {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@utility display {
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+
+/* Animated underline for text links. */
+@utility link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.45s var(--ease-expo);
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 1px;
+  }
+}
+
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  pointer-events: none;
+}
+
+@keyframes gradient-pan {
+  to {
+    background-position: 100% 0;
+  }
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(calc(var(--r, 0deg) + 2deg));
+  }
+}
+
+@keyframes drift {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.floaty {
+  animation: floaty var(--d, 7s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* ------------------------------------------------- material tone swatches */
+/* Used by the Materials & Finishes section and the product customiser.    */
+
+[class*="tone-"] {
+  --on: #1b1f22;
+  position: relative;
+  isolation: isolate;
+}
+[class*="tone-"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .42 0 0 0 0 .38 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.tone-paper {
+  background: linear-gradient(135deg, #faf8f3, #ece8de);
+}
+.tone-kraft {
+  background: linear-gradient(135deg, #c7a578, #a98558);
+  --on: #2e2112;
+}
+.tone-card {
+  background: repeating-linear-gradient(90deg, #b99468 0 7px, #a78256 7px 9px, #c4a074 9px 16px);
+  --on: #2e2112;
+}
+.tone-board {
+  background: linear-gradient(135deg, #1f2a33, #0f1519);
+  --on: #e9e4d8;
+}
+.tone-fabric {
+  background-color: #d8d2c4;
+  background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.35) 0 1px, transparent 1px 3px);
+}
+.tone-pvc {
+  background: linear-gradient(120deg, #cfe4ee 0%, #f1f8fb 38%, #b6d4e2 62%, #e3f0f5 100%);
+}
+.tone-silicone {
+  background: radial-gradient(120% 120% at 25% 15%, #3a3f44, #15181a 70%);
+  --on: #dfe3e6;
+}
+.tone-clear {
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.08) 45%, rgba(255, 255, 255, 0.4)),
+    repeating-conic-gradient(rgba(120, 130, 138, 0.16) 0% 25%, transparent 0% 50%) 0 0 / 22px 22px, #dfe6ea;
+}
+.tone-metal {
+  background: linear-gradient(120deg, #9aa2a8, #f1f3f4 35%, #a9b0b5 60%, #dfe2e4);
+}
+.tone-leather {
+  background: radial-gradient(120% 120% at 30% 20%, #9a6a44, #6d4527 75%);
+  --on: #f1e3cf;
+}
+.tone-satin {
+  background: linear-gradient(100deg, #f3f0ea, #ffffff 30%, #e3dfd6 55%, #f8f6f1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
