@@ -72,7 +72,7 @@ function Stage({ i, title, text, active, onActive }: { i: number; title: string;
   return (
     <li ref={ref} className="flex min-h-[38vh] flex-col justify-center pl-12 lg:min-h-[52vh]">
       <span className="eyebrow">Step 0{i + 1}</span>
-      <h3 className={cn("display mt-3 text-[clamp(2rem,4.4vw,4rem)] transition-all duration-700", active ? "text-ink" : "text-muted opacity-40")}>{title}</h3>
+      <h3 className={cn("display mt-3 text-[clamp(1.8rem,3.4vw,3rem)] transition-all duration-700", active ? "text-ink" : "text-muted opacity-40")}>{title}</h3>
       <p className={cn("mt-3 max-w-sm text-lg leading-relaxed text-muted transition-opacity duration-700", !active && "opacity-40")}>{text}</p>
     </li>
   );
@@ -87,7 +87,7 @@ export function IdeaToDelivery() {
   const top = useTransform(p, (v) => `${v * 100}%`);
 
   return (
-    <section className="bg-bg py-24 lg:py-36">
+    <section className="bg-bg py-13.5 lg:py-21.5">
       <div className="container-x">
         <SectionHeading eyebrow="How it happens">
           <SplitText segments={["From idea ", { text: "to delivery.", gradient: true }]} />

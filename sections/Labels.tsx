@@ -22,13 +22,13 @@ export function Labels() {
   };
 
   return (
-    <section className="bg-bg2 py-24 lg:py-36">
+    <section className="bg-bg2 py-13.5 lg:py-21.5">
       <div className="container-x">
         <SectionHeading eyebrow="Labels & tags" text="The part of the garment people touch every time they wear it.">
           <SplitText segments={["Look ", { text: "closer.", gradient: true }]} />
         </SectionHeading>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.35fr] lg:gap-16">
+        <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_1.35fr] lg:gap-16">
           <ul className="order-2 lg:order-1">
             {labelTypes.map((l, i) => {
               const on = i === active;
@@ -37,7 +37,7 @@ export function Labels() {
                   <button type="button" onClick={() => setActive(i)} aria-pressed={on} className="block w-full py-6 text-left">
                     <span className="flex items-baseline gap-5">
                       <span className="eyebrow">0{i + 1}</span>
-                      <span className={cn("display text-[clamp(1.5rem,2.6vw,2.4rem)] transition-colors", on ? "text-ink" : "text-muted")}>{l.name}</span>
+                      <span className={cn("display text-[clamp(1.35rem,2vw,1.9rem)] transition-colors", on ? "text-ink" : "text-muted")}>{l.name}</span>
                     </span>
                   </button>
                   <AnimatePresence initial={false}>

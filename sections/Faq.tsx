@@ -12,7 +12,7 @@ export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="bg-bg py-24 lg:py-36">
+    <section id="faq" className="bg-bg py-13.5 lg:py-21.5">
       <div className="container-x grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <SectionHeading eyebrow="FAQ" text="The questions we hear most. If yours is not here, ask us directly.">

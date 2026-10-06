@@ -15,13 +15,13 @@ export function Stickers() {
   const s = stickerTypes[active];
 
   return (
-    <section id="stickers" className="bg-bg py-24 lg:py-36">
+    <section id="stickers" className="bg-bg py-13.5 lg:py-21.5">
       <div className="container-x">
         <SectionHeading eyebrow="Sticker guide" text="Four kinds of sticker, four different jobs. Pick one to see where it belongs.">
           <SplitText segments={["Which sticker ", { text: "sticks", serif: true }, " where?"]} />
         </SectionHeading>
 
-        <div className="mt-12 grid items-center gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
+        <div className="mt-10 grid items-center gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
           <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] border border-line bg-bg2" data-cursor="VIEW">
             <AnimatePresence initial={false}>
               <motion.div key={s.id} className="absolute inset-0" initial={{ opacity: 0, scale: 1.05 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8, ease: EASE }}>

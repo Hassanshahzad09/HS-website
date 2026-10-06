@@ -9,7 +9,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { categoryName, products, searchProducts } from "@/data/products";
 import { EASE } from "@/lib/utils";
 
-const SUGGESTIONS = ["Rigid boxes", "Labels", "Ribbons", "Stickers", "Bags", "Pouches"];
+const SUGGESTIONS = ["Labels", "Ribbons", "Stickers", "Bags", "Pouches"];
 
 export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [query, setQuery] = useState("");

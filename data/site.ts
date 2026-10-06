@@ -21,7 +21,6 @@ export const site = {
 export const nav = [
   { label: "Home", href: "/" },
   { label: "Products", href: "/products" },
-  { label: "Solutions", href: "/#solutions" },
   { label: "Portfolio", href: "/#portfolio" },
   { label: "About", href: "/#about" },
   { label: "Process", href: "/#process" },
@@ -30,7 +29,7 @@ export const nav = [
 
 /** PLACEHOLDER figures — edit freely. */
 export const stats = [
-  { value: 16, suffix: "+", label: "Custom Products" },
+  { value: 10, suffix: "+", label: "Custom Products" },
   { value: 250, suffix: "+", label: "Projects Delivered" },
   { value: 8, suffix: "", label: "Finishing Options" },
   { value: 4, suffix: "", label: "Regions Reached" },
@@ -62,33 +61,11 @@ export const journey = [
   { title: "Delivery", text: "Protected for transit and sent to you, in one country or several." },
 ];
 
-export const materials = [
-  { name: "Paper", tone: "paper", note: "Coated and uncoated stocks" },
-  { name: "Kraft", tone: "kraft", note: "Natural, recycled fibre" },
-  { name: "Cardboard", tone: "card", note: "Corrugated strength" },
-  { name: "Rigid Board", tone: "board", note: "Dense, wrapped board" },
-  { name: "Fabric", tone: "fabric", note: "Cotton, satin, polyester" },
-  { name: "PVC", tone: "pvc", note: "Soft and moulded" },
-  { name: "Silicone", tone: "silicone", note: "Tactile, raised detail" },
-  { name: "Transparent", tone: "clear", note: "Clear films and acrylic" },
-] as const;
-
-export const finishes = [
-  { name: "Matte", effect: "matte", tone: "paper", note: "Flat, glare-free calm" },
-  { name: "Gloss", effect: "gloss", tone: "board", note: "Deep, reflective colour" },
-  { name: "Soft Touch", effect: "soft", tone: "board", note: "A velvet feel in the hand" },
-  { name: "Emboss", effect: "emboss", tone: "paper", note: "Raised from the surface" },
-  { name: "Deboss", effect: "deboss", tone: "kraft", note: "Pressed into the surface" },
-  { name: "Foil", effect: "foil", tone: "board", note: "Metallic, hot-stamped" },
-  { name: "UV", effect: "uv", tone: "board", note: "Gloss placed only where it counts" },
-  { name: "Die Cut", effect: "diecut", tone: "kraft", note: "Cut to any shape" },
-] as const;
-
 export const stickerTypes = [
   {
     id: "dtf",
     name: "DTF Stickers",
-    slug: "dtf-stickers",
+    slug: "stickers",
     image: "/products/dtf-stickers.webp",
     text: "Full-colour transfers for fabric. Heat-pressed, soft to the touch and flexible enough to move with the garment.",
     points: ["For apparel and textiles", "Applied with a heat press", "Soft, stretchable finish"],
@@ -96,7 +73,7 @@ export const stickerTypes = [
   {
     id: "uv",
     name: "UV DTF Stickers",
-    slug: "uv-dtf-stickers",
+    slug: "stickers",
     image: "/products/uv-dtf-stickers.webp",
     text: "Raised, glossy transfers for hard surfaces. Peel, press and only the artwork stays behind.",
     points: ["For glass, metal and plastic", "No heat needed", "Raised gloss, no background"],
@@ -104,7 +81,7 @@ export const stickerTypes = [
   {
     id: "glossy",
     name: "Glossy Stickers",
-    slug: "glossy-matte-stickers",
+    slug: "stickers",
     image: "/products/glossy-stickers.webp",
     text: "A bright, reflective surface that makes colour look richer and protects the print underneath.",
     points: ["Vivid, saturated colour", "Wipe-clean surface", "Sheets, rolls or die-cuts"],
@@ -112,7 +89,7 @@ export const stickerTypes = [
   {
     id: "matte",
     name: "Matte Stickers",
-    slug: "glossy-matte-stickers",
+    slug: "stickers",
     image: "/products/matte-stickers.webp",
     text: "A calm, glare-free finish with a paper-like feel. Easy to read under any light, easy to write on.",
     points: ["Soft, non-reflective look", "Writable surface", "Sheets, rolls or die-cuts"],
@@ -120,19 +97,18 @@ export const stickerTypes = [
 ];
 
 export const labelTypes = [
-  { name: "Woven Labels", slug: "woven-labels", image: "/products/woven-labels.webp", text: "Thread by thread. Lettering that stays sharp at a few millimetres tall." },
-  { name: "Care Labels", slug: "care-labels", image: "/products/care-labels.webp", text: "Soft satin, wash-fast ink, and the information your garment needs." },
-  { name: "Rubber & Silicone Tags", slug: "silicone-tags", image: "/products/silicone-tags.webp", text: "Moulded relief you can feel with a thumb. Matte, flexible, exact." },
+  { name: "Woven Labels", slug: "woven-labels", image: "/products/photo/woven-labels-1.webp", text: "Thread by thread. Lettering that stays sharp at a few millimetres tall." },
+  { name: "Care Labels", slug: "care-labels", image: "/products/photo/care-labels-1.webp", text: "Soft satin, wash-fast ink, and the information your garment needs." },
 ];
 
 export const ribbonUses = ["Packaging", "Gift Wrapping", "Fashion", "Events", "Branding"];
 
 // Fictional demonstration projects — not real clients.
 export const portfolio = [
-  { id: "maison-aurelia", name: "Maison Aurelia", category: "Luxury Fashion", product: "Shopping Bag • Rigid Box • Ribbon", finish: "Foil • Soft Touch", text: "A black-on-black retail suite where gold foil is the only thing that catches light.", ratio: "4 / 5" },
-  { id: "forma-skin", name: "Forma Skin", category: "Beauty", product: "Pouch • Rigid Box • Card", finish: "Matte • Deboss", text: "Blush board and terracotta ink for a skincare line that wanted to feel warm, not clinical.", ratio: "1 / 1" },
+  { id: "maison-aurelia", name: "Maison Aurelia", category: "Luxury Fashion", product: "Shopping Bag • Ribbon", finish: "Foil • Soft Touch", text: "A black-on-black retail suite where gold foil is the only thing that catches light.", ratio: "4 / 5" },
+  { id: "forma-skin", name: "Forma Skin", category: "Beauty", product: "Pouch • Card", finish: "Matte • Deboss", text: "Blush board and terracotta ink for a skincare line that wanted to feel warm, not clinical.", ratio: "1 / 1" },
   { id: "roast-and-ritual", name: "Roast & Ritual", category: "Food", product: "Stand-up Pouch • Stickers", finish: "Kraft • Matte", text: "Kraft pouches with a deep green label, designed to look right beside the grinder.", ratio: "4 / 5" },
-  { id: "northline", name: "Northline", category: "Lifestyle", product: "Bag • Silicone Tag • Woven Label", finish: "Matte • Emboss", text: "One cobalt blue, held consistently across paper, silicone and thread.", ratio: "4 / 3" },
+  { id: "northline", name: "Northline", category: "Lifestyle", product: "Bag • Woven Label", finish: "Matte • Emboss", text: "One cobalt blue, held consistently across paper and thread.", ratio: "4 / 3" },
   { id: "atelier-27", name: "Atelier 27", category: "Fashion", product: "Woven Label • Care Label • Tag", finish: "High-density Weave", text: "A full trim set for a small studio: neck label, care label and a moulded hang tag.", ratio: "1 / 1" },
   { id: "velora", name: "Velora", category: "E-commerce", product: "Mailer Box • Card • Sticker", finish: "Soft Touch • Gloss", text: "An unboxing built for the doorstep, with a card and seal in every order.", ratio: "4 / 5" },
 ].map((p) => ({ ...p, image: `/images/portfolio-${p.id}.webp` }));
@@ -158,14 +134,14 @@ export const faqs = [
 
 // Gallery tiles reuse the product close-ups. Swap in real photography any time.
 export const gallery = [
-  { src: "/products/rigid-boxes-2.webp", alt: "Close-up of a foil-stamped rigid box lid" },
-  { src: "/products/woven-labels-2.webp", alt: "Macro detail of woven label threads" },
-  { src: "/products/ribbons-3.webp", alt: "Printed ribbon unrolling from its spool" },
-  { src: "/products/shopping-bags-3.webp", alt: "Shopping bags on a dark studio set" },
-  { src: "/products/thank-you-cards-2.webp", alt: "Foil lettering on a thank you card" },
-  { src: "/products/silicone-tags-2.webp", alt: "Embossed silicone tag on fabric" },
-  { src: "/products/pouches-2.webp", alt: "Printed stand-up pouches, close-up" },
-  { src: "/products/glossy-matte-stickers-2.webp", alt: "Sticker sheet showing gloss finish" },
+  { src: "/products/photo/shopping-bags-1.webp", alt: "Olive green shopping bags with gold foil logos and ribbon handles" },
+  { src: "/products/photo/woven-labels-1.webp", alt: "Black and ivory woven labels" },
+  { src: "/products/photo/ribbons-2.webp", alt: "Close-up of printed satin ribbon" },
+  { src: "/products/photo/care-labels-2.webp", alt: "Satin care labels printed with wash symbols" },
+  { src: "/products/photo/thank-you-cards-2.webp", alt: "Burgundy thank you card with gold foil lettering" },
+  { src: "/products/photo/tote-bags-1.webp", alt: "Black and natural canvas tote bags with printed logos" },
+  { src: "/products/photo/cotton-pouches-2.webp", alt: "Cotton drawstring pouches with printed logos" },
+  { src: "/products/photo/stickers-3.webp", alt: "Die-cut stickers with raised gloss detail" },
 ];
 
 // Shipping lanes drawn on the world map (longitude / latitude).

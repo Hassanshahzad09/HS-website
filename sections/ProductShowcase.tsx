@@ -4,7 +4,7 @@ import { ProductCatalogue } from "@/products/ProductCatalogue";
 
 export function ProductShowcase() {
   return (
-    <section id="products" className="relative bg-bg py-24 lg:py-36">
+    <section id="products" className="relative bg-bg py-13.5 lg:py-21.5">
       <div className="container-x">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading eyebrow="The catalogue">
@@ -14,7 +14,7 @@ export function ProductShowcase() {
             Explore Products
           </ButtonLink>
         </div>
-        <div className="mt-12 lg:mt-16">
+        <div className="mt-10 lg:mt-12">
           <ProductCatalogue carousel />
         </div>
       </div>

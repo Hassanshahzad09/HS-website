@@ -15,13 +15,13 @@ export function Process() {
   useMotionValueEvent(scrollYProgress, "change", (v) => setActive(Math.min(process.length - 1, Math.floor(v * process.length))));
 
   return (
-    <section id="process" className="bg-bg2 py-24 lg:py-36">
+    <section id="process" className="bg-bg2 py-13.5 lg:py-21.5">
       <div className="container-x">
         <SectionHeading eyebrow="Our process" text="Five stages, one point of contact, and a physical sample before anything is committed.">
           <SplitText segments={["From first call ", { text: "to final carton.", gradient: true }]} />
         </SectionHeading>
 
-        <div ref={ref} className="relative mt-16 lg:mt-24">
+        <div ref={ref} className="relative mt-12 lg:mt-16">
           {/* track + animated progress line */}
           <div className="absolute left-[11px] top-0 h-full w-px bg-line lg:left-0 lg:top-[11px] lg:h-px lg:w-full" aria-hidden="true">
             <motion.div className="hidden h-full w-full origin-left bg-brand lg:block" style={{ scaleX: line }} />
@@ -36,7 +36,7 @@ export function Process() {
                   <span className={cn("absolute left-0 top-0 grid size-[23px] place-items-center rounded-full border bg-bg2 transition-colors duration-500", on ? "border-brand" : "border-line")} aria-hidden="true">
                     <span className={cn("size-[9px] rounded-full transition-all duration-500", on ? "scale-100 bg-brand" : "scale-50 bg-line")} />
                   </span>
-                  <p className={cn("display text-[clamp(3rem,5vw,4.6rem)] transition-colors duration-700", on ? "text-gradient" : "text-line")}>{s.n}</p>
+                  <p className={cn("display text-[clamp(2.4rem,3.8vw,3.5rem)] transition-colors duration-700", on ? "text-gradient" : "text-line")}>{s.n}</p>
                   <h3 className={cn("mt-3 text-2xl font-medium tracking-tight transition-colors duration-500", !on && "text-muted")}>{s.title}</h3>
                   <p className="mt-3 max-w-xs leading-relaxed text-muted">{s.text}</p>
                 </li>

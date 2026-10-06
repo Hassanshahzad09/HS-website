@@ -32,13 +32,13 @@ function Counter({ value, suffix }: { value: number; suffix: string }) {
 
 export function Numbers() {
   return (
-    <section className="bg-bg py-20 lg:py-28" aria-label="Heritage Shapes in numbers">
+    <section className="bg-bg py-11.5 lg:py-17.5" aria-label="Heritage Shapes in numbers">
       <div className="container-x">
         <dl className="grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
           {stats.map((s) => (
             <div key={s.label} className="flex flex-col-reverse border-t border-line pt-6">
               <dt className="eyebrow mt-3">{s.label}</dt>
-              <dd className="display text-gradient text-[clamp(3.2rem,8vw,7rem)]">
+              <dd className="display text-gradient text-[clamp(2.6rem,6vw,5.2rem)]">
                 <Counter value={s.value} suffix={s.suffix} />
               </dd>
             </div>

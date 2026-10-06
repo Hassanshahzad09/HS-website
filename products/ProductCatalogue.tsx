@@ -80,7 +80,7 @@ export function ProductCatalogue({ carousel = false, withSearch = false }: { car
         className={cn(
           "mt-6",
           carousel
-            ? "no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:overflow-visible sm:px-0 lg:grid-cols-3 xl:grid-cols-4"
+            ? "no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:overflow-visible sm:px-0 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-4 xl:gap-y-10"
             : "grid grid-cols-1 gap-x-6 gap-y-12 min-[480px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
         )}
       >
@@ -95,7 +95,7 @@ export function ProductCatalogue({ carousel = false, withSearch = false }: { car
               transition={{ duration: 0.5, ease: EASE, delay: Math.min(i * 0.04, 0.3) }}
               className={cn(carousel && "w-[78vw] shrink-0 snap-center sm:w-auto")}
             >
-              <ProductCard product={p} />
+              <ProductCard product={p} compact={carousel} />
             </motion.div>
           ))}
         </AnimatePresence>

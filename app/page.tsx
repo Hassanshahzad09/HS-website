@@ -4,8 +4,6 @@ import { Hero } from "@/sections/Hero";
 import { ProductShowcase } from "@/sections/ProductShowcase";
 
 // Everything below the first screens is split into its own chunk.
-const WhatNext = dynamic(() => import("@/sections/WhatNext").then((m) => m.WhatNext));
-const Materials = dynamic(() => import("@/sections/Materials").then((m) => m.Materials));
 const BeforeAfter = dynamic(() => import("@/sections/BeforeAfter").then((m) => m.BeforeAfter));
 const Showcase = dynamic(() => import("@/sections/Showcase").then((m) => m.Showcase));
 const Stickers = dynamic(() => import("@/sections/Stickers").then((m) => m.Stickers));
@@ -31,8 +29,6 @@ export default function HomePage() {
       <Hero />
       <BrandStatement />
       <ProductShowcase />
-      <WhatNext />
-      <Materials />
       <BeforeAfter />
       <Showcase />
       <Stickers />

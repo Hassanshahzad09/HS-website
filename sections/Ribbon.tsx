@@ -16,7 +16,7 @@ export function Ribbon() {
   const draw = useSpring(useTransform(scrollYProgress, [0, 0.85], [0, 1]), { stiffness: 80, damping: 24 });
 
   return (
-    <section ref={ref} className="on-dark relative overflow-hidden bg-bg py-28 text-ink lg:py-44">
+    <section ref={ref} className="on-dark relative overflow-hidden bg-bg py-17.5 text-ink lg:py-25.5">
       <svg viewBox="0 0 1600 420" preserveAspectRatio="none" className="pointer-events-none absolute inset-x-0 top-1/2 h-[70%] w-full -translate-y-1/2" aria-hidden="true">
         <defs>
           <linearGradient id="ribbon-sheen" x1="0" y1="0" x2="1" y2="0">
@@ -38,11 +38,11 @@ export function Ribbon() {
         <Reveal y={12}>
           <p className="eyebrow mb-6">Ribbons</p>
         </Reveal>
-        <h2 className="display max-w-5xl text-[clamp(2.2rem,6vw,5.4rem)] [text-shadow:0_2px_30px_rgba(0,0,0,.55)]">
+        <h2 className="display max-w-5xl text-[clamp(2rem,4.5vw,4rem)] [text-shadow:0_2px_30px_rgba(0,0,0,.55)]">
           <SplitText segments={["Details are what make a brand ", { text: "feel premium.", serif: true }]} />
         </h2>
 
-        <ul className="mt-14 flex flex-wrap gap-2.5">
+        <ul className="mt-10 flex flex-wrap gap-2.5">
           {ribbonUses.map((u, i) => (
             <motion.li key={u} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 + i * 0.07, duration: 0.5 }} className="glass rounded-full border border-line px-5 py-2.5 text-sm">
               {u}

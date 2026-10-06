@@ -3,13 +3,13 @@ import { testimonials } from "@/data/site";
 
 export function Testimonials() {
   return (
-    <section className="bg-bg2 py-24 lg:py-36">
+    <section className="bg-bg2 py-13.5 lg:py-21.5">
       <div className="container-x">
         <SectionHeading eyebrow="In their words">
           <SplitText segments={["What it feels like ", { text: "on the other side.", serif: true }]} />
         </SectionHeading>
 
-        <ul className="no-scrollbar -mx-5 mt-14 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0">
+        <ul className="no-scrollbar -mx-5 mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0">
           {testimonials.map((t, i) => (
             <li key={t.name} className="w-[84vw] shrink-0 snap-center sm:w-[60vw] lg:w-auto">
               <Reveal delay={i * 0.1} className="h-full">

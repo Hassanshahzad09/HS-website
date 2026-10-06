@@ -13,13 +13,13 @@ const ICONS: Record<(typeof benefits)[number]["icon"], LucideIcon> = {
 
 export function Why() {
   return (
-    <section className="bg-bg2 py-24 lg:py-36">
+    <section className="bg-bg2 py-13.5 lg:py-21.5">
       <div className="container-x">
         <SectionHeading eyebrow="Why Heritage Shapes">
           <SplitText segments={["Six reasons brands ", { text: "stay.", serif: true }]} />
         </SectionHeading>
 
-        <ul className="mt-14 grid gap-px overflow-hidden rounded-[2rem] border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-10 grid gap-px overflow-hidden rounded-[2rem] border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
           {benefits.map((b, i) => {
             const Icon = ICONS[b.icon];
             return (

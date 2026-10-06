@@ -30,12 +30,12 @@ function Word({ children, progress, start, end }: { children: string; progress: 
 }
 
 const PRODUCTS = [
-  { src: "bag", cls: "left-[8%] top-[18%] w-[24%]", from: [-260, -120] },
-  { src: "box", cls: "left-[62%] top-[14%] w-[26%]", from: [280, -140] },
-  { src: "pouch", cls: "left-[38%] top-[8%] w-[20%]", from: [0, -260] },
-  { src: "card", cls: "left-[4%] top-[58%] w-[24%]", from: [-300, 160] },
-  { src: "ribbon", cls: "left-[36%] top-[62%] w-[28%]", from: [0, 300] },
-  { src: "label", cls: "left-[70%] top-[60%] w-[22%]", from: [300, 180] },
+  { src: "photo-bag", cls: "left-[8%] top-[18%] w-[24%]", from: [-260, -120] },
+  { src: "photo-tote", cls: "left-[62%] top-[14%] w-[26%]", from: [280, -140] },
+  { src: "photo-pouch", cls: "left-[38%] top-[8%] w-[20%]", from: [0, -260] },
+  { src: "photo-card", cls: "left-[4%] top-[58%] w-[24%]", from: [-300, 160] },
+  { src: "photo-ribbon", cls: "left-[36%] top-[62%] w-[28%]", from: [0, 300] },
+  { src: "photo-label", cls: "left-[70%] top-[60%] w-[22%]", from: [300, 180] },
 ];
 
 function Piece({ item, progress }: { item: (typeof PRODUCTS)[number]; progress: MotionValue<number> }) {
@@ -62,10 +62,10 @@ export function Cinematic() {
   const finalEvents = useTransform(p, (v) => (v > 0.84 ? "auto" : "none"));
   const glow = useTransform(p, [0, 0.6, 1], [0.15, 0.5, 0.8]);
 
-  const big = "display mx-auto max-w-5xl text-center text-[clamp(2.4rem,7.5vw,7rem)]";
+  const big = "display mx-auto max-w-5xl text-center text-[clamp(2.2rem,5.6vw,5.2rem)]";
 
   return (
-    <section ref={ref} className="on-dark relative h-[360vh] bg-black text-ink" aria-label="Your brand has a story">
+    <section ref={ref} className="on-dark relative h-[280vh] bg-black text-ink" aria-label="Your brand has a story">
       <div className="sticky top-0 grid h-[100svh] place-items-center overflow-hidden">
         <motion.div className="blob left-1/2 top-1/2 size-[46rem] -translate-x-1/2 -translate-y-1/2 bg-brand/40" style={{ opacity: glow }} aria-hidden="true" />
 

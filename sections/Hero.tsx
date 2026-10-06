@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion, useMotionValue, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
-import { useRef, type CSSProperties, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import { ButtonLink } from "@/components/Button";
 import { useSiteReady } from "@/components/Preloader";
 import { SplitText } from "@/components/Reveal";
@@ -20,14 +20,54 @@ type FloatItem = {
 };
 
 const ITEMS: FloatItem[] = [
-  { src: "card", alt: "Foil-stamped thank you card", cls: "left-[-6%] top-[2%] w-[32%]", depth: 0.4, far: true, d: 9, r: -6, to: [70, 90] },
-  { src: "label", alt: "Woven garment label", cls: "left-[62%] top-[-2%] w-[36%]", depth: 0.6, far: true, d: 8, r: 6, to: [-70, 110] },
-  { src: "bag", alt: "Custom shopping bag", cls: "left-[22%] top-[4%] w-[54%]", depth: 1, d: 7, r: -2, to: [10, 40] },
-  { src: "pouch", alt: "Printed stand-up pouch", cls: "left-[-4%] top-[40%] w-[42%]", depth: 1.3, d: 8.5, r: -4, to: [90, -20] },
-  { src: "box", alt: "Rigid gift box", cls: "left-[48%] top-[44%] w-[54%]", depth: 1.5, d: 7.5, r: 0, to: [-60, -40] },
-  { src: "ribbon", alt: "Printed ribbon", cls: "left-[12%] top-[70%] w-[52%]", depth: 1.9, d: 6.5, r: 0, to: [30, -90] },
-  { src: "sticker", alt: "Die-cut sticker", cls: "left-[72%] top-[28%] w-[15%]", depth: 2.3, d: 6, r: 8, to: [-110, 30] },
+  { src: "photo-card", alt: "Foil-stamped thank you card", cls: "left-[-6%] top-[2%] w-[32%]", depth: 0.4, far: true, d: 9, r: -6, to: [70, 90] },
+  { src: "photo-label", alt: "Woven garment label", cls: "left-[62%] top-[-2%] w-[36%]", depth: 0.6, far: true, d: 8, r: 6, to: [-70, 110] },
+  { src: "photo-bag", alt: "Custom shopping bag", cls: "left-[22%] top-[4%] w-[54%]", depth: 1, d: 7, r: -2, to: [10, 40] },
+  { src: "photo-tote", alt: "Printed canvas tote bag", cls: "left-[50%] top-[42%] w-[50%]", depth: 1.5, d: 7.5, r: 4, to: [-60, -40] },
+  { src: "photo-ribbon", alt: "Printed ribbon", cls: "left-[-2%] top-[46%] w-[50%]", depth: 1.9, d: 6.5, r: 0, to: [30, -90] },
 ];
+
+// Words typed after "brands" in the headline. The first is also the widest, so it reserves the space.
+const WORDS = ["memorable.", "iconic.", "timeless."];
+
+function TypedWord({ play }: { play: boolean }) {
+  const [text, setText] = useState(WORDS[0]);
+
+  useEffect(() => {
+    if (!play) return;
+    let word = 0;
+    let len = WORDS[0].length;
+    let deleting = true;
+    let timer: number;
+    const tick = () => {
+      if (deleting) {
+        len--;
+        if (len === 0) {
+          deleting = false;
+          word = (word + 1) % WORDS.length;
+        }
+      } else {
+        len++;
+      }
+      setText(WORDS[word].slice(0, len));
+      const full = !deleting && len === WORDS[word].length;
+      if (full) deleting = true;
+      timer = window.setTimeout(tick, full ? 1800 : len === 0 ? 350 : deleting ? 45 : 95);
+    };
+    timer = window.setTimeout(tick, 3000);
+    return () => window.clearTimeout(timer);
+  }, [play]);
+
+  return (
+    <span className="inline-grid">
+      <span className="invisible col-start-1 row-start-1 pr-[0.1em]">{WORDS[0]}</span>
+      <span className="col-start-1 row-start-1 whitespace-nowrap">
+        <span className="text-gradient">{text}</span>
+        <span className="ml-[0.04em] inline-block h-[0.82em] w-[0.05em] translate-y-[0.08em] animate-pulse bg-brand" />
+      </span>
+    </span>
+  );
+}
 
 function Float({ item, i, mx, my, progress, ready }: { item: FloatItem; i: number; mx: MotionValue<number>; my: MotionValue<number>; progress: MotionValue<number>; ready: boolean }) {
   const px = useTransform(mx, (v) => v * item.depth * 16);
@@ -72,12 +112,18 @@ export function Hero() {
         <div className="blob -right-32 bottom-0 size-[30rem] bg-gold/20" aria-hidden="true" />
 
         <div className="container-x relative grid h-full grid-rows-[auto_1fr] items-center gap-4 pb-6 pt-24 lg:grid-cols-[1.08fr_1fr] lg:grid-rows-1 lg:gap-6 lg:pb-10">
-          <motion.div style={{ y: textY, opacity: textOpacity }} className="relative z-10">
-            <motion.p className="eyebrow mb-5 lg:mb-7" initial={{ opacity: 0 }} animate={ready ? { opacity: 1 } : undefined} transition={{ duration: 1, delay: 0.1 }}>
-              Custom • Premium • International
-            </motion.p>
-            <h1 className="display text-[clamp(2.7rem,7.4vw,7.2rem)]">
-              <SplitText play={ready} delay={0.1} stagger={0.08} segments={["Packaging\nthat makes\n", { text: "brands memorable.", gradient: true }]} />
+          <motion.div style={{ y: textY, opacity: textOpacity }} className="relative z-10 lg:-mt-14">
+            <h1 className="display text-[clamp(2.4rem,5.6vw,5.4rem)]">
+              <SplitText play={ready} delay={0.1} stagger={0.08} segments={["Packaging\nthat makes"]} />
+              <span className="block" role="text" aria-label={`brands ${WORDS[0]}`}>
+                {[<span key="brands" className="text-gradient">brands</span>, <TypedWord key="typed" play={ready} />].map((word, i) => (
+                  <span key={i} aria-hidden="true" className={cn("inline-block overflow-hidden pb-[0.14em] -mb-[0.14em] align-bottom", i === 0 && "mr-[0.22em]")}>
+                    <motion.span className="inline-block will-change-transform" initial={{ y: "115%" }} animate={ready ? { y: 0 } : undefined} transition={{ duration: 1, delay: 0.34 + i * 0.08, ease: EASE }}>
+                      {word}
+                    </motion.span>
+                  </span>
+                ))}
+              </span>
             </h1>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={ready ? { opacity: 1, y: 0 } : undefined} transition={{ duration: 0.9, delay: 0.7, ease: EASE }}>
               <p className="mt-5 max-w-md text-base leading-relaxed text-muted sm:text-lg lg:mt-8">Custom printing and packaging solutions crafted for brands that care about every detail.</p>

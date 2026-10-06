@@ -35,7 +35,7 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
 
   const product = getProduct(slug);
 
-  // Prefill from a product page: /quote?product=rigid-boxes&material=…&finish=…&qty=…
+  // Prefill from a product page: /quote?product=shopping-bags&material=…&finish=…&qty=…
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
     const p = getProduct(q.get("product") ?? "");
@@ -95,15 +95,15 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
   const Heading = standalone ? "h1" : "h2";
 
   return (
-    <section id="quote" className={cn("relative overflow-hidden bg-bg2", standalone ? "pb-24 pt-32 lg:pt-40" : "py-24 lg:py-36")}>
+    <section id="quote" className={cn("relative overflow-hidden bg-bg2", standalone ? "pb-24 pt-32 lg:pt-40" : "py-13.5 lg:py-21.5")}>
       <div className="blob -left-40 top-20 size-[30rem] bg-brand/15" aria-hidden="true" />
       <div className="container-x relative">
         <p className="eyebrow mb-5">Quote builder</p>
-        <Heading className="display max-w-5xl text-[clamp(2.1rem,5.2vw,4.6rem)]">
+        <Heading className="display max-w-5xl text-[clamp(1.9rem,4vw,3.5rem)]">
           <SplitText segments={["Let’s build something your customers ", { text: "remember.", gradient: true }]} />
         </Heading>
 
-        <Reveal className="mt-12 grid gap-6 lg:grid-cols-[1fr_340px] lg:gap-8">
+        <Reveal className="mt-10 grid gap-6 lg:grid-cols-[1fr_340px] lg:gap-8">
           <form onSubmit={submit} noValidate className="rounded-[2rem] border border-line bg-surface p-5 sm:p-9">
             {status === "done" ? (
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="flex min-h-[26rem] flex-col items-start justify-center" role="status">

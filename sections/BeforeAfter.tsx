@@ -2,25 +2,41 @@
 
 import Image from "next/image";
 import { MoveHorizontal } from "lucide-react";
-import { useState } from "react";
+import { animate, useInView } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { MaskReveal, SectionHeading, SplitText } from "@/components/Reveal";
 
 /** Draggable comparison: unbranded packaging on the left, branded on the right. */
 export function BeforeAfter() {
   const [pos, setPos] = useState(50);
+  const [touched, setTouched] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { amount: 0.4 });
+
+  // While the section is on screen the bar sweeps left and right. Dragging takes over;
+  // the sweep starts again the next time the section scrolls into view.
+  useEffect(() => {
+    if (!inView) {
+      setTouched(false);
+      return;
+    }
+    if (touched) return;
+    const controls = animate(50, [50, 68, 32, 50], { duration: 6, ease: "easeInOut", repeat: Infinity, onUpdate: setPos });
+    return () => controls.stop();
+  }, [touched, inView]);
 
   return (
-    <section className="bg-bg py-24 lg:py-36">
+    <section className="bg-bg py-13.5 lg:py-21.5">
       <div className="container-x">
-        <SectionHeading eyebrow="Standard vs branded" text="Same bag, same box, same pouch. Drag the handle to see what colour, foil, a ribbon and a seal do to them.">
+        <SectionHeading eyebrow="Standard vs branded" text="Same bags, same box, same tags. Drag the handle to see what a logo, a palette and a seal do to them.">
           <SplitText segments={["Small details. ", { text: "Big difference.", gradient: true }]} />
         </SectionHeading>
 
-        <MaskReveal className="mt-12">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] border border-line bg-bg2 sm:aspect-[16/10]" data-cursor="DRAG">
-            <Image src="/mockups/after.webp" alt="Branded packaging: navy bag with gold foil logo, printed box, pouch, ribbon and sticker" fill sizes="(min-width: 1480px) 1350px, 92vw" className="object-cover" />
+        <MaskReveal className="mt-10">
+          <div ref={ref} className="relative aspect-[4/3] overflow-hidden rounded-[2rem] border border-line bg-bg2 sm:aspect-[21/9]" data-cursor="DRAG">
+            <Image src="/mockups/set-branded.webp" alt="Branded packaging set in black and white: shopping bags, gift box with tissue and seal, hang tag, woven label and printed cards" fill sizes="(min-width: 1480px) 1350px, 92vw" className="object-cover" />
             <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-              <Image src="/mockups/before.webp" alt="Standard packaging: plain kraft bag, box and pouch with no branding" fill sizes="(min-width: 1480px) 1350px, 92vw" className="object-cover" />
+              <Image src="/mockups/set-standard.webp" alt="The same packaging set unbranded: plain kraft bags, box, tag and blank cards" fill sizes="(min-width: 1480px) 1350px, 92vw" className="object-cover" />
             </div>
 
             <span className="glass absolute left-4 top-4 rounded-full px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.16em]">Standard</span>
@@ -39,7 +55,11 @@ export function BeforeAfter() {
               max={100}
               step={0.5}
               value={pos}
-              onChange={(e) => setPos(Number(e.target.value))}
+              onPointerDown={() => setTouched(true)}
+              onChange={(e) => {
+                setTouched(true);
+                setPos(Number(e.target.value));
+              }}
               aria-label="Comparison slider: move left for branded, right for standard"
               className="absolute inset-0 size-full cursor-ew-resize opacity-0"
             />

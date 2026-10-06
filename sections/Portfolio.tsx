@@ -28,13 +28,13 @@ export function Portfolio() {
   }, [open]);
 
   return (
-    <section id="portfolio" className="bg-bg py-24 lg:py-36">
+    <section id="portfolio" className="bg-bg py-13.5 lg:py-21.5">
       <div className="container-x">
         <SectionHeading eyebrow="Portfolio" text="Concept projects showing how materials and finishes come together across a full brand set.">
           <SplitText segments={["Made for brands. ", { text: "Built to be remembered.", gradient: true }]} />
         </SectionHeading>
 
-        <div className="mt-14 columns-1 gap-5 sm:columns-2 lg:columns-3">
+        <div className="mt-10 columns-1 gap-5 sm:columns-2 lg:columns-3">
           {portfolio.map((p, i) => (
             <MaskReveal key={p.id} delay={(i % 3) * 0.08} className="mb-5 break-inside-avoid">
               <button type="button" onClick={() => setOpen(p)} data-cursor="VIEW" aria-label={`${p.name} — ${p.category}. View project`} className="group relative block w-full overflow-hidden rounded-[1.75rem] bg-bg2 text-left" style={{ aspectRatio: p.ratio }}>

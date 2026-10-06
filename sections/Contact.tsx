@@ -36,12 +36,12 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="relative overflow-hidden bg-bg2 py-24 lg:py-36">
+    <section id="contact" className="relative overflow-hidden bg-bg2 py-13.5 lg:py-21.5">
       <div className="blob -right-40 bottom-0 size-[32rem] bg-gold/15" aria-hidden="true" />
       <div className="container-x relative grid gap-14 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
         <div>
           <p className="eyebrow mb-5">Contact</p>
-          <h2 className="display text-[clamp(2.3rem,5.6vw,5rem)]">
+          <h2 className="display text-[clamp(2rem,4.2vw,3.75rem)]">
             <SplitText segments={["Have an idea?\n", { text: "Let’s shape it.", gradient: true }]} />
           </h2>
           <Reveal delay={0.2}>

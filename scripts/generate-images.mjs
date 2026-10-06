@@ -147,66 +147,6 @@ function tag(p) {
   ${emboss(16, -10, 78, p, p.base)}`;
 }
 
-function pen(p) {
-  const [barrel, d1] = lin([shade(p.base, 35), p.base, shade(p.base, -35)], 0, 0, 0, 1);
-  const [grip, d2] = lin(["#5b6168", "#22262a", "#0c0e10"], 0, 0, 0, 1);
-  return `<defs>${d1}${d2}</defs>
-  <rect x="-178" y="-7" width="16" height="14" rx="3" fill="${SILVER}"/>
-  <rect x="-164" y="-10" width="262" height="20" rx="9" fill="${barrel}"/>
-  <rect x="-150" y="-15" width="92" height="6" rx="2.5" fill="${SILVER}"/>
-  <rect x="92" y="-10" width="6" height="20" fill="${SILVER}"/>
-  <rect x="98" y="-9.5" width="40" height="19" rx="3" fill="${grip}"/>
-  <polygon points="138,-8 176,-2.2 176,2.2 138,8" fill="${SILVER}"/>
-  <rect x="176" y="-1" width="6" height="2" fill="#333"/>
-  ${p.plain ? "" : `<text x="18" y="3.6" text-anchor="middle" font-family="${SERIF}" font-size="8.5" letter-spacing="2.2" fill="${p.ink}">${esc((p.brand ?? "Heritage Shapes").toUpperCase())}</text>`}`;
-}
-
-function keychain(p, round = false) {
-  const ring = `<circle cx="0" cy="-118" r="34" fill="none" stroke="${SILVER}" stroke-width="7"/><circle cx="0" cy="-118" r="30.5" fill="none" stroke="#000" stroke-width="1" opacity=".25"/>
-  <rect x="-5" y="-90" width="10" height="26" rx="5" fill="${SILVER}"/>`;
-  if (round)
-    return `${ring}<circle cx="0" cy="14" r="78" fill="${p.base}"/><circle cx="0" cy="14" r="78" fill="none" stroke="${SILVER}" stroke-width="6"/>
-    <circle cx="0" cy="-48" r="7" fill="${shade(p.base, -60)}"/>${lockup(0, 22, 76, p, p.ink, false)}`;
-  return `${ring}
-  <rect x="-54" y="-70" width="108" height="210" rx="28" fill="${p.base}"/>
-  <rect x="-45" y="-61" width="90" height="192" rx="21" fill="none" stroke="${shade(p.base, 38)}" stroke-width="1.6" stroke-dasharray="6 5" opacity=".8"/>
-  <circle cx="0" cy="-44" r="8" fill="${SILVER}"/><circle cx="0" cy="-44" r="3" fill="#00000055"/>
-  ${emboss(0, 40, 62, p, p.base, false)}`;
-}
-
-function zipper(p) {
-  let teeth = "";
-  for (let i = 0, y = -214; y < 96; y += 11, i++)
-    teeth += `<rect x="${i % 2 ? -1.5 : -10}" y="${y}" width="11.5" height="7.5" rx="2" fill="${p.ink}"/>`;
-  return `<rect x="-48" y="-225" width="96" height="450" fill="${p.base}"/>
-  <rect x="-48" y="-225" width="96" height="450" fill="url(#weave)"/>
-  <path d="M-30 -225V225M30 -225V225" stroke="${shade(p.base, 22)}" stroke-width="1.4" stroke-dasharray="5 4" opacity=".7"/>
-  <rect x="-13" y="-225" width="26" height="450" fill="${shade(p.base, -22)}"/>
-  ${teeth}
-  <path d="M-10 100L-22 215M10 100L22 215" stroke="${p.ink}" stroke-width="8" stroke-dasharray="7.5 3.5"/>
-  <path d="M-20 62H20L16 112Q0 122 -16 112Z" fill="${p.ink}"/><path d="M-20 62H20L16 112Q0 122 -16 112Z" fill="#000" opacity=".12"/>
-  <rect x="-7" y="70" width="14" height="24" rx="6" fill="#00000040"/>
-  <rect x="-13" y="84" width="26" height="92" rx="12" fill="${p.ink}"/><rect x="-13" y="84" width="26" height="92" rx="12" fill="none" stroke="#00000030" stroke-width="1.2"/>
-  <circle cx="0" cy="97" r="5" fill="${shade(p.base, -40)}"/>
-  ${p.plain ? "" : mark(0, 146, 17, shade(p.base, -30), 60)}`;
-}
-
-function flyer(p, v = 0) {
-  const [img, d1] = lin([p.base, shade(p.base, 28), p.accent], 0, 0, 1, 1);
-  const lines = (x, y, n, w) =>
-    Array.from({ length: n }, (_, i) => `<rect x="${x}" y="${y + i * 11}" width="${i === n - 1 ? w * 0.6 : w}" height="3.5" rx="1.7" fill="#1b2227" opacity=".28"/>`).join("");
-  const layouts = [
-    `<rect x="-115" y="-162" width="230" height="170" fill="${img}"/>${mark(0, -78, 96, "#fff", 46, 0.92)}
-     <rect x="-95" y="30" width="150" height="13" rx="2" fill="#141a1f"/><rect x="-95" y="50" width="105" height="13" rx="2" fill="#141a1f"/>${lines(-95, 82, 5, 190)}
-     <rect x="-95" y="138" width="64" height="5" rx="2.5" fill="${p.base}"/>`,
-    `<rect x="-95" y="-140" width="120" height="14" rx="2" fill="#141a1f"/><rect x="-95" y="-118" width="165" height="14" rx="2" fill="${p.base}"/>${lines(-95, -88, 4, 190)}
-     <rect x="-95" y="-28" width="190" height="130" fill="${img}"/>${lines(-95, 118, 2, 190)}`,
-    `<rect x="-115" y="-162" width="230" height="324" fill="${p.base}"/>${mark(0, -40, 120, p.accent, 44)}
-     <rect x="-60" y="58" width="120" height="12" rx="2" fill="#fff" opacity=".95"/><rect x="-40" y="80" width="80" height="6" rx="3" fill="#fff" opacity=".55"/>`,
-  ];
-  return `<defs>${d1}</defs><rect x="-115" y="-162" width="230" height="324" fill="#fbfaf7"/>${layouts[v % 3]}`;
-}
-
 /** Flat ribbon following y = fn(x), printed with repeating marks. */
 function strip(fn, x0, x1, width, p) {
   const pts = [];
@@ -225,13 +165,6 @@ function strip(fn, x0, x1, width, p) {
   return `<path d="${d}" fill="none" stroke="${shade(p.base, -26)}" stroke-width="${width}" stroke-linejoin="round"/>
   <path d="${d}" fill="none" stroke="${p.base}" stroke-width="${width - 5}" stroke-linejoin="round"/>
   <path d="${d}" fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="${width * 0.22}" transform="translate(0 ${-width * 0.22})"/>${marks}`;
-}
-
-function ribbon(p) {
-  let rings = "";
-  for (let r = 34; r < 92; r += 5) rings += `<circle r="${r}" fill="none" stroke="${shade(p.base, -32)}" stroke-width="1" opacity=".55"/>`;
-  return `<g transform="translate(-120 -20)">${strip((x) => 92 - 14 + 30 * Math.sin((x - 10) / 62) * Math.min(1, x / 90), 0, 400, 46, p)}
-  <circle r="92" fill="${p.base}"/>${rings}<circle r="32" fill="#cdb48c"/><circle r="32" fill="none" stroke="#00000030" stroke-width="2"/><circle r="22" fill="#3a2f22"/></g>`;
 }
 
 function wovenLabel(p, w = 250, h = 104) {
@@ -336,18 +269,6 @@ function uvFilm(p) {
   <path d="M190 96L136 150H190Z" fill="#fff" opacity=".5"/>`;
 }
 
-function diary(p) {
-  const [cover, d1] = lin([shade(p.base, 9), p.base, shade(p.base, -10)], 0, 0, 1, 1);
-  let pages = "";
-  for (let i = 2; i < 12; i += 2.5) pages += `<path d="M-136 ${190 + i}H${140 + i * 0.6}" stroke="#00000018" stroke-width="1"/>`;
-  return `<defs>${d1}</defs><rect x="-136" y="-184" width="286" height="386" rx="9" fill="#efe9dc"/>${pages}
-  <path d="M-40 190L-40 240L-33 232L-26 240L-26 190Z" fill="${p.accent}"/>
-  <rect x="-145" y="-190" width="286" height="380" rx="9" fill="${cover}"/>
-  <rect x="-145" y="-190" width="24" height="380" rx="9" fill="#000" opacity=".16"/>
-  <rect x="92" y="-190" width="13" height="380" fill="${shade(p.base, -45)}"/>
-  ${emboss(-12, -22, 108, p, p.base)}`;
-}
-
 /* ----------------------------------------------------------------- scenes */
 
 const DEFS = `<defs>
@@ -403,103 +324,6 @@ const SAGE = { base: "#7c8f7a", accent: "#e9e2cf", ink: "#f3eee0", paper: "#f7f4
 // Three views per product: studio hero, macro close-up, alternate colourway.
 
 const PRODUCTS = {
-  "shopping-bags": (v) => ({
-    bg: ["#e9e3d8", "#dcd5c8", "#1b2126"][v],
-    items: [
-      { svg: bag([IVORY, NAVY, NOIR][v]), x: 560, y: 560, s: 1.75, r: -3 },
-      { svg: bag([NAVY, IVORY, { ...IVORY, base: "#e4dccb", ink: GOLD }][v]), x: 890, y: 630, s: 1.3, r: 4 },
-    ],
-  }),
-  pouches: (v) => ({
-    bg: ["#dfe5e4", "#e7e0d2", "#22282c"][v],
-    items: [
-      { svg: pouch({ ...BLUE, label: "#f7f3ea", labelInk: "#05649a" }), x: 500, y: 540, s: 1.55, r: -5 },
-      { svg: pouch({ ...NOIR, base: "#1d2023" }), x: 790, y: 520, s: 1.7, r: 2 },
-      { svg: pouch({ ...SAND, base: "#c8a77a", label: "#fbf7ee", labelInk: "#2a2118" }), x: 1050, y: 600, s: 1.25, r: 7 },
-    ],
-  }),
-  "rigid-boxes": (v) => ({
-    bg: ["#e6e0d5", "#d9dfe2", "#1a1d20"][v],
-    items: [
-      { svg: box([NAVY, NOIR, IVORY][v], { w: 270, d: 270, h: 100 }), x: 600, y: 520, s: 1.5 },
-      { svg: box([IVORY, NAVY, NOIR][v], { w: 170, d: 170, h: 70 }), x: 990, y: 700, s: 1.4 },
-    ],
-  }),
-  "silicone-tags": (v) => ({
-    bg: ["#3c4a5a", "#6b6558", "#2b2f2a"][v],
-    fabric: true,
-    items: [
-      { svg: tag({ base: "#101214", ink: "#101214" }), x: 560, y: 470, s: 2, r: -8, flat: true },
-      { svg: tag({ base: ["#b6a37f", "#0b5f93", "#8b3a2f"][v], ink: "#000" }), x: 900, y: 690, s: 1.55, r: 11, flat: true },
-    ],
-  }),
-  "custom-diaries": (v) => ({
-    bg: ["#e5dfd3", "#d8dcd6", "#20252a"][v],
-    items: [
-      { svg: diary([NAVY, { ...SAND, base: "#8b5a35", accent: "#c9a66b" }, NOIR][v]), x: 620, y: 520, s: 1.45, r: -9, flat: true },
-      { svg: pen({ ...NOIR, ink: "#d8c08a" }), x: 1030, y: 610, s: 1.5, r: -68, flat: true },
-    ],
-  }),
-  "ball-pens": (v) => ({
-    bg: ["#e2e6e8", "#e8e2d6", "#1c2024"][v],
-    items: [
-      { svg: pen({ base: "#0b5f93", ink: "#fff" }), x: 640, y: 380, s: 2.3, r: -24, flat: true },
-      { svg: pen({ base: "#f3f1ec", ink: "#0b5f93" }), x: 720, y: 530, s: 2.3, r: -24, flat: true },
-      { svg: pen({ base: "#16181b", ink: "#d8c08a" }), x: 800, y: 680, s: 2.3, r: -24, flat: true },
-    ],
-  }),
-  keychains: (v) => ({
-    bg: ["#ddd6c9", "#d5dbdf", "#262b30"][v],
-    items: [
-      { svg: keychain({ ...SAND, base: "#8b5a35" }), x: 540, y: 560, s: 2, r: -14, flat: true },
-      { svg: keychain({ base: "#0d3f5f", ink: GOLD }, true), x: 880, y: 590, s: 1.9, r: 12, flat: true },
-    ],
-  }),
-  zippers: (v) => ({
-    bg: ["#c9c2b4", "#39424d", "#5a4a3c"][v],
-    fabric: true,
-    items: [
-      { svg: zipper({ base: "#15171a", ink: GOLD }), x: 470, y: 520, s: 1.75, r: -10, flat: true },
-      { svg: zipper({ base: "#0d3f5f", ink: SILVER }), x: 720, y: 540, s: 1.75, r: 2, flat: true },
-      { svg: zipper({ base: "#b7a27c", ink: "#2a2118" }), x: 970, y: 520, s: 1.75, r: 12, flat: true },
-    ],
-  }),
-  flyers: (v) => ({
-    bg: ["#dcd8cf", "#e6e1d6", "#23282d"][v],
-    items: [
-      { svg: flyer(BLUE, 2), x: 470, y: 560, s: 1.65, r: -17, flat: true },
-      { svg: flyer({ ...BLUE, accent: "#e0b56c" }, 1), x: 700, y: 520, s: 1.65, r: -3, flat: true },
-      { svg: flyer({ ...BLUE, accent: "#e0b56c" }, 0), x: 940, y: 560, s: 1.65, r: 11, flat: true },
-    ],
-  }),
-  ribbons: (v) => ({
-    bg: ["#e8e1d4", "#dfe4e3", "#1d2125"][v],
-    items: [
-      { svg: ribbon([NAVY, { base: "#f1eadb", ink: "#0b5f93" }, { base: "#7d1f2b", ink: GOLD }][v]), x: 520, y: 470, s: 1.8, flat: true },
-      { svg: ribbon([{ base: "#efe7d6", ink: "#0b5f93" }, NOIR, NAVY][v]), x: 430, y: 800, s: 1.15, r: -6, flat: true },
-    ],
-  }),
-  "woven-labels": (v) => ({
-    bg: ["#8d8676", "#3e4a58", "#2e2b28"][v],
-    fabric: true,
-    items: [
-      { svg: wovenLabel({ base: "#121417", ink: "#d2b071" }), x: 600, y: 400, s: 2.2, r: -9, flat: true },
-      { svg: wovenLabel({ base: "#ebe3d2", ink: "#0d3f5f" }), x: 860, y: 610, s: 2, r: 6, flat: true },
-      { svg: wovenLabel({ base: "#0d3f5f", ink: "#f1ead9" }, 190, 86), x: 500, y: 760, s: 1.8, r: -3, flat: true },
-    ],
-  }),
-  "care-labels": (v) => ({
-    bg: ["#b9b5ab", "#59636e", "#3a3531"][v],
-    fabric: true,
-    items: [
-      { svg: careLabel({ base: "#f6f4ee", ink: "#1a1d20" }), x: 560, y: 520, s: 2, r: -7, flat: true },
-      { svg: careLabel({ base: "#17191c", ink: "#f1ede3" }), x: 890, y: 560, s: 1.75, r: 9, flat: true },
-    ],
-  }),
-  "thank-you-cards": (v) => ({
-    bg: ["#e4ddd0", "#dadfe0", "#1e2226"][v],
-    items: [{ svg: card([{ base: "#cdb596", paper: "#fbf8f0", ink: GOLD }, { base: "#0d3f5f", paper: "#fbf8f0", ink: "#0b5f93" }, { base: "#2a2d31", paper: "#f6f1e6", ink: GOLD }][v]), x: 700, y: 520, s: 2, flat: true }],
-  }),
   "dtf-stickers": (v) => ({
     bg: ["#d9d4c9", "#cfd6da", "#1d2125"][v],
     items: [
@@ -572,27 +396,7 @@ async function cutouts() {
   for (const [name, svg] of Object.entries(set)) await save(`mockups/cutout-${name}.webp`, svg, 88);
 }
 
-/* ----------------------------------------------------------- before/after */
-
-async function beforeAfter() {
-  const make = (b) => {
-    const P = b ? NAVY : KRAFT;
-    const P2 = b ? IVORY : { ...KRAFT, base: "#c4a57c" };
-    const items = [
-      { svg: bag(P), x: 520, y: 470, s: 1.75, r: -2 },
-      { svg: box(P2, { w: 260, d: 260, h: 96 }), x: 980, y: 560, s: 1.45 },
-      { svg: pouch(b ? { ...NOIR, base: "#1d2023" } : { ...KRAFT, base: "#ad8a5f" }), x: 1300, y: 420, s: 1.2, r: 5 },
-    ];
-    if (b)
-      items.push(
-        { svg: `<g transform="translate(-200 0)">${strip((x) => 18 * Math.sin(x / 50), 0, 400, 40, NAVY)}</g>`, x: 760, y: 870, s: 1.3, r: -5, flat: true },
-        { svg: looseSticker(0, true), x: 1240, y: 800, s: 1.7, r: 12, flat: true },
-      );
-    return scene({ w: 1600, h: 1000, bg: b ? "#e7e1d5" : "#dcd7cd", items });
-  };
-  await save("mockups/before.webp", make(false));
-  await save("mockups/after.webp", make(true));
-}
+// mockups/set-standard.webp and mockups/set-branded.webp are supplied photographs, not generated here.
 
 /* -------------------------------------------------------------- portfolio */
 
@@ -679,5 +483,5 @@ async function brand() {
 }
 
 const only = process.argv[2];
-const jobs = { products, cutouts, beforeAfter, portfolio, brand };
+const jobs = { products, cutouts, portfolio, brand };
 for (const [name, job] of Object.entries(jobs)) if (!only || only === name) await job();

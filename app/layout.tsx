@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { CustomCursor } from "@/components/CustomCursor";
 import { Footer } from "@/components/Footer";
 import { MobileCTA } from "@/components/MobileCTA";
 import { Navbar } from "@/components/Navbar";
@@ -19,7 +18,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: site.title, template: `%s | ${site.name}` },
   description: site.description,
-  keywords: ["custom packaging", "rigid boxes", "shopping bags", "woven labels", "DTF stickers", "UV DTF", "printing", "branded products"],
+  keywords: ["custom packaging", "shopping bags", "pouches", "woven labels", "DTF stickers", "UV DTF", "printing", "branded products"],
   openGraph: {
     type: "website",
     siteName: site.name,
@@ -33,14 +32,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f7f5f0" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b0d0f" },
-  ],
+  themeColor: "#f7f5f0",
 };
 
 // Runs before paint: applies the saved theme and skips the preloader on repeat visits.
-const bootScript = `(function(){var d=document.documentElement;try{var t=localStorage.getItem('hs-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';d.dataset.theme=t;if(sessionStorage.getItem('hs-loaded'))d.dataset.loaded='1'}catch(e){d.dataset.theme='light'}})()`;
+const bootScript = `(function(){var d=document.documentElement;try{var t=localStorage.getItem('hs-theme');if(t!=='dark')t='light';d.dataset.theme=t;if(sessionStorage.getItem('hs-loaded'))d.dataset.loaded='1'}catch(e){d.dataset.theme='light'}})()`;
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -64,7 +60,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <Providers>
           <Preloader />
-          <CustomCursor />
           <Navbar />
           <main id="main">{children}</main>
           <Footer />
