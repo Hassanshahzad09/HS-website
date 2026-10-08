@@ -12,6 +12,7 @@ export type EnquiryPayload = {
   quantity?: string | number;
   material?: string;
   finishes?: string[];
+  colour?: string;
   fileName?: string;
   message?: string;
 };

@@ -27,6 +27,7 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
   const [qty, setQty] = useState(500);
   const [material, setMaterial] = useState("");
   const [finishes, setFinishes] = useState<string[]>([]);
+  const [colour, setColour] = useState("");
   const [fileName, setFileName] = useState("");
   const [contact, setContact] = useState<Contact>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<keyof Contact | "product" | "qty" | "form", string>>>({});
@@ -35,7 +36,7 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
 
   const product = getProduct(slug);
 
-  // Prefill from a product page: /quote?product=shopping-bags&material=…&finish=…&qty=…
+  // Prefill from a product page: /quote?product=shopping-bags&material=…&finish=…&colour=…&qty=…
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
     const p = getProduct(q.get("product") ?? "");
@@ -44,6 +45,7 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
     setMaterial(p.materials.find((m) => m.name === q.get("material"))?.name ?? p.materials[0].name);
     const f = p.finishes.find((x) => x.name === q.get("finish"));
     if (f) setFinishes([f.name]);
+    setColour(p.colours?.find((c) => c === q.get("colour")) ?? "");
     const n = Number(q.get("qty"));
     if (n > 0) setQty(n);
     setStep(1);
@@ -54,6 +56,7 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
     setSlug(s);
     setMaterial(p.materials[0].name);
     setFinishes([]);
+    setColour("");
     setErrors({});
   };
 
@@ -72,7 +75,7 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
     if (!isEmail(contact.email)) errs.email = "Enter a valid email so we can send the quote.";
     if (Object.keys(errs).length) return setErrors(errs);
     setStatus("busy");
-    const res = await submitEnquiry({ type: "quote", ...contact, product: product?.name, quantity: qty, material, finishes, fileName });
+    const res = await submitEnquiry({ type: "quote", ...contact, product: product?.name, quantity: qty, material, finishes, colour: colour || undefined, fileName });
     if (res.ok) {
       setReference(res.reference ?? "");
       setStatus("done");
@@ -86,6 +89,7 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
     setStep(0);
     setSlug("");
     setFinishes([]);
+    setColour("");
     setFileName("");
     setContact(EMPTY);
     setStatus("idle");
@@ -198,6 +202,18 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
                               </button>
                             </div>
                           </fieldset>
+                          {product.colours && (
+                            <fieldset>
+                              <legend className="text-2xl font-medium tracking-tight">Which colour?</legend>
+                              <div className="mt-5 flex flex-wrap gap-2">
+                                {product.colours.map((c) => (
+                                  <button key={c} type="button" aria-pressed={colour === c} onClick={() => setColour(c)} className={chip(colour === c)}>
+                                    {c}
+                                  </button>
+                                ))}
+                              </div>
+                            </fieldset>
+                          )}
                         </div>
                       )}
 
@@ -297,7 +313,8 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
               <Row label="Product" value={product?.name} />
               <Row label="Quantity" value={product && qty > 0 ? qty.toLocaleString("en") : undefined} />
               <Row label="Material" value={product ? material : undefined} />
-              <Row label="Finishes" value={finishes.length ? finishes.join(", ") : undefined} />
+              <Row label={product?.finishLabel ?? "Finishes"} value={finishes.length ? finishes.join(", ") : undefined} />
+              {product?.colours && <Row label="Colour" value={colour || undefined} />}
               <Row label="Artwork" value={fileName || undefined} />
             </dl>
             <p className="mt-5 text-xs leading-relaxed text-muted">No payment, no commitment. A quote is a conversation starter.</p>

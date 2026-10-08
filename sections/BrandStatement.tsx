@@ -12,7 +12,7 @@ type Word = string | { text: string; keep?: boolean };
 // `keep` words stay in the gradient once the reading head has passed them.
 const LINES: Word[][] = [
   ["Your", "packaging", "isn’t", "just", "packaging."],
-  ["It", "is", "the", { text: "first", keep: true }, { text: "physical", keep: true }, { text: "impression", keep: true }, "of", "your", "brand."],
+  ["It", "is", "the", "first", "physical", "impression", { text: "of", keep: true }, { text: "your", keep: true }, { text: "brand.", keep: true }],
 ];
 
 const DIM = "color-mix(in srgb, var(--ink) 30%, var(--bg-2))";
@@ -88,7 +88,7 @@ export function BrandStatement() {
       {/* slow background waves */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 opacity-60" aria-hidden="true">
         {[0, 1, 2].map((i) => (
-          <svg key={i} viewBox="0 0 1800 120" preserveAspectRatio="none" className="absolute bottom-0 left-0 h-full w-[200%]" style={{ animation: `drift ${26 + i * 9}s linear infinite`, bottom: `${i * 26}px`, opacity: 0.5 - i * 0.13 }}>
+          <svg key={i} viewBox="0 0 1800 120" preserveAspectRatio="none" className="keep-motion absolute bottom-0 left-0 h-full w-[200%]" style={{ animation: `drift ${26 + i * 9}s linear infinite reverse`, bottom: `${i * 11}px`, opacity: 0.5 - i * 0.13 }}>
             <path d={WAVE} fill="none" stroke="var(--brand)" strokeWidth={1.2} />
             <path d={WAVE} fill="none" stroke="var(--brand)" strokeWidth={1.2} transform="translate(900 0)" />
           </svg>

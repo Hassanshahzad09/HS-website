@@ -80,7 +80,7 @@ export function ProductCatalogue({ carousel = false, withSearch = false }: { car
         className={cn(
           "mt-6",
           carousel
-            ? "no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:overflow-visible sm:px-0 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-4 xl:gap-y-10"
+            ? "no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:overflow-visible sm:px-0 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-10 xl:gap-x-6"
             : "grid grid-cols-1 gap-x-6 gap-y-12 min-[480px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
         )}
       >

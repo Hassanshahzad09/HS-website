@@ -267,7 +267,8 @@ html[data-loaded] .preloader {
   html {
     scroll-behavior: auto;
   }
-  *,
+  /* .keep-motion opts slow, purely decorative drift (the brand statement waves) out of this. */
+  *:not(.keep-motion),
   *::before,
   *::after {
     animation-duration: 0.01ms !important;

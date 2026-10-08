@@ -25,6 +25,12 @@ export type Product = {
   applications: string[];
   /** Placeholder — replace with your real minimum order quantity. */
   moq: string;
+  /** Photos of the product in one finish or style. `effect` ties a shot to that finish chip on the product page. */
+  variants?: { image: string; label: string; effect?: Effect; colour?: string }[];
+  /** Heading for the finish chips when "Finish" is the wrong word, e.g. "Print type". */
+  finishLabel?: string;
+  /** Stock colours the customer chooses between. */
+  colours?: string[];
   featured?: boolean;
   tags: string[];
 };
@@ -92,7 +98,13 @@ export const products: Product[] = [
     ...photo("shopping-bags"),
     why: ["Reinforced tops and bases that hold their shape", "Rope, ribbon, twisted or die-cut handles", "Printed inside and out if you want it"],
     materials: [M.art, M.kraft, M.textured],
-    finishes: [F.matte, F.gloss, F.soft, F.foil, F.emboss, F.uv],
+    finishes: [F.matte, F.gloss, F.soft, F.foil, F.emboss, F.deboss, F.uv, F.print],
+    variants: [
+      { image: "/products/photo/shopping-bags-foil.webp", label: "Gold foil", effect: "foil" },
+      { image: "/products/photo/shopping-bags-emboss.webp", label: "Blind emboss", effect: "emboss" },
+      { image: "/products/photo/shopping-bags-deboss.webp", label: "Deboss", effect: "deboss" },
+      { image: "/products/photo/shopping-bags-print.webp", label: "Printed logo", effect: "print" },
+    ],
     customization: ["Any size", "Handle type and colour", "Inside print", "Ribbon closure"],
     applications: ["Fashion retail", "Beauty", "Gifting", "Events"],
     moq: "From 250 units",
@@ -126,9 +138,19 @@ export const products: Product[] = [
     description:
       "A tote keeps working long after the purchase. We cut and stitch yours in the fabric weight you choose, reinforce the handles, and print your artwork so it holds through washing and daily use.",
     ...photo("tote-bags"),
-    why: ["Reinforced, cross-stitched handles", "Natural, dyed or black fabric", "Screen print or full-colour transfer"],
+    why: ["Reinforced, cross-stitched handles", "Black or natural canvas", "Plain printing or full-colour DTF"],
     materials: [M.canvas, M.cotton, M.jute],
-    finishes: [F.print, F.matte],
+    finishLabel: "Print type",
+    finishes: [
+      { name: "Plain Printing", effect: "matte" },
+      { name: "DTF", effect: "print" },
+    ],
+    colours: ["Black", "Canvas"],
+    variants: [
+      { image: "/products/photo/tote-bags-black.webp", label: "Plain print on black", effect: "matte", colour: "Black" },
+      { image: "/products/photo/tote-bags-natural.webp", label: "Plain print on canvas", effect: "matte", colour: "Canvas" },
+      { image: "/products/photo/tote-bags-colour.webp", label: "DTF on canvas", effect: "print", colour: "Canvas" },
+    ],
     customization: ["Any size", "Handle length", "Gusset and inner pocket", "Zip or button closure"],
     applications: ["Retail", "Events", "Grocery", "Corporate gifting"],
     moq: "From 100 units",
@@ -232,7 +254,13 @@ export const products: Product[] = [
     ...photo("thank-you-cards"),
     why: ["Heavy stock with real presence", "Foil, emboss and edge colour", "Matching envelopes available"],
     materials: [M.art, M.textured, M.kraft],
-    finishes: [F.foil, F.emboss, F.deboss, F.soft, F.uv],
+    finishes: [F.foil, F.emboss, F.deboss, F.soft, F.uv, F.print],
+    variants: [
+      { image: "/products/photo/thank-you-cards-foil.webp", label: "Gold foil", effect: "foil" },
+      { image: "/products/photo/thank-you-cards-emboss.webp", label: "Blind emboss", effect: "emboss" },
+      { image: "/products/photo/thank-you-cards-deboss.webp", label: "Deboss", effect: "deboss" },
+      { image: "/products/photo/thank-you-cards-print.webp", label: "Printed", effect: "print" },
+    ],
     customization: ["Size", "Double-sided print", "QR or discount code", "Envelopes"],
     applications: ["E-commerce orders", "Boutiques", "Weddings", "Subscriptions"],
     moq: "From 250 units",
