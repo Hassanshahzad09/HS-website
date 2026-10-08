@@ -9,9 +9,7 @@ const Showcase = dynamic(() => import("@/sections/Showcase").then((m) => m.Showc
 const BrandKits = dynamic(() => import("@/sections/BrandKits").then((m) => m.BrandKits));
 const Labels = dynamic(() => import("@/sections/Labels").then((m) => m.Labels));
 const Ribbon = dynamic(() => import("@/sections/Ribbon").then((m) => m.Ribbon));
-const Portfolio = dynamic(() => import("@/sections/Portfolio").then((m) => m.Portfolio));
 const Process = dynamic(() => import("@/sections/Process").then((m) => m.Process));
-const IdeaToDelivery = dynamic(() => import("@/sections/IdeaToDelivery").then((m) => m.IdeaToDelivery));
 const Why = dynamic(() => import("@/sections/Why").then((m) => m.Why));
 const Global = dynamic(() => import("@/sections/Global").then((m) => m.Global));
 const Numbers = dynamic(() => import("@/sections/Numbers").then((m) => m.Numbers));
@@ -20,7 +18,7 @@ const Cinematic = dynamic(() => import("@/sections/Cinematic").then((m) => m.Cin
 const QuoteBuilder = dynamic(() => import("@/sections/QuoteBuilder").then((m) => m.QuoteBuilder));
 const Contact = dynamic(() => import("@/sections/Contact").then((m) => m.Contact));
 
-// INTRO → BRAND → PRODUCTS → CRAFT → CUSTOMISATION → PORTFOLIO → PROCESS → TRUST → QUOTE → CONTACT
+// INTRO → BRAND → PRODUCTS → CRAFT → CUSTOMISATION → PROCESS → TRUST → QUOTE → CONTACT
 export default function HomePage() {
   return (
     <>
@@ -32,9 +30,7 @@ export default function HomePage() {
       <BrandKits />
       <Labels />
       <Ribbon />
-      <Portfolio />
       <Process />
-      <IdeaToDelivery />
       <Why />
       <Global />
       <Numbers />

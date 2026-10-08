@@ -21,7 +21,7 @@ export const site = {
 export const nav = [
   { label: "Home", href: "/" },
   { label: "Products", href: "/products" },
-  { label: "Portfolio", href: "/#portfolio" },
+  { label: "Portfolio", href: "/portfolio" },
   { label: "About", href: "/#about" },
   { label: "Process", href: "/#process" },
   { label: "Contact", href: "/#contact" },
@@ -50,15 +50,6 @@ export const process = [
   { n: "03", title: "Sample", text: "You hold a physical sample before anything goes to full production." },
   { n: "04", title: "Produce", text: "The approved sample becomes the standard every piece is made to." },
   { n: "05", title: "Deliver", text: "Checked, packed and shipped to your door, wherever that is." },
-];
-
-export const journey = [
-  { title: "Idea", text: "A sketch, a reference, a feeling you want the customer to have." },
-  { title: "Design", text: "We turn it into a dieline with exact sizes, materials and finishes." },
-  { title: "Prototype", text: "A real sample in your hands, so decisions are made on the object." },
-  { title: "Production", text: "Printing, cutting, finishing and assembly, run to the approved sample." },
-  { title: "Quality Check", text: "Colour, registration and construction inspected before packing." },
-  { title: "Delivery", text: "Protected for transit and sent to you, in one country or several." },
 ];
 
 // Complete branding kits by industry. `items` are product slugs from data/products.ts.
@@ -110,13 +101,13 @@ export const ribbonUses = ["Packaging", "Gift Wrapping", "Fashion", "Events", "B
 
 // Fictional demonstration projects — not real clients.
 export const portfolio = [
-  { id: "maison-aurelia", name: "Maison Aurelia", category: "Luxury Fashion", product: "Shopping Bag • Ribbon", finish: "Foil • Soft Touch", text: "A black-on-black retail suite where gold foil is the only thing that catches light.", ratio: "4 / 5" },
+  { id: "maison-aurelia", name: "Maison Aurélia", category: "Luxury Fashion", product: "Shopping Bag • Ribbon • Card • Labels • Tissue", finish: "Gold Foil • Soft Touch", text: "A burgundy retail suite, from the bag to the care label, where gold foil is the only thing that catches light.", ratio: "4 / 5", photo: "/images/portfolio-maison-aurelia-photo.webp" },
   { id: "forma-skin", name: "Forma Skin", category: "Beauty", product: "Pouch • Card", finish: "Matte • Deboss", text: "Blush board and terracotta ink for a skincare line that wanted to feel warm, not clinical.", ratio: "1 / 1" },
   { id: "roast-and-ritual", name: "Roast & Ritual", category: "Food", product: "Stand-up Pouch • Stickers", finish: "Kraft • Matte", text: "Kraft pouches with a deep green label, designed to look right beside the grinder.", ratio: "4 / 5" },
   { id: "northline", name: "Northline", category: "Lifestyle", product: "Bag • Woven Label", finish: "Matte • Emboss", text: "One cobalt blue, held consistently across paper and thread.", ratio: "4 / 3" },
   { id: "atelier-27", name: "Atelier 27", category: "Fashion", product: "Woven Label • Care Label • Tag", finish: "High-density Weave", text: "A full trim set for a small studio: neck label, care label and a moulded hang tag.", ratio: "1 / 1" },
   { id: "velora", name: "Velora", category: "E-commerce", product: "Mailer Box • Card • Sticker", finish: "Soft Touch • Gloss", text: "An unboxing built for the doorstep, with a card and seal in every order.", ratio: "4 / 5" },
-].map((p) => ({ ...p, image: `/images/portfolio-${p.id}.webp` }));
+].map((p) => ({ ...p, image: p.photo ?? `/images/portfolio-${p.id}.webp` }));
 
 // PLACEHOLDER testimonials — sample content to be replaced with real client quotes.
 export const testimonials = [

@@ -401,7 +401,6 @@ async function cutouts() {
 /* -------------------------------------------------------------- portfolio */
 
 async function portfolio() {
-  const aurelia = { base: "#141516", accent: "#b99355", ink: GOLD, paper: "#f6f2e8", brand: "Maison Aurelia" };
   const forma = { base: "#e8cfc2", accent: "#a5563f", ink: "#8a4230", paper: "#fbf5ef", brand: "Forma Skin" };
   const roast = { base: "#b08d62", accent: "#20382e", ink: "#20382e", paper: "#f3ead8", brand: "Roast & Ritual" };
   const north = { base: "#dfe2e4", accent: "#1f47c4", ink: "#1f47c4", paper: "#f7f8f9", brand: "Northline" };
@@ -410,14 +409,6 @@ async function portfolio() {
   const wave = (x) => 20 * Math.sin(x / 52);
 
   const scenes = {
-    "maison-aurelia": {
-      w: 1200, h: 1500, bg: "#2a2622",
-      items: [
-        { svg: bag(aurelia), x: 480, y: 600, s: 2.1, r: -3 },
-        { svg: box(aurelia, { w: 240, d: 240, h: 86 }), x: 800, y: 1080, s: 1.5 },
-        { svg: `<g transform="translate(-200 0)">${strip(wave, 0, 400, 40, aurelia)}</g>`, x: 380, y: 1300, s: 1.4, r: -8, flat: true },
-      ],
-    },
     "forma-skin": {
       w: 1200, h: 1200, bg: "#f1e1d6",
       items: [

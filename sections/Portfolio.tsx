@@ -8,12 +8,12 @@ import { useEffect, useState } from "react";
 import { Arrow, buttonClass } from "@/components/Button";
 import { MaskReveal, SectionHeading, SplitText } from "@/components/Reveal";
 import { portfolio } from "@/data/site";
-import { EASE } from "@/lib/utils";
+import { cn, EASE } from "@/lib/utils";
 
 type Project = (typeof portfolio)[number];
 
 /** Masonry grid of demonstration projects; each opens a detail dialog. */
-export function Portfolio() {
+export function Portfolio({ standalone = false }: { standalone?: boolean }) {
   const [open, setOpen] = useState<Project | null>(null);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export function Portfolio() {
   }, [open]);
 
   return (
-    <section id="portfolio" className="bg-bg py-13.5 lg:py-21.5">
+    <section id="portfolio" className={cn("bg-bg", standalone ? "pb-24 pt-32 lg:pt-40" : "py-13.5 lg:py-21.5")}>
       <div className="container-x">
         <SectionHeading eyebrow="Portfolio" text="Concept projects showing how materials and finishes come together across a full brand set.">
           <SplitText segments={["Made for brands. ", { text: "Built to be remembered.", gradient: true }]} />
