@@ -61,38 +61,43 @@ export const journey = [
   { title: "Delivery", text: "Protected for transit and sent to you, in one country or several." },
 ];
 
-export const stickerTypes = [
+// Complete branding kits by industry. `items` are product slugs from data/products.ts.
+export const brandKits = [
   {
-    id: "dtf",
-    name: "DTF Stickers",
-    slug: "stickers",
-    image: "/products/dtf-stickers.webp",
-    text: "Full-colour transfers for fabric. Heat-pressed, soft to the touch and flexible enough to move with the garment.",
-    points: ["For apparel and textiles", "Applied with a heat press", "Soft, stretchable finish"],
+    id: "fashion",
+    name: "Fashion Brands",
+    title: "Fashion brand kit",
+    image: "/mockups/set-branded.webp",
+    alt: "Fashion branding kit: shopping bags, gift box, hang tag, woven label and printed cards",
+    text: "From the label stitched into the collar to the bag that leaves the store. One palette, one logo, matched across thread, paper and fabric.",
+    items: ["woven-labels", "care-labels", "shopping-bags", "tote-bags", "ribbons", "thank-you-cards"],
   },
   {
-    id: "uv",
-    name: "UV DTF Stickers",
-    slug: "stickers",
-    image: "/products/uv-dtf-stickers.webp",
-    text: "Raised, glossy transfers for hard surfaces. Peel, press and only the artwork stays behind.",
-    points: ["For glass, metal and plastic", "No heat needed", "Raised gloss, no background"],
+    id: "jewellery",
+    name: "Jewellery Brands",
+    title: "Jewellery brand kit",
+    image: "/products/photo/shopping-bags-foil.webp",
+    alt: "Black jewellery shopping bag with a gold foil crest and ribbon handles",
+    text: "Small pieces deserve a slow reveal. Foil-stamped bags, soft pouches, ribbon and a card, made to feel as considered as what is inside.",
+    items: ["shopping-bags", "pouches", "ribbons", "thank-you-cards", "stickers"],
   },
   {
-    id: "glossy",
-    name: "Glossy Stickers",
-    slug: "stickers",
-    image: "/products/glossy-stickers.webp",
-    text: "A bright, reflective surface that makes colour look richer and protects the print underneath.",
-    points: ["Vivid, saturated colour", "Wipe-clean surface", "Sheets, rolls or die-cuts"],
+    id: "food",
+    name: "Food Brands",
+    title: "Food brand kit",
+    image: "/products/photo/tote-bags-colour.webp",
+    alt: "Canvas tote bag printed with a full-colour citrus illustration",
+    text: "Packaging that looks good on the counter and on the way home. Seals and labels for every pack, bags for takeaway, and print for the table.",
+    items: ["stickers", "shopping-bags", "tote-bags", "flyers", "thank-you-cards"],
   },
   {
-    id: "matte",
-    name: "Matte Stickers",
-    slug: "stickers",
-    image: "/products/matte-stickers.webp",
-    text: "A calm, glare-free finish with a paper-like feel. Easy to read under any light, easy to write on.",
-    points: ["Soft, non-reflective look", "Writable surface", "Sheets, rolls or die-cuts"],
+    id: "beauty",
+    name: "Beauty & Skincare",
+    title: "Beauty and skincare kit",
+    image: "/products/photo/shopping-bags-deboss.webp",
+    alt: "Sage green shopping bag with a debossed crest for a botanical apothecary",
+    text: "Calm colours and tactile finishes for products people use every day. Debossed bags, pouches for gifting, and seals that close every order.",
+    items: ["shopping-bags", "pouches", "stickers", "ribbons", "thank-you-cards"],
   },
 ];
 
@@ -130,18 +135,6 @@ export const faqs = [
   { q: "Can you produce custom sizes?", a: "Yes. Send us your product dimensions and we will build the dieline around it." },
   { q: "Can I provide my own artwork?", a: "Yes. Print-ready PDF or AI files are ideal. If you only have a logo, we can prepare the artwork on our dieline for your approval." },
   { q: "How do I request a quotation?", a: "Use the quote builder on this site, or message us on WhatsApp or email with the product, quantity and any reference images. We reply with pricing and a timeline." },
-];
-
-// Gallery tiles reuse the product close-ups. Swap in real photography any time.
-export const gallery = [
-  { src: "/products/photo/shopping-bags-1.webp", alt: "Olive green shopping bags with gold foil logos and ribbon handles" },
-  { src: "/products/photo/woven-labels-1.webp", alt: "Black and ivory woven labels" },
-  { src: "/products/photo/ribbons-2.webp", alt: "Close-up of printed satin ribbon" },
-  { src: "/products/photo/care-labels-2.webp", alt: "Satin care labels printed with wash symbols" },
-  { src: "/products/photo/thank-you-cards-2.webp", alt: "Burgundy thank you card with gold foil lettering" },
-  { src: "/products/photo/tote-bags-1.webp", alt: "Black and natural canvas tote bags with printed logos" },
-  { src: "/products/photo/cotton-pouches-2.webp", alt: "Cotton drawstring pouches with printed logos" },
-  { src: "/products/photo/stickers-3.webp", alt: "Die-cut stickers with raised gloss detail" },
 ];
 
 // Shipping lanes drawn on the world map (longitude / latitude).

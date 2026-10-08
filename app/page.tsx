@@ -6,7 +6,7 @@ import { ProductShowcase } from "@/sections/ProductShowcase";
 // Everything below the first screens is split into its own chunk.
 const BeforeAfter = dynamic(() => import("@/sections/BeforeAfter").then((m) => m.BeforeAfter));
 const Showcase = dynamic(() => import("@/sections/Showcase").then((m) => m.Showcase));
-const Stickers = dynamic(() => import("@/sections/Stickers").then((m) => m.Stickers));
+const BrandKits = dynamic(() => import("@/sections/BrandKits").then((m) => m.BrandKits));
 const Labels = dynamic(() => import("@/sections/Labels").then((m) => m.Labels));
 const Ribbon = dynamic(() => import("@/sections/Ribbon").then((m) => m.Ribbon));
 const Portfolio = dynamic(() => import("@/sections/Portfolio").then((m) => m.Portfolio));
@@ -17,7 +17,6 @@ const Global = dynamic(() => import("@/sections/Global").then((m) => m.Global));
 const Numbers = dynamic(() => import("@/sections/Numbers").then((m) => m.Numbers));
 const Testimonials = dynamic(() => import("@/sections/Testimonials").then((m) => m.Testimonials));
 const Cinematic = dynamic(() => import("@/sections/Cinematic").then((m) => m.Cinematic));
-const Gallery = dynamic(() => import("@/sections/Gallery").then((m) => m.Gallery));
 const QuoteBuilder = dynamic(() => import("@/sections/QuoteBuilder").then((m) => m.QuoteBuilder));
 const Contact = dynamic(() => import("@/sections/Contact").then((m) => m.Contact));
 
@@ -30,7 +29,7 @@ export default function HomePage() {
       <ProductShowcase />
       <BeforeAfter />
       <Showcase />
-      <Stickers />
+      <BrandKits />
       <Labels />
       <Ribbon />
       <Portfolio />
@@ -41,7 +40,6 @@ export default function HomePage() {
       <Numbers />
       <Testimonials />
       <Cinematic />
-      <Gallery />
       <QuoteBuilder />
       <Contact />
     </>

@@ -21,7 +21,7 @@ const columns = [
   {
     title: "Resources",
     links: [
-      { label: "Sticker guide", href: "/#stickers" },
+      { label: "Branding kits", href: "/#kits" },
       { label: "FAQ", href: "/faq" },
       { label: "Request a quote", href: "/quote" },
     ],
