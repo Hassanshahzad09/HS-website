@@ -29,10 +29,10 @@ export const nav = [
 
 /** PLACEHOLDER figures — edit freely. */
 export const stats = [
-  { value: 10, suffix: "+", label: "Custom Products" },
+  { value: 50, suffix: "+", label: "Clients" },
   { value: 250, suffix: "+", label: "Projects Delivered" },
-  { value: 8, suffix: "", label: "Finishing Options" },
-  { value: 4, suffix: "", label: "Regions Reached" },
+  { value: 10, suffix: "+", label: "Custom Products" },
+  { value: 9, suffix: "+", label: "Countries Reached" },
 ];
 
 export const benefits = [
@@ -129,10 +129,17 @@ export const faqs = [
 ];
 
 // Shipping lanes drawn on the world map (longitude / latitude).
-export const origin = { label: "Pakistan", lon: 72, lat: 31 };
+export const origin = { label: "Pakistan", role: "Production", lon: 72, lat: 31 };
+// `role` adds a second line under the label: operations are run from the UK, materials are sourced in China.
 export const routes = [
-  { label: "United Kingdom", lon: -1.5, lat: 52.5, dx: -10, dy: -12, anchor: "end" },
+  { label: "United Kingdom", role: "Operations", lon: -1.5, lat: 52.5, dx: -10, dy: 15, anchor: "end" },
   { label: "Europe", lon: 14, lat: 47, dx: 10, dy: 16, anchor: "start" },
-  { label: "UAE", lon: 54.4, lat: 24.4, dx: -10, dy: 18, anchor: "end" },
-  { label: "USA", lon: -77, lat: 39, dx: 0, dy: -14, anchor: "middle" },
+  { label: "UAE", lon: 54.4, lat: 24.4, dx: 2, dy: 18, anchor: "end" },
+  { label: "Saudi Arabia", lon: 45, lat: 24, dx: -9, dy: 4, anchor: "end" },
+  { label: "USA", lon: -96, lat: 38, dx: 0, dy: 19, anchor: "middle" },
+  { label: "Canada", lon: -104, lat: 56, dx: 0, dy: -11, anchor: "middle" },
+  { label: "China", role: "Sourcing", lon: 120, lat: 30, dx: 9, dy: 2, anchor: "start" },
+  { label: "Japan", lon: 139, lat: 36, dx: 9, dy: 4, anchor: "start" },
+  { label: "Singapore", lon: 103.8, lat: 1.4, dx: -9, dy: 4, anchor: "end" },
+  { label: "Australia", lon: 134, lat: -25, dx: 0, dy: 19, anchor: "middle" },
 ] as const;

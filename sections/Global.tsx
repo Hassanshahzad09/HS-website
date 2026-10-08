@@ -41,12 +41,12 @@ export function Global() {
     <section className="on-dark relative overflow-hidden bg-bg py-13.5 text-ink lg:py-21.5">
       <div className="blob right-0 top-0 size-[36rem] bg-brand/15" aria-hidden="true" />
       <div className="container-x relative">
-        <SectionHeading eyebrow="International order fulfilment" text="Made in Pakistan and shipped to brands across borders. One team handles production, packing and export paperwork.">
+        <SectionHeading eyebrow="International order fulfilment" text="Sourcing in China, production in Pakistan, operations in the United Kingdom, and delivery to brands across four continents. One team handles production, packing and export paperwork.">
           <SplitText segments={["From our production floor to brands ", { text: "around the world.", gradient: true }]} />
         </SectionHeading>
 
         <Reveal className="mt-10 lg:mt-12" y={40}>
-          <svg viewBox={`0 0 ${MAP.w} ${MAP.h}`} className="w-full" role="img" aria-label="Dotted world map with shipping lanes from Pakistan to the United Kingdom, Europe, the UAE and the USA">
+          <svg viewBox={`0 0 ${MAP.w} ${MAP.h}`} className="w-full" role="img" aria-label="Dotted world map with shipping lanes from our production base in Pakistan to the United Kingdom, Europe, the UAE, Saudi Arabia, the USA, Canada, Japan, Singapore and Australia, and a sourcing link to China">
             <path d={DOTS.join("")} stroke="var(--ink)" strokeOpacity={0.22} strokeWidth={2.6} strokeLinecap="round" fill="none" />
             <MapRoutes />
           </svg>

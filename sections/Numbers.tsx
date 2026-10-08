@@ -7,12 +7,12 @@ import { stats } from "@/data/site";
 function Counter({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-15%" });
-  const [n, setN] = useState(0);
+  // Rendered with the real figure, then counts up from 1 (never 0) when it scrolls into view.
+  const [n, setN] = useState(value);
 
   useEffect(() => {
-    if (!inView) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return setN(value);
-    const controls = animate(0, value, { duration: 1.8, ease: [0.16, 1, 0.3, 1], onUpdate: (v) => setN(Math.round(v)) });
+    if (!inView) return setN(1);
+    const controls = animate(1, value, { duration: 2.2, ease: [0.16, 1, 0.3, 1], onUpdate: (v) => setN(Math.max(1, Math.round(v))), onComplete: () => setN(value) });
     return () => controls.stop();
   }, [inView, value]);
 
