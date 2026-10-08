@@ -75,7 +75,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
               {!query.trim() && (
                 <div className="flex flex-wrap gap-2 px-2 pb-3 pt-2">
                   {SUGGESTIONS.map((s) => (
-                    <button key={s} type="button" onClick={() => setQuery(s)} className="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted transition-colors hover:border-ink hover:text-ink">
+                    <button key={s} type="button" onClick={() => setQuery(s)} className="glass-btn rounded-full px-3.5 py-1.5 text-sm text-muted hover:text-ink">
                       {s}
                     </button>
                   ))}

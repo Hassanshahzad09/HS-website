@@ -54,9 +54,9 @@ export function ProductCatalogue({ carousel = false, withSearch = false }: { car
                 type="button"
                 aria-selected={active}
                 onClick={() => setFilter(t.id)}
-                className={cn("relative shrink-0 rounded-full border px-4 py-2.5 text-sm transition-colors", active ? "border-transparent text-bg" : "border-line text-muted hover:border-ink hover:text-ink")}
+                className={cn("glass-btn relative shrink-0 rounded-full px-4 py-2.5 text-sm", active ? "text-bg" : "text-muted hover:text-ink")}
               >
-                {active && <motion.span layoutId={`filter-pill-${carousel ? "home" : "page"}`} className="absolute inset-0 rounded-full bg-ink" transition={{ type: "spring", stiffness: 400, damping: 34 }} />}
+                {active && <motion.span layoutId={`filter-pill-${carousel ? "home" : "page"}`} className="absolute inset-0 rounded-full bg-[color-mix(in_srgb,var(--ink)_82%,transparent)]" transition={{ type: "spring", stiffness: 400, damping: 34 }} />}
                 <span className="relative">{t.name}</span>
               </button>
             );

@@ -4,9 +4,9 @@ import { cn } from "@/lib/utils";
 // Kept free of "use client" so server components can style plain links as buttons.
 
 export const VARIANTS = {
-  primary: "bg-ink text-bg hover:bg-brand hover:text-onbrand",
-  brand: "bg-brand text-onbrand hover:bg-ink hover:text-bg",
-  outline: "border border-line text-ink hover:border-ink",
+  primary: "glass-btn [--gb:color-mix(in_srgb,var(--ink)_80%,transparent)] text-bg hover:[--gb:color-mix(in_srgb,var(--brand)_82%,transparent)] hover:text-onbrand",
+  brand: "glass-btn [--gb:color-mix(in_srgb,var(--brand)_82%,transparent)] text-onbrand hover:[--gb:color-mix(in_srgb,var(--ink)_80%,transparent)] hover:text-bg",
+  outline: "glass-btn text-ink hover:[--gb:color-mix(in_srgb,var(--surface)_64%,transparent)]",
   ghost: "text-ink hover:text-brand px-0!",
 } as const;
 

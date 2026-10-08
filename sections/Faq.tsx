@@ -8,11 +8,12 @@ import { Reveal, SectionHeading, SplitText } from "@/components/Reveal";
 import { faqs } from "@/data/site";
 import { cn, EASE } from "@/lib/utils";
 
-export function Faq() {
+/** FAQ accordion. `standalone` adds room for the fixed header when it is the whole /faq page. */
+export function Faq({ standalone = false }: { standalone?: boolean }) {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="bg-bg py-13.5 lg:py-21.5">
+    <section id="faq" className={cn("bg-bg", standalone ? "pb-24 pt-32 lg:pt-40" : "py-13.5 lg:py-21.5")}>
       <div className="container-x grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <SectionHeading eyebrow="FAQ" text="The questions we hear most. If yours is not here, ask us directly.">

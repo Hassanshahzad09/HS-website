@@ -212,7 +212,7 @@ export function ProductDetail({ product }: { product: Product }) {
                 )}
                 <div>
                   <label htmlFor="qty" className="eyebrow mb-2.5 block">Quantity</label>
-                  <div className="inline-flex items-center rounded-full border border-line">
+                  <div className="glass-btn inline-flex items-center rounded-full active:scale-100">
                     <button type="button" onClick={() => setQty((q) => Math.max(50, q - 50))} aria-label="Decrease quantity" className="grid size-11 place-items-center rounded-full hover:bg-bg2">
                       <Minus className="size-4" />
                     </button>
@@ -311,7 +311,7 @@ export function ProductDetail({ product }: { product: Product }) {
 }
 
 const chip = (active: boolean) =>
-  cn("rounded-full border px-3.5 py-2 text-sm transition-colors", active ? "border-ink bg-ink text-bg" : "border-line text-muted hover:border-ink hover:text-ink");
+  cn("glass-btn rounded-full px-3.5 py-2 text-sm", active ? "[--gb:color-mix(in_srgb,var(--ink)_80%,transparent)] text-bg" : "text-muted hover:text-ink");
 
 function Spec({ title, items }: { title: string; items: string[] }) {
   return (

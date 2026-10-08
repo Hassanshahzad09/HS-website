@@ -19,7 +19,6 @@ const Testimonials = dynamic(() => import("@/sections/Testimonials").then((m) =>
 const Cinematic = dynamic(() => import("@/sections/Cinematic").then((m) => m.Cinematic));
 const Gallery = dynamic(() => import("@/sections/Gallery").then((m) => m.Gallery));
 const QuoteBuilder = dynamic(() => import("@/sections/QuoteBuilder").then((m) => m.QuoteBuilder));
-const Faq = dynamic(() => import("@/sections/Faq").then((m) => m.Faq));
 const Contact = dynamic(() => import("@/sections/Contact").then((m) => m.Contact));
 
 // INTRO → BRAND → PRODUCTS → CRAFT → CUSTOMISATION → PORTFOLIO → PROCESS → TRUST → QUOTE → CONTACT
@@ -44,7 +43,6 @@ export default function HomePage() {
       <Cinematic />
       <Gallery />
       <QuoteBuilder />
-      <Faq />
       <Contact />
     </>
   );

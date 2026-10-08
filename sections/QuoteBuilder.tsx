@@ -326,7 +326,7 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
 }
 
 const chip = (active: boolean) =>
-  cn("min-h-10 rounded-full border px-4 py-2 text-sm transition-colors", active ? "border-ink bg-ink text-bg" : "border-line text-muted hover:border-ink hover:text-ink");
+  cn("glass-btn min-h-10 rounded-full px-4 py-2 text-sm", active ? "[--gb:color-mix(in_srgb,var(--ink)_80%,transparent)] text-bg" : "text-muted hover:text-ink");
 
 function Row({ label, value }: { label: string; value?: string }) {
   return (

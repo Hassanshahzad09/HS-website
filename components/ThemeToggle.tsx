@@ -29,7 +29,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       type="button"
       onClick={toggle}
       aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-      className={cn("relative grid size-11 place-items-center overflow-hidden rounded-full border border-line transition-colors hover:border-ink", className)}
+      className={cn("relative grid size-11 place-items-center overflow-hidden rounded-full glass-btn hover:text-brand", className)}
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span key={theme ?? "none"} initial={{ y: 14, opacity: 0, rotate: -40 }} animate={{ y: 0, opacity: 1, rotate: 0 }} exit={{ y: -14, opacity: 0, rotate: 40 }} transition={{ duration: 0.25 }}>
