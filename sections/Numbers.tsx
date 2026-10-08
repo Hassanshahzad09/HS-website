@@ -6,7 +6,7 @@ import { stats } from "@/data/site";
 
 function Counter({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-15%" });
+  const inView = useInView(ref, { once: true, margin: "-15% 0px" });
   // Rendered with the real figure, then counts up from 1 (never 0) when it scrolls into view.
   const [n, setN] = useState(value);
 

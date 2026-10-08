@@ -16,8 +16,8 @@ export function MapRoutes() {
         const d = y > oy + 10 ? `M${ox} ${oy}Q${x} ${oy} ${x} ${y}` : `M${ox} ${oy}Q${(ox + x) / 2} ${Math.min(oy, y) - lift} ${x} ${y}`;
         return (
           <g key={r.label}>
-            <motion.path d={d} fill="none" stroke="var(--brand)" strokeWidth={1.4} strokeLinecap="round" initial={{ pathLength: 0, opacity: 0 }} whileInView={{ pathLength: 1, opacity: 1 }} viewport={{ once: true, margin: "-20%" }} transition={{ duration: 1.6, delay: 0.3 + i * 0.15, ease: "easeInOut" }} />
-            <motion.g initial={{ opacity: 0, scale: 0 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: "-20%" }} transition={{ delay: 1.6 + i * 0.15, duration: 0.5 }} style={{ transformOrigin: `${x}px ${y}px` }}>
+            <motion.path d={d} fill="none" stroke="var(--brand)" strokeWidth={1.4} strokeLinecap="round" initial={{ pathLength: 0, opacity: 0 }} whileInView={{ pathLength: 1, opacity: 1 }} viewport={{ once: true, margin: "-20% 0px" }} transition={{ duration: 1.6, delay: 0.3 + i * 0.15, ease: "easeInOut" }} />
+            <motion.g initial={{ opacity: 0, scale: 0 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: "-20% 0px" }} transition={{ delay: 1.6 + i * 0.15, duration: 0.5 }} style={{ transformOrigin: `${x}px ${y}px` }}>
               <circle cx={x} cy={y} r={4} fill="var(--brand)" />
               <text x={x + r.dx} y={y + r.dy} textAnchor={r.anchor} fontSize={12} fill="var(--ink)" style={{ letterSpacing: "0.06em" }}>
                 {r.label}
