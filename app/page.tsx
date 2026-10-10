@@ -7,9 +7,7 @@ import { ProductShowcase } from "@/sections/ProductShowcase";
 const BeforeAfter = dynamic(() => import("@/sections/BeforeAfter").then((m) => m.BeforeAfter));
 const Showcase = dynamic(() => import("@/sections/Showcase").then((m) => m.Showcase));
 const BrandKits = dynamic(() => import("@/sections/BrandKits").then((m) => m.BrandKits));
-const Labels = dynamic(() => import("@/sections/Labels").then((m) => m.Labels));
 const Ribbon = dynamic(() => import("@/sections/Ribbon").then((m) => m.Ribbon));
-const Process = dynamic(() => import("@/sections/Process").then((m) => m.Process));
 const Why = dynamic(() => import("@/sections/Why").then((m) => m.Why));
 const Global = dynamic(() => import("@/sections/Global").then((m) => m.Global));
 const Numbers = dynamic(() => import("@/sections/Numbers").then((m) => m.Numbers));
@@ -17,7 +15,7 @@ const Testimonials = dynamic(() => import("@/sections/Testimonials").then((m) =>
 const Cinematic = dynamic(() => import("@/sections/Cinematic").then((m) => m.Cinematic));
 const Contact = dynamic(() => import("@/sections/Contact").then((m) => m.Contact));
 
-// INTRO → BRAND → PRODUCTS → CRAFT → CUSTOMISATION → PROCESS → TRUST → CONTACT
+// INTRO → BRAND → PRODUCTS → CRAFT → CUSTOMISATION → TRUST → CONTACT
 export default function HomePage() {
   return (
     <>
@@ -27,9 +25,7 @@ export default function HomePage() {
       <BeforeAfter />
       <Showcase />
       <BrandKits />
-      <Labels />
       <Ribbon />
-      <Process />
       <Why />
       <Global />
       <Numbers />

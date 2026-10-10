@@ -22,8 +22,8 @@ export const nav = [
   { label: "Home", href: "/" },
   { label: "Products", href: "/products" },
   { label: "Portfolio", href: "/portfolio" },
-  { label: "About", href: "/#about" },
-  { label: "Process", href: "/#process" },
+  { label: "About", href: "/about" },
+  { label: "AI Studio", href: "/ai-studio", ai: true },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -43,14 +43,6 @@ export const benefits = [
   { icon: "factory", title: "Reliable Production", text: "Clear timelines, agreed up front, with updates at each stage." },
   { icon: "globe", title: "International Shipping", text: "Packed for the journey and shipped to brands across borders." },
 ] as const;
-
-export const process = [
-  { n: "01", title: "Discover", text: "We learn the product, the customer and the moment the packaging has to win." },
-  { n: "02", title: "Design", text: "Structure, material and finish are specified, with dielines ready for your artwork." },
-  { n: "03", title: "Sample", text: "You hold a physical sample before anything goes to full production." },
-  { n: "04", title: "Produce", text: "The approved sample becomes the standard every piece is made to." },
-  { n: "05", title: "Deliver", text: "Checked, packed and shipped to your door, wherever that is." },
-];
 
 // Complete branding kits by industry, each shown as one infographic plus a photo per item.
 // An item's `product` is a slug from data/products.ts when we sell it as a standalone product.
@@ -124,11 +116,6 @@ export const brandKits: BrandKit[] = [
 
 export const getKit = (id: string) => brandKits.find((k) => k.id === id);
 
-export const labelTypes = [
-  { name: "Woven Labels", slug: "woven-labels", image: "/products/photo/woven-labels-1.webp", text: "Thread by thread. Lettering that stays sharp at a few millimetres tall." },
-  { name: "Care Labels", slug: "care-labels", image: "/products/photo/care-labels-1.webp", text: "Soft satin, wash-fast ink, and the information your garment needs." },
-];
-
 export const ribbonUses = ["Packaging", "Gift Wrapping", "Fashion", "Events", "Branding"];
 
 // Fictional demonstration projects — not real clients.
@@ -152,13 +139,13 @@ export const portfolio = [
 // PLACEHOLDER testimonials — sample content to be replaced with real client quotes before launch.
 // Ratings are out of 5, in half-star steps.
 export const testimonials = [
-  { quote: "Heritage Shapes transformed our packaging from ordinary to something customers actually remembered.", name: "Sara M.", role: "Founder", company: "Fashion label", rating: 5 },
+  { quote: "Heritage Shapes transformed our packaging from ordinary to something customers actually remembered.", name: "Sarah M.", role: "Founder", company: "Fashion label", rating: 5 },
   { quote: "The sample arrived looking exactly like the render. The production run looked exactly like the sample.", name: "Daniel R.", role: "Operations Lead", company: "Skincare brand", rating: 5 },
   { quote: "We came for boxes and left with labels, ribbon and cards that finally look like one brand.", name: "Amna K.", role: "Creative Director", company: "Online boutique", rating: 4.5 },
   { quote: "Our woven labels are sharp even at the smallest size. Customers comment on them, which never happened before.", name: "Bilal H.", role: "Founder", company: "Streetwear brand", rating: 5 },
-  { quote: "Clear timelines and honest updates. One shipment slipped by a few days, but they told us early and sorted it.", name: "Claire W.", role: "Buyer", company: "Home goods store", rating: 4 },
+  { quote: "Clear timelines and honest updates. One shipment slipped by a few days, but they told us early and sorted it.", name: "Megan W.", role: "Buyer", company: "Home goods store", rating: 4 },
   { quote: "The foil on our jewellery bags is perfect. It feels like a much bigger house than we are.", name: "Hira S.", role: "Owner", company: "Jewellery studio", rating: 5 },
-  { quote: "Butter paper, cups and bags all in one order, all in our green. The café finally looks finished.", name: "Omar F.", role: "Co-founder", company: "Café", rating: 4.5 },
+  { quote: "Butter paper, cups and bags all in one order, all in our green. The café finally looks finished.", name: "Tyler B.", role: "Co-founder", company: "Café", rating: 4.5 },
   { quote: "Good quality and fair pricing for short runs. A couple of revisions on the dieline, but the result was worth it.", name: "James T.", role: "Brand Manager", company: "Candle company", rating: 4 },
 ];
 

@@ -110,7 +110,7 @@ export function BrandStatement() {
               We are a printing and packaging studio working with brands that want the box, the label and the ribbon to say the same thing. Every piece is made to order, sampled before production, and finished by people who notice a millimetre.
             </p>
             <div className="mt-8">
-              <ButtonLink href="/#process" variant="outline">
+              <ButtonLink href="/about#manufacturing" variant="outline">
                 See how we work
               </ButtonLink>
             </div>

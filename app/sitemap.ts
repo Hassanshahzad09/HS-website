@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: site.url, lastModified: now, priority: 1 },
     { url: `${site.url}/products`, lastModified: now, priority: 0.9 },
     { url: `${site.url}/quote`, lastModified: now, priority: 0.8 },
+    { url: `${site.url}/about`, lastModified: now, priority: 0.8 },
     { url: `${site.url}/portfolio`, lastModified: now, priority: 0.8 },
     { url: `${site.url}/faq`, lastModified: now, priority: 0.6 },
     ...brandKits.map((k) => ({ url: `${site.url}/kits/${k.id}`, lastModified: now, priority: 0.7 })),

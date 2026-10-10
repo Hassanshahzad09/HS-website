@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { products } from "@/data/products";
 import { site } from "@/data/site";
+import { AiBadge } from "./AiBadge";
 import { LogoMark } from "./Logo";
 import { Newsletter } from "./Newsletter";
 
@@ -12,9 +13,9 @@ const columns = [
   {
     title: "Company",
     links: [
-      { label: "About", href: "/#about" },
+      { label: "About", href: "/about" },
       { label: "Portfolio", href: "/portfolio" },
-      { label: "Process", href: "/#process" },
+      { label: "AI Studio", href: "/ai-studio", ai: true },
       { label: "Contact", href: "/#contact" },
     ],
   },
@@ -52,8 +53,9 @@ export function Footer() {
                 <ul className="space-y-3 text-sm">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <Link href={l.href} className="link-underline text-ink/80 hover:text-ink">
-                        {l.label}
+                      <Link href={l.href} className="inline-flex items-center gap-1.5 text-ink/80 hover:text-ink">
+                        <span className="link-underline">{l.label}</span>
+                        {"ai" in l && l.ai && <AiBadge />}
                       </Link>
                     </li>
                   ))}

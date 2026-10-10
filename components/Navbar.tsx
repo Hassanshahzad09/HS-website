@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { nav, site } from "@/data/site";
 import { useStoredList, WISHLIST_KEY } from "@/lib/storage";
 import { cn, EASE } from "@/lib/utils";
+import { AiBadge } from "./AiBadge";
 import { Arrow, buttonClass } from "./Button";
 import { Logo } from "./Logo";
 import { SearchOverlay } from "./SearchOverlay";
@@ -65,7 +66,20 @@ export function Navbar() {
               : "mt-0 h-[4.5rem] w-full max-w-[1480px] border-transparent bg-transparent px-[clamp(1.25rem,4vw,4rem)] shadow-none",
           )}
         >
-          <Link href="/" aria-label="Heritage Shapes — home" className="shrink-0">
+          <Link
+            href="/"
+            aria-label="Heritage Shapes — home"
+            className="shrink-0"
+            onClick={(e) => {
+              // Already on the homepage: glide back to the hero instead of doing nothing.
+              if (pathname === "/") {
+                e.preventDefault();
+                setMenu(false);
+                window.history.replaceState(null, "", "/");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
+          >
             <Logo />
           </Link>
 
@@ -73,8 +87,9 @@ export function Navbar() {
             <ul className="flex items-center gap-7 text-sm">
               {nav.map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} aria-current={isActive(item.href) ? "page" : undefined} className={cn("link-underline py-2 transition-colors hover:text-ink", isActive(item.href) ? "text-ink" : "text-muted")}>
-                    {item.label}
+                  <Link href={item.href} aria-current={isActive(item.href) ? "page" : undefined} className={cn("inline-flex items-center gap-1.5 py-2 transition-colors hover:text-ink", isActive(item.href) ? "text-ink" : "text-muted")}>
+                    <span className="link-underline">{item.label}</span>
+                    {"ai" in item && item.ai && <AiBadge />}
                   </Link>
                 </li>
               ))}
@@ -120,6 +135,7 @@ export function Navbar() {
                       <Link href={item.href} onClick={() => setMenu(false)} className="display flex items-baseline gap-4 py-2 text-[clamp(2rem,9vw,3.2rem)]">
                         <span className="eyebrow w-6">0{i + 1}</span>
                         {item.label}
+                        {"ai" in item && item.ai && <AiBadge className="self-center text-xs" />}
                       </Link>
                     </motion.div>
                   </li>
