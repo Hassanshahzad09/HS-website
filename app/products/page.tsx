@@ -19,7 +19,7 @@ export default function ProductsPage() {
           <SplitText segments={["Everything your brand needs ", { text: "to be remembered.", gradient: true }]} />
         </h1>
         <Reveal delay={0.2}>
-          <p className="mt-6 max-w-xl text-lg text-muted">Ten product lines, each made to order. Filter by category, save what you like, and open any product to configure it.</p>
+          <p className="mt-6 max-w-xl text-lg text-muted">Eleven product lines, each made to order. Filter by category, save what you like, and open any product to configure it.</p>
         </Reveal>
 
         <div className="mt-14">

@@ -4,7 +4,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { EASE } from "@/lib/utils";
 
-const DURATION = 1500;
+// The logo finishes drawing at ~0.97s; the page opens just after that.
+const DURATION = 1100;
 
 /** Shown once per browser session: logo draws in, a thin line fills, the page is revealed. */
 export function Preloader() {
@@ -36,10 +37,10 @@ export function Preloader() {
           aria-label="Loading Heritage Shapes"
         >
           <svg viewBox="0 0 741 568" fill="none" stroke="var(--brand)" strokeWidth={52} className="h-16 w-auto">
-            <motion.path d="M198 542V284.5A258.5 258.5 0 0 1 715 284.5V542Z" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.1, ease: "easeInOut" }} />
-            <motion.path d="M26 542V374.5A171.5 171.5 0 0 1 369 374.5V542Z" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.1, delay: 0.15, ease: "easeInOut" }} />
+            <motion.path d="M198 542V284.5A258.5 258.5 0 0 1 715 284.5V542Z" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.85, ease: "easeInOut" }} />
+            <motion.path d="M26 542V374.5A171.5 171.5 0 0 1 369 374.5V542Z" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.85, delay: 0.12, ease: "easeInOut" }} />
           </svg>
-          <motion.span className="font-brand text-lg tracking-[0.2em]" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}>
+          <motion.span className="font-brand text-lg tracking-[0.2em]" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.5 }}>
             Heritage Shapes
           </motion.span>
           <span className="h-px w-44 overflow-hidden bg-line">

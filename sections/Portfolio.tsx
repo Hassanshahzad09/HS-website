@@ -38,8 +38,8 @@ export function Portfolio({ standalone = false }: { standalone?: boolean }) {
           {portfolio.map((p, i) => (
             <MaskReveal key={p.id} delay={(i % 3) * 0.08} className="mb-5 break-inside-avoid">
               <button type="button" onClick={() => setOpen(p)} data-cursor="VIEW" aria-label={`${p.name} — ${p.category}. View project`} className="group relative block w-full overflow-hidden rounded-[1.75rem] bg-bg2 text-left" style={{ aspectRatio: p.ratio }}>
-                <Image src={p.image} alt={`${p.name}: ${p.product}`} fill sizes="(min-width: 1024px) 32vw, (min-width: 640px) 46vw, 92vw" className="object-cover transition-transform duration-[1100ms] ease-[var(--ease-expo)] group-hover:scale-[1.06]" />
-                <span className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent opacity-70 transition-all duration-500 group-hover:opacity-100 group-hover:backdrop-blur-[2px] group-focus-visible:opacity-100" />
+                <Image src={p.image} alt={`${p.name}: ${p.product}`} fill sizes="(min-width: 1024px) 32vw, (min-width: 640px) 46vw, 92vw" className="object-cover transition-transform duration-[1100ms] ease-[var(--ease-expo)] group-hover:scale-[1.04]" />
+                <span className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent opacity-70 transition-all duration-500 group-hover:opacity-100 group-focus-visible:opacity-100" />
                 <span className="glass absolute left-4 top-4 rounded-full px-3 py-1 text-[0.68rem] font-medium uppercase tracking-[0.14em]">{p.category}</span>
                 <span className="absolute right-4 top-4 grid size-11 -translate-y-2 place-items-center rounded-full bg-white text-[#0e1418] opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
                   <ArrowUpRight className="size-5" aria-hidden="true" />

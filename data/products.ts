@@ -66,6 +66,8 @@ const M = {
   vinyl: { name: "White Vinyl", tone: "paper" },
   petFilm: { name: "PET Transfer Film", tone: "clear" },
   paper: { name: "Coated Paper", tone: "paper" },
+  greaseproof: { name: "Greaseproof Paper", tone: "paper" },
+  brownGreaseproof: { name: "Brown Greaseproof", tone: "kraft" },
 } satisfies Record<string, Material>;
 
 const F = {
@@ -265,6 +267,24 @@ export const products: Product[] = [
     applications: ["E-commerce orders", "Boutiques", "Weddings", "Subscriptions"],
     moq: "From 250 units",
     tags: ["thank you", "cards", "insert", "print", "ecommerce"],
+  },
+  {
+    id: "p17",
+    name: "Butter Paper",
+    slug: "butter-paper",
+    category: "packaging",
+    shortDescription: "Greaseproof wrapping paper printed with your logo, for food that looks good in the hand.",
+    description:
+      "Butter paper is what the customer actually holds. We print your logo in a repeat across greaseproof sheets, in white or natural brown, with food-safe inks that stay put under heat and grease.",
+    image: "/products/butter-paper.webp",
+    gallery: ["/products/butter-paper.webp", "/products/butter-paper-2.webp", "/products/butter-paper-3.webp"],
+    why: ["Grease and moisture resistant", "Food-safe inks", "Logo repeat printed edge to edge"],
+    materials: [M.greaseproof, M.brownGreaseproof],
+    finishes: [F.print],
+    customization: ["Sheet size", "Logo repeat", "One or two colours", "Sheets or rolls"],
+    applications: ["Burgers and sandwiches", "Bakeries", "Cafés", "Takeaway"],
+    moq: "From 1,000 sheets",
+    tags: ["butter paper", "greaseproof", "wrapping paper", "food packaging", "burger paper", "bakery"],
   },
   {
     id: "p14",

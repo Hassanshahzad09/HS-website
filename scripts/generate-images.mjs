@@ -253,6 +253,23 @@ function dtfFilm(p) {
   <path d="M170 82L122 130H170Z" fill="#fff" opacity=".85"/><path d="M170 82L122 130" stroke="#00000030" stroke-width="1"/>`;
 }
 
+/** Greaseproof sheet printed with a staggered logo repeat, with a soft fold line. */
+function butterPaper(p) {
+  let repeat = "";
+  for (let r = 0; r < 5; r++)
+    for (let c = 0; c < 5; c++) {
+      const x = -150 + c * 76 + (r % 2 ? 38 : 0);
+      const y = -150 + r * 76;
+      if (x < 168) repeat += mark(x, y, 34, p.ink, 52, 0.8);
+    }
+  const [sheen, d1] = lin(["#ffffff00", "#ffffff40", "#ffffff00"], 0, 0, 1, 1);
+  return `<defs>${d1}</defs><clipPath id="bp${p.id}"><rect x="-180" y="-180" width="360" height="360" rx="3"/></clipPath>
+  <rect x="-180" y="-180" width="360" height="360" rx="3" fill="${p.base}" opacity=".95"/>
+  <g clip-path="url(#bp${p.id})">${repeat}</g>
+  <rect x="-180" y="-180" width="360" height="360" rx="3" fill="${sheen}"/>
+  <path d="M-180 -12L180 8" stroke="#000" stroke-width="1.4" opacity=".08"/><path d="M-180 -10L180 10" stroke="#fff" stroke-width="2" opacity=".35"/>`;
+}
+
 function tee(p) {
   return `<rect x="-230" y="-190" width="460" height="380" rx="18" fill="${p.base}"/><rect x="-230" y="-190" width="460" height="380" rx="18" fill="url(#weave)"/>
   <path d="M-62 -190Q0 -128 62 -190" fill="none" stroke="${shade(p.base, 20)}" stroke-width="12"/>
@@ -324,6 +341,13 @@ const SAGE = { base: "#7c8f7a", accent: "#e9e2cf", ink: "#f3eee0", paper: "#f7f4
 // Three views per product: studio hero, macro close-up, alternate colourway.
 
 const PRODUCTS = {
+  "butter-paper": (v) => ({
+    bg: ["#d8cbb5", "#cfd3cf", "#2a2724"][v],
+    items: [
+      { svg: butterPaper({ id: "a", base: "#d9c19b", ink: "#6f4424" }), x: 560, y: 560, s: 1.35, r: -12, flat: true },
+      { svg: butterPaper({ id: "b", base: "#f6f1e6", ink: ["#0b5f93", "#1f5c3a", "#9a2f2a"][v] }), x: 850, y: 470, s: 1.35, r: 9, flat: true },
+    ],
+  }),
   "dtf-stickers": (v) => ({
     bg: ["#d9d4c9", "#cfd6da", "#1d2125"][v],
     items: [

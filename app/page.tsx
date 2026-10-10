@@ -15,10 +15,9 @@ const Global = dynamic(() => import("@/sections/Global").then((m) => m.Global));
 const Numbers = dynamic(() => import("@/sections/Numbers").then((m) => m.Numbers));
 const Testimonials = dynamic(() => import("@/sections/Testimonials").then((m) => m.Testimonials));
 const Cinematic = dynamic(() => import("@/sections/Cinematic").then((m) => m.Cinematic));
-const QuoteBuilder = dynamic(() => import("@/sections/QuoteBuilder").then((m) => m.QuoteBuilder));
 const Contact = dynamic(() => import("@/sections/Contact").then((m) => m.Contact));
 
-// INTRO → BRAND → PRODUCTS → CRAFT → CUSTOMISATION → PROCESS → TRUST → QUOTE → CONTACT
+// INTRO → BRAND → PRODUCTS → CRAFT → CUSTOMISATION → PROCESS → TRUST → CONTACT
 export default function HomePage() {
   return (
     <>
@@ -36,7 +35,6 @@ export default function HomePage() {
       <Numbers />
       <Testimonials />
       <Cinematic />
-      <QuoteBuilder />
       <Contact />
     </>
   );

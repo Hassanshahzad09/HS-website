@@ -59,9 +59,9 @@ export function Navbar() {
       <header className="pointer-events-none fixed inset-x-0 top-0 z-[80]">
         <div
           className={cn(
-            "keep-motion pointer-events-auto mx-auto flex items-center justify-between gap-6 rounded-full border transition-all duration-[900ms] ease-[var(--ease-expo)]",
+            "keep-motion pointer-events-auto mx-auto flex items-center justify-between gap-6 rounded-full border transition-[margin,height,width,max-width,padding,background-color,border-color,box-shadow] duration-[900ms] ease-[var(--ease-expo)]",
             scrolled || menu
-              ? "mt-3 h-[3.75rem] w-[calc(100%-1.5rem)] max-w-[1180px] border-line bg-[color-mix(in_srgb,var(--glass)_70%,transparent)] px-3 shadow-[0_18px_50px_-24px_rgba(0,0,0,.4),inset_0_1px_0_rgba(255,255,255,.35)] backdrop-blur-xl backdrop-saturate-150 sm:pl-6 sm:pr-2.5"
+              ? "mt-3 h-[3.75rem] w-[calc(100%-1.5rem)] max-w-[1180px] border-line bg-[color-mix(in_srgb,var(--glass)_70%,transparent)] px-3 shadow-[0_18px_50px_-24px_rgba(0,0,0,.4),inset_0_1px_0_rgba(255,255,255,.35)] backdrop-blur-md backdrop-saturate-150 sm:pl-6 sm:pr-2.5"
               : "mt-0 h-[4.5rem] w-full max-w-[1480px] border-transparent bg-transparent px-[clamp(1.25rem,4vw,4rem)] shadow-none",
           )}
         >

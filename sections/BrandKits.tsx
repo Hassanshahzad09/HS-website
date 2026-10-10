@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { ButtonLink } from "@/components/Button";
 import { SectionHeading, SplitText } from "@/components/Reveal";
-import { getProduct } from "@/data/products";
 import { brandKits } from "@/data/site";
 import { cn, EASE } from "@/lib/utils";
 
@@ -22,14 +21,14 @@ export function BrandKits() {
           <SplitText segments={["One kit, ", { text: "every", serif: true }, " touchpoint."]} />
         </SectionHeading>
 
-        <div className="mt-10 grid items-center gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] border border-line bg-bg2" data-cursor="VIEW">
+        <div className="mt-10 grid items-center gap-8 lg:grid-cols-[1.35fr_1fr] lg:gap-14">
+          <Link href={`/kits/${kit.id}`} aria-label={`See the full ${kit.title.toLowerCase()} kit`} className="relative block aspect-[2752/1536] overflow-hidden rounded-[2rem] border border-line bg-bg2" data-cursor="VIEW">
             <AnimatePresence initial={false}>
-              <motion.div key={kit.id} className="absolute inset-0" initial={{ opacity: 0, scale: 1.05 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8, ease: EASE }}>
-                <Image src={kit.image} alt={kit.alt} fill sizes="(min-width: 1024px) 55vw, 92vw" className="object-cover" />
+              <motion.div key={kit.id} className="absolute inset-0" initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8, ease: EASE }}>
+                <Image src={kit.image} alt={kit.alt} fill sizes="(min-width: 1024px) 58vw, 92vw" className="object-cover" />
               </motion.div>
             </AnimatePresence>
-          </div>
+          </Link>
 
           <div>
             <div role="tablist" aria-label="Industries" className="grid grid-cols-2 gap-2">
@@ -56,22 +55,21 @@ export function BrandKits() {
 
                   <p className="eyebrow mt-6">In the kit</p>
                   <ul className="mt-3 flex flex-wrap gap-2">
-                    {kit.items.map((slug) => {
-                      const product = getProduct(slug);
-                      if (!product) return null;
-                      return (
-                        <li key={slug}>
-                          <Link href={`/products/${slug}`} className="glass-btn inline-flex rounded-full px-3.5 py-2 text-sm text-ink hover:text-brand">
-                            {product.name}
-                          </Link>
-                        </li>
-                      );
-                    })}
+                    {kit.items.map((it) => (
+                      <li key={it.name}>
+                        <Link href={it.product ? `/products/${it.product}` : `/kits/${kit.id}`} className="glass-btn inline-flex rounded-full px-3.5 py-2 text-sm text-ink hover:text-brand">
+                          {it.name}
+                        </Link>
+                      </li>
+                    ))}
                   </ul>
 
-                  <div className="mt-7">
-                    <ButtonLink href="/quote" variant="brand" cursor="QUOTE">
-                      Get a quote for this kit
+                  <div className="mt-7 flex flex-wrap gap-3">
+                    <ButtonLink href={`/kits/${kit.id}`} variant="brand" cursor="EXPLORE">
+                      See the full kit
+                    </ButtonLink>
+                    <ButtonLink href="/quote" variant="outline" cursor="QUOTE">
+                      Get a quote
                     </ButtonLink>
                   </div>
                 </motion.div>

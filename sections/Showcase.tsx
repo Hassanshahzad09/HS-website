@@ -54,7 +54,6 @@ export function Showcase() {
                   top: on ? "46%" : `${it.y}%`,
                   scale: on ? 2.1 : 1,
                   opacity: on ? 1 : 0.45,
-                  filter: on ? "blur(0px)" : "blur(2px)",
                 }}
                 transition={{ duration: 1, ease: EASE }}
               >

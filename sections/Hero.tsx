@@ -75,7 +75,7 @@ function Float({ item, i, mx, my, progress, ready }: { item: FloatItem; i: numbe
   const sx = useTransform(progress, [0, 1], [0, item.to[0]]);
   const sy = useTransform(progress, [0, 1], [0, item.to[1]]);
   return (
-    <motion.div className={cn("absolute", item.cls, item.far && "opacity-85 blur-[1.5px]")} style={{ x: sx, y: sy }}>
+    <motion.div className={cn("absolute", item.cls, item.far && "opacity-85")} style={{ x: sx, y: sy }}>
       <motion.div style={{ x: px, y: py }}>
         <motion.div initial={{ opacity: 0, scale: 0.7, y: 40 }} animate={ready ? { opacity: 1, scale: 1, y: 0 } : undefined} transition={{ duration: 1.2, delay: 0.25 + i * 0.09, ease: EASE }}>
           <div className="floaty" style={{ "--d": `${item.d}s`, "--r": `${item.r}deg`, "--delay": `${-i * 1.3}s` } as CSSProperties}>
