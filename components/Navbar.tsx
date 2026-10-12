@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Heart, Menu, Search, X } from "lucide-react";
+import { Heart, Menu, Search, User, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { nav, site } from "@/data/site";
 import { useStoredList, WISHLIST_KEY } from "@/lib/storage";
+import { useUser } from "@/lib/supabase/client";
 import { cn, EASE } from "@/lib/utils";
 import { AiBadge } from "./AiBadge";
-import { Arrow, buttonClass } from "./Button";
+import { buttonClass } from "./Button";
 import { Logo } from "./Logo";
 import { SearchOverlay } from "./SearchOverlay";
 import { ThemeToggle } from "./ThemeToggle";
@@ -20,6 +21,8 @@ export function Navbar() {
   const [menu, setMenu] = useState(false);
   const [search, setSearch] = useState(false);
   const { list: saved } = useStoredList(WISHLIST_KEY);
+  const { user } = useUser();
+  const account = user ? { href: "/account", label: "My account" } : { href: "/login", label: "Log in / Sign up" };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -105,9 +108,12 @@ export function Navbar() {
               {saved.length > 0 && <span className="absolute -right-0.5 -top-0.5 grid size-[18px] place-items-center rounded-full bg-brand text-[10px] font-semibold text-onbrand">{saved.length}</span>}
             </Link>
             <ThemeToggle />
+            <Link href={account.href} aria-label={account.label} className="hidden size-11 place-items-center rounded-full glass-btn hover:text-brand sm:grid md:hidden">
+              <User className="size-[18px]" />
+            </Link>
             <span className="ml-1 hidden md:block">
-              <Link href="/quote" data-cursor="QUOTE" className={buttonClass("primary")}>
-                Get a Quote <Arrow />
+              <Link href={account.href} className={buttonClass("primary")}>
+                <User className="size-4" aria-hidden="true" /> {account.label}
               </Link>
             </span>
             <button type="button" onClick={() => setMenu((m) => !m)} aria-label={menu ? "Close menu" : "Open menu"} aria-expanded={menu} aria-controls="mobile-menu" className="grid size-11 place-items-center rounded-full glass-btn lg:hidden">
@@ -143,8 +149,8 @@ export function Navbar() {
               </ul>
             </nav>
             <motion.div className="mt-auto space-y-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-              <Link href="/quote" onClick={() => setMenu(false)} className={buttonClass("brand", "w-full")}>
-                Get a Quote <Arrow />
+              <Link href={account.href} onClick={() => setMenu(false)} className={buttonClass("brand", "w-full")}>
+                <User className="size-4" aria-hidden="true" /> {account.label}
               </Link>
               <div className="flex justify-between text-sm text-muted">
                 <a href={`mailto:${site.email}`}>{site.email}</a>

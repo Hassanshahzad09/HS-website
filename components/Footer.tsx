@@ -23,7 +23,9 @@ const columns = [
     title: "Resources",
     links: [
       { label: "Branding kits", href: "/#kits" },
+      { label: "AI Studio pricing", href: "/pricing" },
       { label: "FAQ", href: "/faq" },
+      { label: "Log in", href: "/login" },
       { label: "Request a quote", href: "/quote" },
     ],
   },

@@ -57,15 +57,15 @@ const PLACEMENTS = ["Centre front", "Upper centre", "Lower corner", "All-over re
 const STAGES = ["Preparing your logo", "Setting up the studio shot", "Applying your finish", "Lighting and final details"];
 
 type Logo = { url: string; name: string; width: number; height: number; transparent: boolean; kb: number };
-type Config = { colour: string; material: string; finish: string; size: string; placement: string };
+type Config = { colour: string; material: string; finish: string; logoType: string; size: string; placement: string };
 type Result = { id: number; image: string; config: Config; product: Product };
 
 const chip = (active: boolean) =>
   cn("glass-btn rounded-full px-3.5 py-2 text-sm", active ? "[--gb:color-mix(in_srgb,var(--ink)_82%,transparent)] text-bg" : "text-muted hover:text-ink");
 
 /** The sample photo that best matches the chosen finish, standing in for a generated image. */
-function sampleImage(p: Product, finishName: string) {
-  const effect = p.finishes.find((f) => f.name === finishName)?.effect;
+function sampleImage(p: Product, c: { finish: string; logoType: string }) {
+  const effect = p.logoTypes ? p.logoTypes.find((l) => l.name === c.logoType)?.effect : p.finishes.find((f) => f.name === c.finish)?.effect;
   return p.variants?.find((v) => v.effect === effect)?.image ?? p.image;
 }
 
@@ -84,7 +84,7 @@ export function AiStudio() {
   const [modal, setModal] = useState<null | "signup" | "limit" | "report">(null);
 
   function defaults(p: Product): Config {
-    return { colour: COLOURS[0].name, material: p.materials[0].name, finish: p.finishes[0].name, size: SIZES[1], placement: PLACEMENTS[0] };
+    return { colour: COLOURS[0].name, material: p.materials[0].name, finish: p.finishes[0].name, logoType: p.logoTypes?.[0].name ?? "", size: SIZES[1], placement: PLACEMENTS[0] };
   }
 
   const pick = (p: Product) => {
@@ -102,7 +102,7 @@ export function AiStudio() {
   };
 
   const finishGeneration = () => {
-    const r: Result = { id: Date.now(), image: sampleImage(product, config.finish), config: { ...config }, product };
+    const r: Result = { id: Date.now(), image: sampleImage(product, config), config: { ...config }, product };
     setResults((list) => [r, ...list]);
     setActive(0);
     setCredits((c) => c - 1);
@@ -111,7 +111,7 @@ export function AiStudio() {
 
   const current = results[active];
   const quoteHref = (r: Result) =>
-    `/quote?product=${r.product.slug}&material=${encodeURIComponent(r.config.material)}&finish=${encodeURIComponent(r.config.finish)}&qty=500`;
+    `/quote?product=${r.product.slug}&material=${encodeURIComponent(r.config.material)}&finish=${encodeURIComponent(r.config.finish)}${r.config.logoType ? `&logo=${encodeURIComponent(r.config.logoType)}` : ""}&qty=500`;
 
   return (
     <>
@@ -137,6 +137,9 @@ export function AiStudio() {
             <a href="#examples" className={buttonClass("outline")}>
               View examples
             </a>
+            <Link href="/pricing" className={buttonClass("outline")}>
+              Pricing
+            </Link>
           </motion.div>
           <p className="mt-5 text-sm text-muted">No sign-up needed for your first {FREE_PREVIEWS} designs.</p>
 
@@ -422,6 +425,17 @@ function CustomiseStep({ product, config, set }: { product: Product; config: Con
           ))}
         </div>
       </Group>
+      {product.logoTypes && (
+        <Group label="Logo type">
+          <div className="flex flex-wrap gap-2">
+            {product.logoTypes.map((l) => (
+              <button key={l.name} type="button" aria-pressed={config.logoType === l.name} onClick={() => set("logoType", l.name)} className={chip(config.logoType === l.name)}>
+                {l.name}
+              </button>
+            ))}
+          </div>
+        </Group>
+      )}
       <div className="grid gap-6 sm:grid-cols-2">
         <Group label="Size">
           <div className="flex flex-wrap gap-2">
@@ -609,15 +623,15 @@ function Canvas({ product, config, logo, generating, onDone, onCancel, onGenerat
     <div className="relative flex flex-col bg-bg2/60 p-5 sm:p-7">
       <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-line bg-bg2 lg:aspect-auto lg:flex-1">
         <AnimatePresence initial={false}>
-          <motion.div key={product.slug + config.finish} className="absolute inset-0" initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7, ease: EASE }}>
-            <Image src={sampleImage(product, config.finish)} alt={`${product.name} preview`} fill sizes="(min-width: 1024px) 55vw, 92vw" className={cn("object-cover transition-[filter] duration-700", generating && "blur-md saturate-50")} />
+          <motion.div key={product.slug + config.finish + config.logoType} className="absolute inset-0" initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7, ease: EASE }}>
+            <Image src={sampleImage(product, config)} alt={`${product.name} preview`} fill sizes="(min-width: 1024px) 55vw, 92vw" className={cn("object-cover transition-[filter] duration-700", generating && "blur-md saturate-50")} />
           </motion.div>
         </AnimatePresence>
 
         {/* Spec chips */}
         {!generating && (
           <div className="absolute inset-x-3 top-3 flex flex-wrap gap-1.5">
-            {[product.name, config.colour, config.material, config.finish].map((t) => (
+            {[product.name, config.colour, config.material, config.finish, config.logoType].filter(Boolean).map((t) => (
               <span key={t} className="glass rounded-full px-2.5 py-1 text-[0.7rem] font-medium">
                 {t}
               </span>
@@ -719,6 +733,7 @@ function ResultView({
     ["Colour", result.config.colour],
     ["Material", result.config.material],
     [result.product.finishLabel ?? "Finish", result.config.finish],
+    ...(result.config.logoType ? ([["Logo type", result.config.logoType]] as [string, string][]) : []),
     ["Size", result.config.size],
     ["Logo placement", result.config.placement],
     ["Mode", "Quick preview"],

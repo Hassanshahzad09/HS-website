@@ -19,6 +19,7 @@ export function ProductDetail({ product }: { product: Product }) {
   const [shot, setShot] = useState(0);
   const [material, setMaterial] = useState(0);
   const [finish, setFinish] = useState(0);
+  const [logoType, setLogoType] = useState(0);
   const [colour, setColour] = useState(0);
   const [qty, setQty] = useState(500);
   const wishlist = useStoredList(WISHLIST_KEY);
@@ -35,6 +36,9 @@ export function ProductDetail({ product }: { product: Product }) {
   ];
   const colours = product.colours ?? [];
   const variantStart = product.gallery.length;
+  const logoTypes = product.logoTypes ?? [];
+  // Photos follow the logo type when a product has one, otherwise the finish.
+  const linked = logoTypes.length ? { list: logoTypes, index: logoType, set: setLogoType } : { list: product.finishes, index: finish, set: setFinish };
 
   // A finish photo and its finish chip stay in step, and the choice is kept in the URL (?finish=foil).
   const remember = (effect?: string) => {
@@ -45,18 +49,18 @@ export function ProductDetail({ product }: { product: Product }) {
   };
   const pickShot = (i: number) => {
     setShot(i);
-    const f = product.finishes.findIndex((x) => x.effect === shots[i].effect);
+    const f = linked.list.findIndex((x) => x.effect === shots[i].effect);
     if (f >= 0) {
-      setFinish(f);
+      linked.set(f);
       remember(shots[i].effect);
     }
     const c = colours.indexOf(shots[i].colour ?? "");
     if (c >= 0) setColour(c);
   };
   // Show the photo that matches both choices when there is one, otherwise the one for the option just picked.
-  const pickFinish = (i: number) => {
-    setFinish(i);
-    const effect = product.finishes[i].effect;
+  const pickLinked = (i: number) => {
+    linked.set(i);
+    const effect = linked.list[i].effect;
     const both = shots.findIndex((x) => x.effect === effect && x.colour === colours[colour]);
     const s = both >= 0 ? both : shots.findIndex((x) => x.effect === effect);
     if (s >= 0) {
@@ -66,14 +70,15 @@ export function ProductDetail({ product }: { product: Product }) {
     }
     remember(effect);
   };
+  const pickFinish = (i: number) => (logoTypes.length ? setFinish(i) : pickLinked(i));
   const pickColour = (i: number) => {
     setColour(i);
-    const both = shots.findIndex((x) => x.colour === colours[i] && x.effect === product.finishes[finish].effect);
+    const both = shots.findIndex((x) => x.colour === colours[i] && x.effect === linked.list[linked.index].effect);
     const s = both >= 0 ? both : shots.findIndex((x) => x.colour === colours[i]);
     if (s >= 0) {
       setShot(s);
-      const f = product.finishes.findIndex((x) => x.effect === shots[s].effect);
-      if (f >= 0) setFinish(f);
+      const f = linked.list.findIndex((x) => x.effect === shots[s].effect);
+      if (f >= 0) linked.set(f);
     }
   };
 
@@ -81,16 +86,18 @@ export function ProductDetail({ product }: { product: Product }) {
   useEffect(() => {
     const wanted = new URLSearchParams(window.location.search).get("finish")?.toLowerCase();
     if (!wanted) return;
-    const f = product.finishes.findIndex((x) => x.effect === wanted || x.name.toLowerCase() === wanted);
+    const list = product.logoTypes ?? product.finishes;
+    const f = list.findIndex((x) => x.effect === wanted || x.name.toLowerCase() === wanted);
     if (f < 0) return;
-    setFinish(f);
-    const v = (product.variants ?? []).findIndex((x) => x.effect === product.finishes[f].effect);
+    (product.logoTypes ? setLogoType : setFinish)(f);
+    const v = (product.variants ?? []).findIndex((x) => x.effect === list[f].effect);
     if (v >= 0) setShot(product.gallery.length + v);
   }, [product]);
 
   const mat = product.materials[material];
   const fin = product.finishes[finish];
-  const quoteHref = `/quote?product=${product.slug}&material=${encodeURIComponent(mat.name)}&finish=${encodeURIComponent(fin.name)}${colours.length ? `&colour=${encodeURIComponent(colours[colour])}` : ""}&qty=${qty}`;
+  const logo = logoTypes[logoType];
+  const quoteHref = `/quote?product=${product.slug}&material=${encodeURIComponent(mat.name)}&finish=${encodeURIComponent(fin.name)}${logo ? `&logo=${encodeURIComponent(logo.name)}` : ""}${colours.length ? `&colour=${encodeURIComponent(colours[colour])}` : ""}&qty=${qty}`;
 
   const related = [...products.filter((p) => p.category === product.category && p.slug !== product.slug), ...products.filter((p) => p.category !== product.category && p.featured)].slice(0, 4);
   const recentProducts = recent.list.filter((s) => s !== product.slug).map((s) => products.find((p) => p.slug === s)).filter((p): p is Product => Boolean(p)).slice(0, 4);
@@ -170,9 +177,10 @@ export function ProductDetail({ product }: { product: Product }) {
 
             <div className="mt-6 grid gap-6 sm:grid-cols-[150px_1fr]">
               <div className="mx-auto w-40 sm:w-auto">
-                <Swatch tone={mat.tone} effect={fin.effect} className="aspect-square w-full rounded-2xl border border-line shadow-inner" markClassName="w-[52%]" />
+                <Swatch tone={mat.tone} effect={logo?.effect ?? fin.effect} className="aspect-square w-full rounded-2xl border border-line shadow-inner" markClassName="w-[52%]" />
                 <p className="mt-2 text-center text-xs text-muted" aria-live="polite">
                   {mat.name} · {fin.name}
+                  {logo && ` · ${logo.name}`}
                   {colours.length > 0 && ` · ${colours[colour]}`}
                 </p>
               </div>
@@ -205,6 +213,18 @@ export function ProductDetail({ product }: { product: Product }) {
                       {colours.map((c, i) => (
                         <button key={c} type="button" aria-pressed={colour === i} onClick={() => pickColour(i)} className={chip(colour === i)}>
                           {c}
+                        </button>
+                      ))}
+                    </div>
+                  </fieldset>
+                )}
+                {logoTypes.length > 0 && (
+                  <fieldset>
+                    <legend className="eyebrow mb-2.5">Logo type</legend>
+                    <div className="flex flex-wrap gap-2">
+                      {logoTypes.map((l, i) => (
+                        <button key={l.name} type="button" aria-pressed={logoType === i} onClick={() => pickLinked(i)} className={chip(logoType === i)}>
+                          {l.name}
                         </button>
                       ))}
                     </div>
@@ -248,6 +268,7 @@ export function ProductDetail({ product }: { product: Product }) {
           <dl className="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2">
             <Spec title="Materials" items={product.materials.map((m) => m.name)} />
             <Spec title={product.finishLabel ?? "Finishes"} items={product.finishes.map((f) => f.name)} />
+            {logoTypes.length > 0 && <Spec title="Logo types" items={logoTypes.map((l) => l.name)} />}
             {colours.length > 0 && <Spec title="Colours" items={colours} />}
             <Spec title="Customisation" items={product.customization} />
             <Spec title="Applications" items={product.applications} />
@@ -275,7 +296,7 @@ export function ProductDetail({ product }: { product: Product }) {
           <h2 id="variants-title" className="display text-[clamp(1.8rem,3.5vw,3rem)]">
             Finishes and styles
           </h2>
-          <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <div className={cn("mt-8 grid grid-cols-2 gap-4", product.variants.length === 5 ? "sm:grid-cols-3 lg:grid-cols-5" : "lg:grid-cols-4")}>
             {product.variants.map((v, i) => (
               <button
                 key={v.image}

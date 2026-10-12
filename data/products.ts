@@ -29,6 +29,8 @@ export type Product = {
   variants?: { image: string; label: string; effect?: Effect; colour?: string }[];
   /** Heading for the finish chips when "Finish" is the wrong word, e.g. "Print type". */
   finishLabel?: string;
+  /** How the logo is applied (foil, emboss…), offered separately from the surface finish. Photos link to these when set. */
+  logoTypes?: Finish[];
   /** Stock colours the customer chooses between. */
   colours?: string[];
   featured?: boolean;
@@ -52,9 +54,7 @@ const M = {
   art: { name: "Art Card", tone: "paper" },
   textured: { name: "Textured Paper", tone: "paper" },
   corrugated: { name: "Corrugated Board", tone: "card" },
-  foilLam: { name: "Foil Laminate", tone: "metal" },
   clearFilm: { name: "Clear Film", tone: "clear" },
-  matteFilm: { name: "Matte Film", tone: "pvc" },
   metal: { name: "Metal", tone: "metal" },
   polyester: { name: "Woven Polyester", tone: "fabric" },
   cotton: { name: "Cotton", tone: "fabric" },
@@ -67,7 +67,7 @@ const M = {
   petFilm: { name: "PET Transfer Film", tone: "clear" },
   paper: { name: "Coated Paper", tone: "paper" },
   greaseproof: { name: "Greaseproof Paper", tone: "paper" },
-  brownGreaseproof: { name: "Brown Greaseproof", tone: "kraft" },
+  tissue: { name: "Tissue Paper", tone: "paper" },
 } satisfies Record<string, Material>;
 
 const F = {
@@ -100,11 +100,19 @@ export const products: Product[] = [
     ...photo("shopping-bags"),
     why: ["Reinforced tops and bases that hold their shape", "Rope, ribbon, twisted or die-cut handles", "Printed inside and out if you want it"],
     materials: [M.art, M.kraft, M.textured],
-    finishes: [F.matte, F.gloss, F.soft, F.foil, F.emboss, F.deboss, F.uv, F.print],
+    finishes: [F.matte, F.gloss, { name: "No Lamination", effect: "print" }],
+    logoTypes: [
+      { name: "Gold Foil", effect: "foil" },
+      { name: "Embossed", effect: "emboss" },
+      { name: "Debossed", effect: "deboss" },
+      { name: "Spot UV", effect: "uv" },
+      { name: "Full-Colour Print", effect: "print" },
+    ],
     variants: [
       { image: "/products/photo/shopping-bags-foil.webp", label: "Gold foil", effect: "foil" },
       { image: "/products/photo/shopping-bags-emboss.webp", label: "Blind emboss", effect: "emboss" },
       { image: "/products/photo/shopping-bags-deboss.webp", label: "Deboss", effect: "deboss" },
+      { image: "/products/photo/shopping-bags-uv.webp", label: "Spot UV", effect: "uv" },
       { image: "/products/photo/shopping-bags-print.webp", label: "Printed logo", effect: "print" },
     ],
     customization: ["Any size", "Handle type and colour", "Inside print", "Ribbon closure"],
@@ -118,30 +126,39 @@ export const products: Product[] = [
     name: "Pouches",
     slug: "pouches",
     category: "packaging",
-    shortDescription: "Stand-up and flat pouches, printed edge to edge and built to stay fresh.",
+    shortDescription: "Drawstring pouches in canvas or jute, printed with your logo.",
     description:
-      "Flexible packaging that still looks composed on a shelf. Choose the barrier, the zipper and the window, and we print your artwork right across the seals.",
+      "A pouch turns a small purchase into a gift, and gets kept long after. We cut and stitch yours in the fabric and size you choose, add a drawstring that closes cleanly, and print your logo so it stays sharp.",
     ...photo("cotton-pouches"),
-    why: ["Resealable zippers and tear notches", "Barrier layers for food and cosmetics", "Clear windows cut to your shape"],
-    materials: [M.matteFilm, M.kraft, M.foilLam, M.clearFilm],
-    finishes: [F.matte, F.gloss, F.soft, F.uv, F.print],
-    customization: ["Stand-up or flat", "Zipper and valve", "Window shape", "Hang hole"],
-    applications: ["Coffee and tea", "Snacks", "Cosmetics", "Supplements"],
+    why: ["Clean, even drawstring closure", "Black or natural canvas", "Plain printing or full-colour DTF"],
+    materials: [M.canvas, M.jute],
+    finishLabel: "Print type",
+    finishes: [
+      { name: "Plain Printing", effect: "matte" },
+      { name: "DTF", effect: "print" },
+    ],
+    colours: ["Black", "Canvas"],
+    variants: [
+      { image: "/products/photo/pouches-black.webp", label: "Plain print on black", effect: "matte", colour: "Black" },
+      { image: "/products/photo/pouches-canvas.webp", label: "Plain print on canvas", effect: "matte", colour: "Canvas" },
+    ],
+    customization: ["Any size", "Drawstring colour", "One or two-sided print", "Inner lining"],
+    applications: ["Jewellery", "Cosmetics", "Gifting", "Shoes and accessories"],
     moq: "From 500 units",
     featured: true,
-    tags: ["pouch", "pouches", "stand-up", "food packaging", "zip"],
+    tags: ["pouch", "pouches", "drawstring", "canvas", "jute", "gift bag", "dust bag"],
   },
   {
     id: "p04",
     name: "Tote Bags",
     slug: "tote-bags",
     category: "packaging",
-    shortDescription: "Cotton and canvas totes printed with your logo, made to be carried again.",
+    shortDescription: "Canvas and jute totes printed with your logo, made to be carried again.",
     description:
       "A tote keeps working long after the purchase. We cut and stitch yours in the fabric weight you choose, reinforce the handles, and print your artwork so it holds through washing and daily use.",
     ...photo("tote-bags"),
     why: ["Reinforced, cross-stitched handles", "Black or natural canvas", "Plain printing or full-colour DTF"],
-    materials: [M.canvas, M.cotton, M.jute],
+    materials: [M.canvas, M.jute],
     finishLabel: "Print type",
     finishes: [
       { name: "Plain Printing", effect: "matte" },
@@ -275,11 +292,10 @@ export const products: Product[] = [
     category: "packaging",
     shortDescription: "Greaseproof wrapping paper printed with your logo, for food that looks good in the hand.",
     description:
-      "Butter paper is what the customer actually holds. We print your logo in a repeat across greaseproof sheets, in white or natural brown, with food-safe inks that stay put under heat and grease.",
-    image: "/products/butter-paper.webp",
-    gallery: ["/products/butter-paper.webp", "/products/butter-paper-2.webp", "/products/butter-paper-3.webp"],
+      "Butter paper is what the customer actually holds. We print your logo in a repeat across greaseproof or tissue sheets, with food-safe inks that stay put under heat and grease.",
+    ...photo("butter-paper"),
     why: ["Grease and moisture resistant", "Food-safe inks", "Logo repeat printed edge to edge"],
-    materials: [M.greaseproof, M.brownGreaseproof],
+    materials: [M.greaseproof, M.tissue],
     finishes: [F.print],
     customization: ["Sheet size", "Logo repeat", "One or two colours", "Sheets or rolls"],
     applications: ["Burgers and sandwiches", "Bakeries", "Cafés", "Takeaway"],

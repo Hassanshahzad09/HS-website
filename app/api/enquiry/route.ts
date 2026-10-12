@@ -1,12 +1,61 @@
 import { NextResponse } from "next/server";
+import { db } from "@/lib/server/db";
+import { saveEnquiry } from "@/lib/server/enquiries";
 
-// Front-end demo endpoint. It validates the enquiry and returns a reference.
-// TODO: forward `body` to email / CRM / database here.
+// Resolves the signed-in user from the request's bearer token, by asking Supabase Auth.
+async function userId(req: Request): Promise<string | null> {
+  const token = req.headers.get("authorization")?.match(/^Bearer (.+)$/)?.[1];
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!token || !url || !key) return null;
+  try {
+    const res = await fetch(`${url}/auth/v1/user`, { headers: { apikey: key, Authorization: `Bearer ${token}` }, cache: "no-store" });
+    if (!res.ok) return null;
+    const user = await res.json();
+    return typeof user?.id === "string" ? user.id : null;
+  } catch {
+    return null;
+  }
+}
+
+const TYPES = ["quote", "contact", "newsletter"] as const;
+const text = (v: unknown, max = 500) => (typeof v === "string" && v.trim() ? v.trim().slice(0, max) : null);
+
+// Validates an enquiry from the quote builder, contact form or newsletter and saves it to the
+// Supabase database. With no database configured it still validates and returns a reference.
 export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
   if (!body || typeof body.email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) {
     return NextResponse.json({ ok: false, error: "Please enter a valid email address." }, { status: 400 });
   }
+  const type = TYPES.includes(body.type) ? (body.type as (typeof TYPES)[number]) : "contact";
   const reference = `HS-${Date.now().toString(36).toUpperCase().slice(-6)}`;
+  const quantity = Number.parseInt(String(body.quantity ?? ""), 10);
+
+  const pool = db();
+  if (pool) {
+    const row = {
+      reference,
+      type,
+      name: text(body.name, 120),
+      company: text(body.company, 160),
+      email: body.email.trim().toLowerCase().slice(0, 254),
+      country: text(body.country, 80),
+      product: text(body.product, 120),
+      quantity: Number.isFinite(quantity) && quantity > 0 ? Math.min(quantity, 100_000_000) : null,
+      material: text(body.material, 80),
+      finishes: Array.isArray(body.finishes) ? body.finishes.map((f: unknown) => text(f, 60)).filter(Boolean).slice(0, 12) : null,
+      logo_type: text(body.logoType, 60),
+      colour: text(body.colour, 60),
+      file_name: text(body.fileName, 200),
+      message: text(body.message, 4000),
+    };
+    try {
+      await saveEnquiry(pool, row, type === "quote" ? await userId(req) : null);
+    } catch (e) {
+      console.error("Enquiry save failed:", e instanceof Error ? e.message : e);
+      return NextResponse.json({ ok: false, error: "We couldn't save your request. Please try again, or message us on WhatsApp." }, { status: 500 });
+    }
+  }
   return NextResponse.json({ ok: true, reference });
 }
