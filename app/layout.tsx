@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import type { ReactNode } from "react";
 import { Footer } from "@/components/Footer";
 import { MobileCTA } from "@/components/MobileCTA";
@@ -38,6 +39,10 @@ export const viewport: Viewport = {
 // Runs before paint: applies the saved theme and skips the preloader on repeat visits.
 const bootScript = `(function(){var d=document.documentElement;try{var t=localStorage.getItem('hs-theme');if(t!=='dark')t='light';d.dataset.theme=t;if(sessionStorage.getItem('hs-loaded'))d.dataset.loaded='1'}catch(e){d.dataset.theme='light'}})()`;
 
+// Google Analytics (GA4). Loaded on the live site only, so visits on localhost are not counted.
+const GA_ID = "G-ER4N63J9ED";
+const analytics = process.env.NODE_ENV === "production";
+
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -65,6 +70,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Footer />
           <MobileCTA />
         </Providers>
+        {analytics && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+            <Script id="ga4" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_ID}');`}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );
