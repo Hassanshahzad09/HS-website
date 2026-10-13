@@ -1,14 +1,23 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Check, LogOut, Sparkles } from "lucide-react";
+import { Check, LogOut, Sparkles, Trash2 } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 import { Arrow, buttonClass } from "@/components/buttonStyles";
 import { Field } from "@/components/Field";
-import { supabaseBrowser, useUser } from "@/lib/supabase/client";
+import { getProduct } from "@/data/products";
+import { accessToken, supabaseBrowser, useUser } from "@/lib/supabase/client";
 
 type Quote = { reference: string; status: string; created_at: string; quote_items: { product_slug: string | null; quantity: number | null }[] };
+
+type Design = {
+  id: string;
+  name: string;
+  created_at: string;
+  cover: { id: string; product_slug: string | null; config_snapshot: { material?: string; finish?: string; logoType?: string } | null; generation_outputs: { storage_path: string }[] } | null;
+};
 
 // Customer-friendly wording for the quote status.
 const STATUS: Record<string, string> = { received: "Received", in_review: "In review", quotation_sent: "Quotation sent", closed: "Closed" };
@@ -19,7 +28,10 @@ export function AccountPage() {
   const { user, loading } = useUser();
   const [form, setForm] = useState({ full_name: "", company: "", phone: "" });
   const [credits, setCredits] = useState(0);
+  const [staff, setStaff] = useState(false);
   const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [designs, setDesigns] = useState<Design[]>([]);
+  const [links, setLinks] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState("");
 
@@ -30,10 +42,26 @@ export function AccountPage() {
   useEffect(() => {
     const sb = supabaseBrowser();
     if (!sb || !user) return;
-    sb.from("profiles").select("full_name, company, phone").eq("id", user.id).maybeSingle().then(({ data }) => {
-      if (data) setForm({ full_name: data.full_name ?? "", company: data.company ?? "", phone: data.phone ?? "" });
+    sb.from("profiles").select("full_name, company, phone, role").eq("id", user.id).maybeSingle().then(({ data }) => {
+      if (!data) return;
+      setForm({ full_name: data.full_name ?? "", company: data.company ?? "", phone: data.phone ?? "" });
+      setStaff(["sales", "admin", "super_admin"].includes(data.role));
     });
     sb.from("credit_balances").select("balance").maybeSingle().then(({ data }) => setCredits(data?.balance ?? 0));
+    sb.from("projects")
+      .select("id, name, created_at, cover:generations!projects_cover_generation_id_fkey(id, product_slug, config_snapshot, generation_outputs(storage_path))")
+      .is("deleted_at", null)
+      .order("created_at", { ascending: false })
+      .then(async ({ data }) => {
+        const list = (data as unknown as Design[] | null) ?? [];
+        setDesigns(list);
+        // AI images are private files: ask the server for short-lived links to this customer's own.
+        const ids = list.filter((d) => d.cover && !d.cover.generation_outputs[0]?.storage_path.startsWith("/")).map((d) => d.cover!.id);
+        if (!ids.length) return;
+        const token = await accessToken();
+        const res = await fetch("/api/studio/images", { method: "POST", headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify({ ids }) }).then((r) => r.json()).catch(() => null);
+        if (res?.ok) setLinks(res.images);
+      });
     sb.from("quotes").select("reference, status, created_at, quote_items(product_slug, quantity)").order("created_at", { ascending: false }).then(({ data }) => setQuotes((data as Quote[] | null) ?? []));
   }, [user]);
 
@@ -48,6 +76,13 @@ export function AccountPage() {
     const { error } = await sb.from("profiles").update({ full_name: form.full_name.trim() || null, company: form.company.trim() || null, phone: form.phone.trim() || null }).eq("id", user.id);
     setNotice(error ? "We couldn't save your details. Please try again." : "Saved.");
     setSaving(false);
+  };
+
+  const removeDesign = async (id: string) => {
+    const sb = supabaseBrowser();
+    if (!sb) return;
+    const { error } = await sb.from("projects").update({ deleted_at: new Date().toISOString() }).eq("id", id);
+    if (!error) setDesigns((list) => list.filter((d) => d.id !== id));
   };
 
   const signOut = async () => {
@@ -73,9 +108,16 @@ export function AccountPage() {
             <h1 className="display mt-4 text-[clamp(2.2rem,5vw,4rem)]">Hello{form.full_name ? `, ${form.full_name.split(" ")[0]}` : ""}.</h1>
             <p className="mt-2 text-muted">{user.email}</p>
           </div>
-          <button type="button" onClick={signOut} className={buttonClass("outline")}>
-            <LogOut className="size-4" aria-hidden="true" /> Log out
-          </button>
+          <div className="flex flex-wrap gap-2">
+            {staff && (
+              <Link href="/admin" className={buttonClass("primary")}>
+                Leads <Arrow />
+              </Link>
+            )}
+            <button type="button" onClick={signOut} className={buttonClass("outline")}>
+              <LogOut className="size-4" aria-hidden="true" /> Log out
+            </button>
+          </div>
         </div>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
@@ -102,12 +144,52 @@ export function AccountPage() {
                 <Sparkles className="size-3.5" aria-hidden="true" /> AI Studio credits
               </p>
               <p className="display mt-3 text-6xl tabular-nums">{credits}</p>
-              <p className="mt-2 text-sm text-bg/70">Credits are added when the live AI Studio opens.</p>
+              <p className="mt-2 text-sm text-bg/70">One credit is one Studio mockup. Your first quote request adds 10 more.</p>
             </div>
             <Link href="/ai-studio" className={buttonClass("brand", "mt-8 self-start")}>
               Open the AI Studio <Arrow />
             </Link>
           </div>
+        </div>
+
+        <div className="mt-6 rounded-[2rem] border border-line bg-surface p-7">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <h2 className="text-xl font-medium tracking-tight">Your saved designs</h2>
+            <Link href="/ai-studio" className={buttonClass("outline")}>
+              New design <Arrow />
+            </Link>
+          </div>
+          {designs.length === 0 ? (
+            <p className="mt-5 text-muted">Nothing saved yet. Press Save on a design in the AI Studio and it appears here.</p>
+          ) : (
+            <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {designs.map((d) => {
+                const c = d.cover;
+                const path = c?.generation_outputs[0]?.storage_path;
+                const image = path?.startsWith("/") ? path : c ? links[c.id] : undefined;
+                const product = getProduct(c?.product_slug ?? "");
+                const cfg = c?.config_snapshot ?? {};
+                const quote = product ? `/quote?product=${product.slug}${cfg.material ? `&material=${encodeURIComponent(cfg.material)}` : ""}${cfg.finish ? `&finish=${encodeURIComponent(cfg.finish)}` : ""}${cfg.logoType ? `&logo=${encodeURIComponent(cfg.logoType)}` : ""}&qty=500` : "/quote";
+                return (
+                  <li key={d.id} className="overflow-hidden rounded-[1.5rem] border border-line">
+                    <div className="relative aspect-[4/3] bg-bg2">{image && <Image src={image} alt={d.name} unoptimized={image.startsWith("http")} fill sizes="(min-width: 1024px) 28vw, (min-width: 640px) 44vw, 92vw" className="object-cover" />}</div>
+                    <div className="p-4">
+                      <p className="font-medium">{d.name}</p>
+                      <p className="mt-0.5 text-sm text-muted">{[cfg.material, cfg.logoType || cfg.finish].filter(Boolean).join(" · ")}</p>
+                      <div className="mt-3 flex items-center justify-between gap-2">
+                        <Link href={quote} className="link-underline text-sm">
+                          Get a quote for this
+                        </Link>
+                        <button type="button" onClick={() => removeDesign(d.id)} aria-label={`Remove ${d.name}`} className="grid size-9 place-items-center rounded-full text-muted hover:text-ink">
+                          <Trash2 className="size-4" aria-hidden="true" />
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
 
         <div className="mt-6 rounded-[2rem] border border-line bg-surface p-7">

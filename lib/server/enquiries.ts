@@ -71,12 +71,24 @@ export async function saveEnquiry(pool: Pool, e: EnquiryRow, userId: string | nu
           config_snapshot: JSON.stringify({ product: e.product, material: e.material, finishes: e.finishes ?? [], logoType: e.logo_type, colour: e.colour }),
         });
       }
+      // Bonus credits for a customer's first quote request (the unique index makes it once only).
+      if (e.type === "quote" && userId) {
+        await db.query(
+          `insert into public.credit_ledger (user_id, type, amount, reason)
+           values ($1, 'grant', coalesce(public.credit_setting('quote_bonus'), 10), 'quote_bonus') on conflict do nothing`,
+          [userId],
+        );
+      }
       await insert(db, "lead_notes", {
         lead_id: leadId,
         type: "note",
         body: e.type === "quote" ? `Quote request ${e.reference}${e.product ? ` for ${e.product}` : ""}.` : `Contact message ${e.reference}${e.message ? `: ${e.message.slice(0, 500)}` : "."}`,
       });
     }
+    await db.query(
+      "insert into public.analytics_events (name, user_id, properties) values ($1, $2, $3)",
+      [e.type === "quote" ? "quote_submitted" : e.type === "contact" ? "contact_submitted" : "newsletter_signup", userId, JSON.stringify({ product: e.product, reference: e.reference })],
+    );
     await db.query("commit");
   } catch (err) {
     await db.query("rollback").catch(() => {});

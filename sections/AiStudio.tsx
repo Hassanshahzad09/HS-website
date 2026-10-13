@@ -27,19 +27,20 @@ import { useEffect, useMemo, useRef, useState, type ChangeEvent, type DragEvent 
 import { AiBadge } from "@/components/AiBadge";
 import { Arrow, buttonClass } from "@/components/buttonStyles";
 import { categoryName, products, type Product } from "@/data/products";
+import { sampleImage, STUDIO_SLUGS } from "@/lib/studio";
+import { accessToken, useUser } from "@/lib/supabase/client";
 import { cn, EASE } from "@/lib/utils";
 
 /*
- * AI Packaging Studio — interface only.
- * Generation is simulated: nothing is uploaded and no AI model is called. The "result" is a
- * sample photo of the chosen product and finish, clearly labelled as such. See the PRD
+ * AI Packaging Studio.
+ * Credits, free-preview limits and the record of every generation are real and live on the
+ * server (/api/studio). The image itself is not AI-made yet: no model is connected, the logo
+ * is not uploaded, and the "result" is a sample photo of the chosen product and finish,
+ * clearly labelled as such. See the PRD
  * (Heritage_Shapes_PRD_4_Phases.docx, sections 16 and 26) for the screens this follows.
  */
 
 const FREE_PREVIEWS = 2;
-
-// Products the Studio can visualise at launch (PRD: 6 to 8 products).
-const STUDIO_SLUGS = ["shopping-bags", "tote-bags", "pouches", "thank-you-cards", "woven-labels", "ribbons", "stickers", "butter-paper"];
 
 const COLOURS = [
   { name: "Matte Black", hex: "#17191c" },
@@ -56,18 +57,44 @@ const PLACEMENTS = ["Centre front", "Upper centre", "Lower corner", "All-over re
 
 const STAGES = ["Preparing your logo", "Setting up the studio shot", "Applying your finish", "Lighting and final details"];
 
-type Logo = { url: string; name: string; width: number; height: number; transparent: boolean; kb: number };
+type Logo = { url: string; file: File; name: string; width: number; height: number; transparent: boolean; kb: number };
 type Config = { colour: string; material: string; finish: string; logoType: string; size: string; placement: string };
-type Result = { id: number; image: string; config: Config; product: Product };
+type Result = { id: number; gid?: string; image: string; sample: boolean; config: Config; product: Product };
 
 const chip = (active: boolean) =>
   cn("glass-btn rounded-full px-3.5 py-2 text-sm", active ? "[--gb:color-mix(in_srgb,var(--ink)_82%,transparent)] text-bg" : "text-muted hover:text-ink");
 
-/** The sample photo that best matches the chosen finish, standing in for a generated image. */
-function sampleImage(p: Product, c: { finish: string; logoType: string }) {
-  const effect = p.logoTypes ? p.logoTypes.find((l) => l.name === c.logoType)?.effect : p.finishes.find((f) => f.name === c.finish)?.effect;
-  return p.variants?.find((v) => v.effect === effect)?.image ?? p.image;
+type Reply = { ok: boolean; id?: string; image?: string; sample?: boolean; ai?: boolean; credits?: number; allowance?: number; signedIn?: boolean; error?: string };
+
+// Calls our own Studio API, as the signed-in customer when there is one.
+async function studioApi(path: string, body?: unknown): Promise<Reply> {
+  try {
+    const token = await accessToken().catch(() => null);
+    const res = await fetch(`/api/studio/${path}`, {
+      method: body ? "POST" : "GET",
+      headers: { ...(body ? { "Content-Type": "application/json" } : {}), ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    return await res.json();
+  } catch {
+    return { ok: false, error: "failed" };
+  }
 }
+
+// Sends the logo to the server, which cleans it and stores it privately.
+async function uploadLogo(file: File): Promise<Reply> {
+  try {
+    const token = await accessToken().catch(() => null);
+    const form = new FormData();
+    form.append("file", file);
+    const res = await fetch("/api/studio/logo", { method: "POST", headers: token ? { Authorization: `Bearer ${token}` } : {}, body: form });
+    return await res.json();
+  } catch {
+    return { ok: false, error: "failed" };
+  }
+}
+
+const remote = (src: string) => src.startsWith("http");
 
 export function AiStudio() {
   const studioProducts = useMemo(() => STUDIO_SLUGS.map((s) => products.find((p) => p.slug === s)).filter((p): p is Product => Boolean(p)), []);
@@ -78,6 +105,30 @@ export function AiStudio() {
   const [config, setConfig] = useState<Config>(() => defaults(studioProducts[0]));
   const [logo, setLogo] = useState<Logo | null>(null);
   const [credits, setCredits] = useState(FREE_PREVIEWS);
+  const [signedIn, setSignedIn] = useState(false);
+  const [allowance, setAllowance] = useState(FREE_PREVIEWS);
+  const [problem, setProblem] = useState("");
+  const pending = useRef<Promise<Reply> | null>(null);
+  const [saved, setSaved] = useState<string[]>([]);
+  const [ai, setAi] = useState(false);
+  // The stored copy of the current logo, so the same file is only uploaded once.
+  const stored = useRef<{ url: string; id: string } | null>(null);
+  const { user } = useUser();
+
+  // The real balance: a customer's credits, or a visitor's free previews left.
+  useEffect(() => {
+    let live = true;
+    studioApi("me").then((r) => {
+      if (!live || !r.ok) return;
+      setCredits(r.credits ?? 0);
+      setSignedIn(Boolean(r.signedIn));
+      setAi(Boolean(r.ai));
+      if (!r.signedIn && r.allowance) setAllowance(r.allowance);
+    });
+    return () => {
+      live = false;
+    };
+  }, [user?.id]);
   const [phase, setPhase] = useState<"edit" | "generating" | "result">("edit");
   const [results, setResults] = useState<Result[]>([]);
   const [active, setActive] = useState(0);
@@ -98,18 +149,56 @@ export function AiStudio() {
   const generate = () => {
     if (!logo) return setStep(2);
     if (credits <= 0) return setModal("limit");
+    setProblem("");
+    const mode = results.length ? "regenerate" : "quick";
+    pending.current = (async () => {
+      if (stored.current?.url !== logo.url) {
+        const up = await uploadLogo(logo.file);
+        if (!up.ok || !up.id) return { ok: false, error: up.error === "failed" || up.error === "unavailable" ? "failed" : "logo" };
+        stored.current = { url: logo.url, id: up.id };
+      }
+      return studioApi("generate", { product: product.slug, config, mode, logo: stored.current.id });
+    })();
     setPhase("generating");
   };
 
-  const finishGeneration = () => {
-    const r: Result = { id: Date.now(), image: sampleImage(product, config), config: { ...config }, product };
+  // Runs when the progress animation ends; the server has usually answered by then.
+  const finishGeneration = async () => {
+    const reply = (await pending.current) ?? { ok: false, error: "failed" };
+    pending.current = null;
+    if (!reply.ok || !reply.image) {
+      setPhase(results.length ? "result" : "edit");
+      if (reply.error === "limit") {
+        setCredits(0);
+        setModal("limit");
+      } else if (reply.error === "busy") setProblem("The Studio is very busy today. Please try again tomorrow, or request a quote and we'll mock it up for you.");
+      else if (reply.error === "logo") setProblem("We couldn't use that logo file. Try a PNG or JPG under 10 MB.");
+      else setProblem("We couldn't create that design. Nothing was charged. Please try again.");
+      return;
+    }
+    const r: Result = { id: Date.now(), gid: reply.id, image: reply.image, sample: reply.sample !== false, config: { ...config }, product };
     setResults((list) => [r, ...list]);
     setActive(0);
-    setCredits((c) => c - 1);
+    setCredits(reply.credits ?? 0);
     setPhase("result");
   };
 
   const current = results[active];
+
+  // Saving and downloading are for account holders; visitors are invited to sign up.
+  const save = async (r: Result) => {
+    if (!signedIn || !r.gid) return setModal("signup");
+    const reply = await studioApi("save", { generation: r.gid });
+    if (reply.ok) return setSaved((list) => [...list, r.gid!]);
+    setProblem(reply.error === "full" ? "Your account is at its limit of saved designs. Remove one from your account page to save another." : "We couldn't save that design. Please try again.");
+  };
+  const download = (r: Result) => {
+    if (!signedIn) return setModal("signup");
+    const a = document.createElement("a");
+    a.href = remote(r.image) ? `${r.image}&download=heritage-shapes-${r.product.slug}.webp` : r.image;
+    a.download = `heritage-shapes-${r.product.slug}.webp`;
+    a.click();
+  };
   const quoteHref = (r: Result) =>
     `/quote?product=${r.product.slug}&material=${encodeURIComponent(r.config.material)}&finish=${encodeURIComponent(r.config.finish)}${r.config.logoType ? `&logo=${encodeURIComponent(r.config.logoType)}` : ""}&qty=500`;
 
@@ -141,7 +230,7 @@ export function AiStudio() {
               Pricing
             </Link>
           </motion.div>
-          <p className="mt-5 text-sm text-muted">No sign-up needed for your first {FREE_PREVIEWS} designs.</p>
+          <p className="mt-5 text-sm text-muted">No sign-up needed for your first {allowance} designs.</p>
 
           <ol className="mx-auto mt-14 grid max-w-4xl gap-4 text-left sm:grid-cols-3">
             {[
@@ -172,8 +261,13 @@ export function AiStudio() {
               <p className="eyebrow">Design studio</p>
               <h2 className="display mt-2 text-[clamp(1.7rem,3vw,2.6rem)]">{phase === "result" ? "Your design" : "Build your packaging"}</h2>
             </div>
-            <CreditBadge credits={credits} />
+            <CreditBadge credits={credits} signedIn={signedIn} allowance={allowance} />
           </div>
+          {problem && (
+            <p role="alert" className="mb-4 flex items-center gap-2 rounded-2xl bg-gold/10 p-4 text-sm">
+              <TriangleAlert className="size-4 shrink-0 text-gold" aria-hidden="true" /> {problem}
+            </p>
+          )}
 
           <div className="overflow-hidden rounded-[2rem] border border-line bg-surface shadow-[0_40px_120px_-60px_rgba(0,0,0,.35)]">
             <AnimatePresence mode="wait" initial={false}>
@@ -193,7 +287,9 @@ export function AiStudio() {
                     setPhase("edit");
                     setStep(0);
                   }}
-                  onSignup={() => setModal("signup")}
+                  saved={Boolean(current.gid && saved.includes(current.gid))}
+                  onSave={() => save(current)}
+                  onDownload={() => download(current)}
                   onReport={() => setModal("report")}
                 />
               ) : (
@@ -235,7 +331,7 @@ export function AiStudio() {
 
           <p className="mt-4 flex items-start gap-2 text-xs text-muted">
             <Info className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
-            Interface preview. AI generation is not connected yet, so results show a sample photo of the product and finish you chose. Your logo stays in your browser and is never uploaded.
+            {ai ? "AI visualisation: colours, finishes and logo detail are indicative, not a print proof. Your logo is stored privately and used only to create your designs." : "Preview. AI generation is not switched on yet, so results show a sample photo of the product and finish you chose. Your logo is stored privately and used only to create your designs."}
           </p>
         </div>
       </section>
@@ -287,7 +383,7 @@ export function AiStudio() {
 
       <Modal open={modal !== null} onClose={() => setModal(null)}>
         {modal === "signup" && <SignupPrompt onClose={() => setModal(null)} />}
-        {modal === "limit" && <LimitReached onClose={() => setModal(null)} quoteHref={current ? quoteHref(current) : "/quote"} />}
+        {modal === "limit" && <LimitReached signedIn={signedIn} onClose={() => setModal(null)} quoteHref={current ? quoteHref(current) : "/quote"} />}
         {modal === "report" && <ReportIssue onClose={() => setModal(null)} />}
       </Modal>
     </>
@@ -296,16 +392,25 @@ export function AiStudio() {
 
 /* ------------------------------------------------------------------ parts */
 
-function CreditBadge({ credits }: { credits: number }) {
+function CreditBadge({ credits, signedIn, allowance }: { credits: number; signedIn: boolean; allowance: number }) {
+  if (signedIn)
+    return (
+      <span className="glass-btn inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm">
+        <Sparkles className="size-3.5 text-brand" aria-hidden="true" />
+        <span>
+          <b className="font-semibold tabular-nums">{credits}</b> {credits === 1 ? "credit" : "credits"} left
+        </span>
+      </span>
+    );
   return (
     <span className="glass-btn inline-flex items-center gap-2.5 rounded-full px-4 py-2 text-sm">
       <span className="flex gap-1" aria-hidden="true">
-        {Array.from({ length: FREE_PREVIEWS }).map((_, i) => (
+        {Array.from({ length: Math.min(allowance, 8) }).map((_, i) => (
           <span key={i} className={cn("size-2 rounded-full transition-colors", i < credits ? "bg-brand" : "bg-line")} />
         ))}
       </span>
       <span>
-        <b className="font-semibold tabular-nums">{credits}</b> of {FREE_PREVIEWS} free previews left
+        <b className="font-semibold tabular-nums">{credits}</b> of {allowance} free previews left
       </span>
     </span>
   );
@@ -490,7 +595,7 @@ function LogoStep({ logo, setLogo }: { logo: Logo | null; setLogo: (l: Logo | nu
         }
       } catch {}
       setTimeout(() => {
-        setLogo({ url, name: file.name, width: img.naturalWidth || 1000, height: img.naturalHeight || 1000, transparent, kb: Math.round(file.size / 1024) });
+        setLogo({ url, file, name: file.name, width: img.naturalWidth || 1000, height: img.naturalHeight || 1000, transparent, kb: Math.round(file.size / 1024) });
         setState("idle");
       }, 650);
     };
@@ -710,7 +815,9 @@ function ResultView({
   onRegenerate,
   onEdit,
   onNew,
-  onSignup,
+  saved,
+  onSave,
+  onDownload,
   onReport,
 }: {
   result: Result;
@@ -723,7 +830,9 @@ function ResultView({
   onRegenerate: () => void;
   onEdit: () => void;
   onNew: () => void;
-  onSignup: () => void;
+  saved: boolean;
+  onSave: () => void;
+  onDownload: () => void;
   onReport: () => void;
 }) {
   const [zoom, setZoom] = useState(false);
@@ -744,9 +853,9 @@ function ResultView({
       <div className="border-b border-line p-5 sm:p-7 lg:border-b-0 lg:border-r">
         <button type="button" onClick={() => setZoom((z) => !z)} aria-label={zoom ? "Zoom out" : "Zoom in"} className="relative block aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-[1.5rem] bg-bg2">
           <motion.div key={result.id} className="absolute inset-0" initial={{ opacity: 0, scale: 1.08 }} animate={{ opacity: 1, scale: zoom ? 1.6 : 1 }} transition={{ duration: 0.8, ease: EASE }}>
-            <Image src={result.image} alt={`Sample ${result.product.name.toLowerCase()} in ${result.config.finish.toLowerCase()}`} fill priority sizes="(min-width: 1024px) 58vw, 92vw" className="object-cover" />
+            <Image src={result.image} unoptimized={remote(result.image)} alt={`Sample ${result.product.name.toLowerCase()} in ${result.config.finish.toLowerCase()}`} fill priority sizes="(min-width: 1024px) 58vw, 92vw" className="object-cover" />
           </motion.div>
-          <span className="glass absolute left-3 top-3 rounded-full px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.12em]">Sample image</span>
+          <span className="glass absolute left-3 top-3 rounded-full px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.12em]">{result.sample ? "Sample image" : "AI visualisation"}</span>
           <span className="pointer-events-none absolute inset-0 grid place-items-center text-4xl font-semibold uppercase tracking-[0.4em] text-white/20" aria-hidden="true">
             Preview
           </span>
@@ -765,7 +874,7 @@ function ResultView({
             <div className="no-scrollbar flex gap-2 overflow-x-auto">
               {history.map((h, i) => (
                 <button key={h.id} type="button" onClick={() => onPick(i)} aria-pressed={i === active} className={cn("relative aspect-[4/3] w-24 shrink-0 overflow-hidden rounded-xl border-2 transition-colors", i === active ? "border-brand" : "border-transparent opacity-70 hover:opacity-100")}>
-                  <Image src={h.image} alt="" fill sizes="96px" className="object-cover" />
+                  <Image src={h.image} unoptimized={remote(h.image)} alt="" fill sizes="96px" className="object-cover" />
                 </button>
               ))}
             </div>
@@ -800,11 +909,11 @@ function ResultView({
           <button type="button" onClick={onEdit} className={buttonClass("outline", "min-h-11 py-2")}>
             <Pencil className="size-4" aria-hidden="true" /> Edit options
           </button>
-          <button type="button" onClick={onSignup} className={buttonClass("outline", "min-h-11 py-2")}>
+          <button type="button" onClick={onDownload} className={buttonClass("outline", "min-h-11 py-2")}>
             <Download className="size-4" aria-hidden="true" /> Download
           </button>
-          <button type="button" onClick={onSignup} className={buttonClass("outline", "min-h-11 py-2")}>
-            <FolderPlus className="size-4" aria-hidden="true" /> Save
+          <button type="button" onClick={onSave} disabled={saved} className={buttonClass("outline", "min-h-11 py-2 disabled:opacity-70")}>
+            {saved ? <Check className="size-4" aria-hidden="true" /> : <FolderPlus className="size-4" aria-hidden="true" />} {saved ? "Saved" : "Save"}
           </button>
         </div>
         <p className="mt-2 text-center text-xs text-muted">
@@ -875,14 +984,10 @@ function SignupPrompt({ onClose }: { onClose: () => void }) {
           </li>
         ))}
       </ul>
-      <button type="button" className={buttonClass("outline", "mt-6 w-full")} disabled>
-        Continue with Google
-      </button>
-      <input type="email" placeholder="you@brand.com" className="glass-btn mt-3 h-12 w-full rounded-full px-5 text-sm outline-none" />
-      <button type="button" className={buttonClass("brand", "mt-3 w-full")} disabled>
-        Create free account
-      </button>
-      <p className="mt-3 text-center text-xs text-muted">Accounts arrive with the live Studio.</p>
+      <Link href="/login" className={buttonClass("brand", "mt-6 w-full")}>
+        Create free account <Arrow />
+      </Link>
+      <p className="mt-3 text-center text-xs text-muted">Designs you made as a visitor move into your new account.</p>
       <button type="button" onClick={onClose} className="link-underline mx-auto mt-4 block text-sm text-muted">
         Continue without an account
       </button>
@@ -890,21 +995,23 @@ function SignupPrompt({ onClose }: { onClose: () => void }) {
   );
 }
 
-function LimitReached({ onClose, quoteHref }: { onClose: () => void; quoteHref: string }) {
+function LimitReached({ signedIn, onClose, quoteHref }: { signedIn: boolean; onClose: () => void; quoteHref: string }) {
   return (
     <div>
       <span className="grid size-12 place-items-center rounded-2xl bg-gold/15 text-gold">
         <Sparkles className="size-5" aria-hidden="true" />
       </span>
-      <h3 className="display mt-4 text-2xl">You&rsquo;ve used your free previews</h3>
-      <p className="mt-2 text-sm text-muted">Create a free account for 5 more, or send us your design and get 10 bonus credits when you request a quote.</p>
+      <h3 className="display mt-4 text-2xl">{signedIn ? "You\u2019re out of credits" : "You\u2019ve used your free previews"}</h3>
+      <p className="mt-2 text-sm text-muted">{signedIn ? "Send us your design for a quote. Your first quote request adds 10 bonus credits." : "Create a free account for 5 more, or send us your design and get 10 bonus credits when you request a quote."}</p>
       <div className="mt-6 grid gap-2">
         <Link href={quoteHref} onClick={onClose} className={buttonClass("brand", "w-full")}>
           Request a quote <Arrow />
         </Link>
-        <button type="button" className={buttonClass("outline", "w-full")} disabled>
-          Create a free account
-        </button>
+        {!signedIn && (
+          <Link href="/login" onClick={onClose} className={buttonClass("outline", "w-full")}>
+            Create a free account
+          </Link>
+        )}
       </div>
     </div>
   );
