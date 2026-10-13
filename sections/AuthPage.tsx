@@ -16,7 +16,7 @@ import { cn, EASE } from "@/lib/utils";
 
 type Mode = "login" | "signup" | "reset" | "update";
 
-const BENEFITS = ["Save designs to projects", "5 free AI Studio credits", "Full-size mockup downloads", "Track your quote requests"];
+const BENEFITS = ["Save designs to projects", "15 free AI Studio credits", "Full-size mockup downloads", "Track your quote requests"];
 
 // Supabase's messages are written for developers; these are the ones a customer can hit.
 const friendly = (message: string) => {
