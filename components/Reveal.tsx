@@ -109,19 +109,22 @@ export function SectionHeading({
   text,
   className,
   center,
+  as: Heading = "h2",
 }: {
   eyebrow: string;
   children: ReactNode;
   text?: string;
   className?: string;
   center?: boolean;
+  /** Use "h1" when the section is the main content of its own page. */
+  as?: "h1" | "h2";
 }) {
   return (
     <div className={cn("max-w-4xl", center && "mx-auto text-center", className)}>
       <Reveal y={12}>
         <p className="eyebrow mb-5">{eyebrow}</p>
       </Reveal>
-      <h2 className="display text-[clamp(1.9rem,4vw,3.5rem)]">{children}</h2>
+      <Heading className="display text-[clamp(1.9rem,4vw,3.5rem)]">{children}</Heading>
       {text && (
         <Reveal delay={0.15}>
           <p className={cn("mt-6 max-w-xl text-lg leading-relaxed text-muted", center && "mx-auto")}>{text}</p>

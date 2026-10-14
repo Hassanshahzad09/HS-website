@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { faqs } from "@/data/site";
 import { Faq } from "@/sections/Faq";
 
 export const metadata: Metadata = {
@@ -7,6 +8,18 @@ export const metadata: Metadata = {
   alternates: { canonical: "/faq" },
 };
 
+// Lets Google show these questions and answers directly in search results.
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+};
+
 export default function FaqPage() {
-  return <Faq standalone />;
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <Faq standalone />
+    </>
+  );
 }
