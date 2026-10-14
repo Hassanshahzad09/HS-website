@@ -63,7 +63,7 @@ export function Navbar() {
       <header className="pointer-events-none fixed inset-x-0 top-0 z-[80]">
         <div
           className={cn(
-            "keep-motion pointer-events-auto mx-auto flex items-center justify-between gap-6 rounded-full border transition-[margin,height,width,max-width,padding,background-color,border-color,box-shadow] duration-[900ms] ease-[var(--ease-expo)]",
+            "keep-motion pointer-events-auto mx-auto flex items-center justify-between gap-3 rounded-full border sm:gap-6 transition-[margin,height,width,max-width,padding,background-color,border-color,box-shadow] duration-[900ms] ease-[var(--ease-expo)]",
             scrolled || menu
               ? "mt-3 h-[3.75rem] w-[calc(100%-1.5rem)] max-w-[1180px] border-line bg-[color-mix(in_srgb,var(--glass)_70%,transparent)] px-3 shadow-[0_18px_50px_-24px_rgba(0,0,0,.4),inset_0_1px_0_rgba(255,255,255,.35)] backdrop-blur-md backdrop-saturate-150 sm:pl-6 sm:pr-2.5"
               : "mt-0 h-[4.5rem] w-full max-w-[1480px] border-transparent bg-transparent px-[clamp(1.25rem,4vw,4rem)] shadow-none",
@@ -99,7 +99,7 @@ export function Navbar() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <button type="button" onClick={() => setSearch(true)} aria-label="Search products" className="grid size-11 place-items-center rounded-full glass-btn hover:text-brand">
               <Search className="size-[18px]" />
             </button>
@@ -107,7 +107,9 @@ export function Navbar() {
               <Heart className="size-[18px]" />
               {saved.length > 0 && <span className="absolute -right-0.5 -top-0.5 grid size-[18px] place-items-center rounded-full bg-brand text-[10px] font-semibold text-onbrand">{saved.length}</span>}
             </Link>
-            <ThemeToggle />
+            <span className="hidden sm:block">
+              <ThemeToggle />
+            </span>
             <Link href={account.href} aria-label={account.label} className="hidden size-11 place-items-center rounded-full glass-btn hover:text-brand sm:grid md:hidden">
               <User className="size-[18px]" />
             </Link>
@@ -127,21 +129,23 @@ export function Navbar() {
         {menu && (
           <motion.div
             id="mobile-menu"
-            className="fixed inset-0 z-[70] flex flex-col bg-bg px-6 pb-8 pt-28 lg:hidden"
+            className="fixed inset-0 z-[70] bg-bg pb-8 pt-24 lg:hidden"
             initial={{ clipPath: "inset(0 0 100% 0)" }}
             animate={{ clipPath: "inset(0 0 0% 0)" }}
             exit={{ clipPath: "inset(0 0 100% 0)" }}
             transition={{ duration: 0.6, ease: EASE }}
           >
+            {/* Same width and side padding as the header capsule, so the menu lines up with the logo. */}
+            <div className="mx-auto flex h-full w-[calc(100%-1.5rem)] max-w-[1180px] flex-col px-3 sm:px-6">
             <nav aria-label="Mobile">
-              <ul className="space-y-1">
+              <ul className="space-y-0.5">
                 {nav.map((item, i) => (
                   <li key={item.label} className="overflow-hidden">
                     <motion.div initial={{ y: "110%" }} animate={{ y: 0 }} transition={{ delay: 0.12 + i * 0.06, duration: 0.7, ease: EASE }}>
-                      <Link href={item.href} onClick={() => setMenu(false)} className="display flex items-baseline gap-4 py-2 text-[clamp(2rem,9vw,3.2rem)]">
-                        <span className="eyebrow w-6">0{i + 1}</span>
-                        {item.label}
-                        {"ai" in item && item.ai && <AiBadge className="self-center text-xs" />}
+                      <Link href={item.href} onClick={() => setMenu(false)} aria-current={isActive(item.href) ? "page" : undefined} className={cn("display flex items-center gap-4 py-1.5 text-[clamp(1.75rem,7vw,2.5rem)] leading-tight transition-colors", isActive(item.href) ? "text-brand" : "hover:text-brand")}>
+                        <span className="w-6 shrink-0 font-sans text-xs tabular-nums text-muted">0{i + 1}</span>
+                        <span>{item.label}</span>
+                        {"ai" in item && item.ai && <AiBadge className="text-xs" />}
                       </Link>
                     </motion.div>
                   </li>
@@ -152,8 +156,13 @@ export function Navbar() {
               <Link href={account.href} onClick={() => setMenu(false)} className={buttonClass("brand", "w-full")}>
                 <User className="size-4" aria-hidden="true" /> {account.label}
               </Link>
-              <div className="flex justify-between text-sm text-muted">
-                <a href={`mailto:${site.email}`}>{site.email}</a>
+              <div className="flex items-center justify-between gap-4 text-sm text-muted">
+                <a href={`mailto:${site.email}`} className="truncate">
+                  {site.email}
+                </a>
+                <span className="sm:hidden">
+                  <ThemeToggle />
+                </span>
                 {site.whatsapp && (
                   <a href={site.whatsapp.href} target="_blank" rel="noreferrer">
                     WhatsApp
@@ -161,6 +170,7 @@ export function Navbar() {
                 )}
               </div>
             </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

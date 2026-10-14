@@ -13,8 +13,8 @@ export function LogoMark({ className, strokeWidth = 52, stroke = "currentColor" 
 export function Logo({ className, compact = false }: { className?: string; compact?: boolean }) {
   return (
     <span className={cn("inline-flex items-center gap-3", className)}>
-      <LogoMark className="h-7 w-auto text-brand" />
-      {!compact && <span className="font-brand text-[1.05rem] leading-none tracking-[0.14em]">Heritage Shapes</span>}
+      <LogoMark className="h-6 w-auto shrink-0 text-brand sm:h-7" />
+      {!compact && <span className="hidden whitespace-nowrap font-brand text-[0.82rem] min-[420px]:inline leading-none tracking-[0.1em] sm:text-[1.05rem] sm:tracking-[0.14em]">Heritage Shapes</span>}
     </span>
   );
 }
