@@ -12,7 +12,7 @@ export const MODES = ["quick", "regenerate"] as const;
 export type Mode = (typeof MODES)[number];
 
 type Settings = { signup: number; quote_bonus: number; guest_previews: number; guest_per_ip_per_day: number; cost: Record<string, number> };
-const DEFAULTS: Settings = { signup: 15, quote_bonus: 10, guest_previews: 10, guest_per_ip_per_day: 20, cost: { quick: 1, regenerate: 1 } };
+const DEFAULTS: Settings = { signup: 5, quote_bonus: 10, guest_previews: 2, guest_per_ip_per_day: 6, cost: { quick: 1, regenerate: 1 } };
 
 export async function creditSettings(pool: Pool): Promise<Settings> {
   const { rows } = await pool.query("select value from public.system_settings where key = 'credits'");

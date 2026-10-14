@@ -41,7 +41,7 @@ import { cn, EASE } from "@/lib/utils";
  * (Heritage_Shapes_PRD_4_Phases.docx, sections 16 and 26) for the screens this follows.
  */
 
-const FREE_PREVIEWS = 10;
+const FREE_PREVIEWS = 2;
 
 const COLOURS = [
   { name: "Matte Black", hex: "#17191c" },
@@ -982,7 +982,7 @@ function SignupPrompt({ onClose }: { onClose: () => void }) {
       <h3 className="display mt-4 text-2xl">Save your work</h3>
       <p className="mt-2 text-sm text-muted">Create a free account to keep this design.</p>
       <ul className="mt-5 space-y-2 text-sm">
-        {["Save designs to projects", "15 free credits", "Full-size downloads"].map((b) => (
+        {["Save designs to projects", "5 more free credits", "Full-size downloads"].map((b) => (
           <li key={b} className="flex items-center gap-2">
             <Check className="size-4 text-brand" aria-hidden="true" /> {b}
           </li>
@@ -1006,7 +1006,7 @@ function LimitReached({ signedIn, onClose, quoteHref }: { signedIn: boolean; onC
         <Sparkles className="size-5" aria-hidden="true" />
       </span>
       <h3 className="display mt-4 text-2xl">{signedIn ? "You\u2019re out of credits" : "You\u2019ve used your free previews"}</h3>
-      <p className="mt-2 text-sm text-muted">{signedIn ? "Send us your design for a quote. Your first quote request adds 10 bonus credits." : "Create a free account for 15 more, or send us your design and get 10 bonus credits when you request a quote."}</p>
+      <p className="mt-2 text-sm text-muted">{signedIn ? "Send us your design for a quote. Your first quote request adds 10 bonus credits." : "Create a free account for 5 more, or send us your design and get 10 bonus credits when you request a quote."}</p>
       <div className="mt-6 grid gap-2">
         <Link href={quoteHref} onClick={onClose} className={buttonClass("brand", "w-full")}>
           Request a quote <Arrow />

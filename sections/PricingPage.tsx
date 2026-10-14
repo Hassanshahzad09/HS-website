@@ -22,9 +22,9 @@ const PLANS = [
     tagline: "Try it, no sign-up",
     price: { monthly: 0, yearly: 0 },
     unit: "",
-    credits: "10 previews",
+    credits: "2 previews",
     cta: { label: "Start designing", href: "/ai-studio" },
-    features: ["10 free previews", "Quick preview mode", "Watermarked images", "Request a quote any time"],
+    features: ["2 free previews", "Quick preview mode", "Watermarked images", "Request a quote any time"],
   },
   {
     id: "free",
@@ -32,9 +32,9 @@ const PLANS = [
     tagline: "For real buyers",
     price: { monthly: 0, yearly: 0 },
     unit: "",
-    credits: "15 credits",
+    credits: "5 credits",
     cta: { label: "Create free account", href: "/login" },
-    features: ["15 credits on sign-up", "+10 bonus credits with a quote request", "Save designs to projects", "Regenerate and edit options"],
+    features: ["5 credits on sign-up", "+10 bonus credits with a quote request", "Save designs to projects", "Regenerate and edit options"],
   },
   {
     id: "pack",
@@ -62,7 +62,7 @@ const PLANS = [
 ] as const;
 
 const COMPARE: { label: string; values: (string | boolean)[] }[] = [
-  { label: "Credits included", values: ["10 previews", "15", "50", "200 / month"] },
+  { label: "Credits included", values: ["2 previews", "5", "50", "200 / month"] },
   { label: "Quick preview", values: [true, true, true, true] },
   { label: "Premium visualisation", values: [false, false, true, true] },
   { label: "Watermark-free images", values: [false, false, true, true] },
@@ -234,7 +234,7 @@ export function PricingPage() {
         </div>
         <div className="container-x mt-14">
           <div className="flex flex-col items-start justify-between gap-6 rounded-[2rem] bg-ink p-8 text-bg sm:flex-row sm:items-center sm:p-12">
-            <p className="display max-w-xl text-[clamp(1.6rem,3vw,2.6rem)]">Your first ten designs are on us.</p>
+            <p className="display max-w-xl text-[clamp(1.6rem,3vw,2.6rem)]">Your first two designs are on us.</p>
             <Link href="/ai-studio" className={buttonClass("brand", "shrink-0")}>
               <Sparkles className="size-4" aria-hidden="true" /> Open the AI Studio
             </Link>
