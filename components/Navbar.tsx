@@ -100,7 +100,7 @@ export function Navbar() {
           </nav>
 
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-            <button type="button" onClick={() => setSearch(true)} aria-label="Search products" className="grid size-11 place-items-center rounded-full glass-btn hover:text-brand">
+            <button type="button" onClick={() => setSearch(true)} aria-label="Search products" className="grid size-10 place-items-center sm:size-11 rounded-full glass-btn hover:text-brand">
               <Search className="size-[18px]" />
             </button>
             <Link href="/products?saved=1" aria-label={`Saved products (${saved.length})`} className="relative hidden size-11 place-items-center rounded-full glass-btn hover:text-brand sm:grid">
@@ -118,7 +118,7 @@ export function Navbar() {
                 <User className="size-4" aria-hidden="true" /> {account.label}
               </Link>
             </span>
-            <button type="button" onClick={() => setMenu((m) => !m)} aria-label={menu ? "Close menu" : "Open menu"} aria-expanded={menu} aria-controls="mobile-menu" className="grid size-11 place-items-center rounded-full glass-btn lg:hidden">
+            <button type="button" onClick={() => setMenu((m) => !m)} aria-label={menu ? "Close menu" : "Open menu"} aria-expanded={menu} aria-controls="mobile-menu" className="grid size-10 place-items-center sm:size-11 rounded-full glass-btn lg:hidden">
               {menu ? <X className="size-5" /> : <Menu className="size-5" />}
             </button>
           </div>
