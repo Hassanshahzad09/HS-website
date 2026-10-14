@@ -71,11 +71,13 @@ gtag('config', '${GA_ID}');`}
       {open && (
         <div role="dialog" aria-live="polite" aria-label="Cookie choices" className="keep-motion fixed inset-x-3 bottom-3 z-[120] sm:inset-x-auto sm:bottom-5 sm:left-5 sm:max-w-md">
           <div className="glass rounded-[1.5rem] border border-line p-5 text-sm shadow-[0_30px_80px_-30px_rgba(0,0,0,.45)]">
-            <p className="font-medium text-ink">Cookies</p>
+            <p className="font-medium text-ink">
+              Cookies <span aria-hidden="true">🍪</span>
+            </p>
             <p className="mt-1.5 leading-relaxed text-muted">
-              We use essential cookies to run the site. With your permission we also use Google Analytics to see how the site is used. See our{" "}
+              We use cookies to run the site and, if you agree, to understand how visitors use it.{" "}
               <Link href="/privacy" className="underline underline-offset-4 hover:text-ink">
-                privacy policy
+                Privacy policy
               </Link>
               .
             </p>
