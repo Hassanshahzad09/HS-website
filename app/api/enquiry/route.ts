@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { userId } from "@/lib/server/auth";
 import { db } from "@/lib/server/db";
 import { saveEnquiry } from "@/lib/server/enquiries";
+import { notifyTeam } from "@/lib/server/notify";
 
 const TYPES = ["quote", "contact", "newsletter"] as const;
 const text = (v: unknown, max = 500) => (typeof v === "string" && v.trim() ? v.trim().slice(0, max) : null);
@@ -37,6 +38,8 @@ export async function POST(req: Request) {
     };
     try {
       await saveEnquiry(pool, row, type === "quote" ? await userId(req) : null);
+      // Saved first, so a failed email can never lose a lead.
+      await notifyTeam(pool, row);
     } catch (e) {
       console.error("Enquiry save failed:", e instanceof Error ? e.message : e);
       return NextResponse.json({ ok: false, error: "We couldn't save your request. Please try again, or message us on WhatsApp." }, { status: 500 });
