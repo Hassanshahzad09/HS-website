@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { showTestimonials } from "@/data/site";
 import { BrandStatement } from "@/sections/BrandStatement";
 import { Hero } from "@/sections/Hero";
 import { ProductShowcase } from "@/sections/ProductShowcase";
@@ -29,7 +30,7 @@ export default function HomePage() {
       <Why />
       <Global />
       <Numbers />
-      <Testimonials />
+      {showTestimonials && <Testimonials />}
       <Cinematic />
       <Contact />
     </>

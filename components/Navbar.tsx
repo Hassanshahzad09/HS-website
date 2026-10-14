@@ -154,9 +154,11 @@ export function Navbar() {
               </Link>
               <div className="flex justify-between text-sm text-muted">
                 <a href={`mailto:${site.email}`}>{site.email}</a>
-                <a href={site.whatsapp.href} target="_blank" rel="noreferrer">
-                  WhatsApp
-                </a>
+                {site.whatsapp && (
+                  <a href={site.whatsapp.href} target="_blank" rel="noreferrer">
+                    WhatsApp
+                  </a>
+                )}
               </div>
             </motion.div>
           </motion.div>

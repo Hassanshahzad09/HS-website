@@ -4,6 +4,7 @@ import { getProduct } from "@/data/products";
 import { userId } from "@/lib/server/auth";
 import { db } from "@/lib/server/db";
 import { findLogo } from "@/lib/server/logos";
+import { verifyTurnstile } from "@/lib/server/turnstile";
 import { ANON_COOKIE, generateForGuest, generateForUser, MODES, type Mode } from "@/lib/server/studio";
 import { STUDIO_SLUGS, type StudioConfig } from "@/lib/studio";
 
@@ -28,6 +29,8 @@ export async function POST(req: Request) {
     const user = await userId(req);
     const jar = await cookies();
     const cookie = jar.get(ANON_COOKIE)?.value;
+    // Free visitor previews cost real money, so visitors must pass the bot check (when it is set up).
+    if (!user && !(await verifyTurnstile(body.turnstile, req))) return NextResponse.json({ ok: false, error: "bot", signedIn: false }, { status: 403 });
     // Only a logo the requester uploaded themselves can be used.
     const logo = user ? await findLogo(pool, { user }, body.logo) : cookie ? await findLogo(pool, { session: cookie }, body.logo) : null;
     const out = user ? await generateForUser(pool, user, { product, config, mode, logo }) : await generateForGuest(pool, req, cookie, { product, config, mode, logo });

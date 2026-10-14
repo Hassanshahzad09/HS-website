@@ -31,7 +31,7 @@ const GLOBAL = {
   quality: "Photorealistic, sharp focus, true-to-life material texture, believable scale, high detail.",
   negative: "Do not redesign, redraw, recolour, crop or distort the logo. Do not add any text, slogans, barcodes, watermarks or other brands. Do not add people, hands or extra products. Do not use unrealistic materials.",
   safety: "Show only the product described. No people, no offensive content, no imitation of third-party trademarks other than the provided logo.",
-  output: "One single image, square 1:1.",
+  output: "One single image, square 1:1, filling the whole frame edge to edge with no border, frame or rounded corners.",
 };
 
 /* ───────────── per product: shape, build, and any wording that differs from the shared one ───────────── */
@@ -89,9 +89,9 @@ const PRODUCTS = {
     photography: "Professional studio product photography, three-quarter view from above, soft even light so the thin paper and its print are clearly visible, gentle natural shadow.",
   },
   stickers: {
-    product: "A set of stickers of the logo on a backing sheet. One sticker is peeled halfway off the sheet; the others lie flat.",
-    construction: "Thin, flat stickers with clean cut edges.",
-    logo: "Use the attached logo image exactly as provided. Each sticker shows the logo once, filling the sticker. Keep its shapes, letters, spacing and proportions unchanged.",
+    product: "A sheet of identical stickers on a backing sheet. One sticker is peeled halfway off the sheet; the others lie flat.",
+    construction: "Thin, flat stickers with clean cut edges and a narrow even margin around the printed logo.",
+    logo: "Each sticker is a flat print of the complete attached logo image, including any background shape or colour it has, reproduced exactly as provided. Do not trace, simplify, outline or redraw it; keep every shape, letter, spacing, proportion and colour unchanged.",
     photography: "Close-up product photography, three-quarter view from above, soft key light from the upper left so the sticker surface finish is visible, gentle natural shadow.",
   },
 };

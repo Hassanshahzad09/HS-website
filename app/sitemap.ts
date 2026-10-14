@@ -13,6 +13,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/ai-studio`, lastModified: now, priority: 0.9 },
     { url: `${site.url}/pricing`, lastModified: now, priority: 0.7 },
     { url: `${site.url}/faq`, lastModified: now, priority: 0.6 },
+    { url: `${site.url}/privacy`, lastModified: now, priority: 0.2 },
+    { url: `${site.url}/terms`, lastModified: now, priority: 0.2 },
     ...brandKits.map((k) => ({ url: `${site.url}/kits/${k.id}`, lastModified: now, priority: 0.7 })),
     ...products.map((p) => ({ url: `${site.url}/products/${p.slug}`, lastModified: now, priority: 0.7 })),
   ];

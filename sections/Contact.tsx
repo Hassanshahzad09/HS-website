@@ -59,6 +59,7 @@ export function Contact() {
                   </span>
                 </a>
               </li>
+              {site.whatsapp && (
               <li>
                 <a href={site.whatsapp.href} target="_blank" rel="noreferrer" className="group flex items-center gap-4">
                   <span className="grid size-12 place-items-center rounded-full border border-line transition-colors group-hover:border-brand group-hover:bg-brand group-hover:text-onbrand">
@@ -70,8 +71,10 @@ export function Contact() {
                   </span>
                 </a>
               </li>
+              )}
             </ul>
 
+            {site.social.length > 0 && (
             <ul className="mt-10 flex gap-6 text-sm">
               {site.social.map((s) => (
                 <li key={s.name}>
@@ -81,6 +84,7 @@ export function Contact() {
                 </li>
               ))}
             </ul>
+            )}
           </Reveal>
         </div>
 

@@ -7,15 +7,13 @@ export const site = {
   title: "Heritage Shapes | Premium Printing & Packaging Solutions",
   description:
     "Heritage Shapes creates premium custom printing, packaging, labels, stickers and branded products for businesses looking to make a lasting impression.",
-  url: "https://www.heritageshapes.com", // PLACEHOLDER domain
+  url: "https://heritageshapes.com",
   email: "hello@heritageshapes.com",
-  whatsapp: { label: "+92 300 0000000", href: "https://wa.me/923000000000" }, // PLACEHOLDER
+  // Add your number to show WhatsApp links, e.g. { label: "+92 300 1234567", href: "https://wa.me/923001234567" }.
+  whatsapp: null as { label: string; href: string } | null,
   location: "Pakistan — shipping worldwide",
-  social: [
-    { name: "Instagram", href: "https://www.instagram.com/" }, // PLACEHOLDER links
-    { name: "LinkedIn", href: "https://www.linkedin.com/" },
-    { name: "Facebook", href: "https://www.facebook.com/" },
-  ],
+  // Add your real profiles to show them, e.g. { name: "Instagram", href: "https://www.instagram.com/heritageshapes" }.
+  social: [] as { name: string; href: string }[],
 };
 
 export const nav = [
@@ -136,6 +134,9 @@ export const portfolio = [
   { id: "velora", name: "Velora", category: "E-commerce", product: "Mailer Box • Card • Sticker", finish: "Soft Touch • Gloss", text: "An unboxing built for the doorstep, with a card and seal in every order.", ratio: "4 / 5" },
 ].map((p) => ({ ...p, image: p.photo ?? `/images/portfolio-${p.id}.webp` }));
 
+/** The reviews section stays hidden until the sample reviews below are replaced with real client quotes. */
+export const showTestimonials = false;
+
 // PLACEHOLDER testimonials — sample content to be replaced with real client quotes before launch.
 // Ratings are out of 5, in half-star steps.
 export const testimonials = [
@@ -161,7 +162,7 @@ export const faqs = [
   { q: "Do you provide international shipping?", a: "Yes. We ship internationally and pack each order for the journey. Shipping cost and transit time are included in your quotation." },
   { q: "Can you produce custom sizes?", a: "Yes. Send us your product dimensions and we will build the dieline around it." },
   { q: "Can I provide my own artwork?", a: "Yes. Print-ready PDF or AI files are ideal. If you only have a logo, we can prepare the artwork on our dieline for your approval." },
-  { q: "How do I request a quotation?", a: "Use the quote builder on this site, or message us on WhatsApp or email with the product, quantity and any reference images. We reply with pricing and a timeline." },
+  { q: "How do I request a quotation?", a: "Use the quote builder on this site, or email us with the product, quantity and any reference images. We reply with pricing and a timeline." },
 ];
 
 // Shipping lanes drawn on the world map (longitude / latitude).

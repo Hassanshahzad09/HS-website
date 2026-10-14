@@ -29,6 +29,7 @@ import { Arrow, buttonClass } from "@/components/buttonStyles";
 import { categoryName, products, type Product } from "@/data/products";
 import { sampleImage, STUDIO_SLUGS } from "@/lib/studio";
 import { accessToken, useUser } from "@/lib/supabase/client";
+import { turnstileToken } from "@/lib/turnstile";
 import { cn, EASE } from "@/lib/utils";
 
 /*
@@ -157,7 +158,9 @@ export function AiStudio() {
         if (!up.ok || !up.id) return { ok: false, error: up.error === "failed" || up.error === "unavailable" ? "failed" : "logo" };
         stored.current = { url: logo.url, id: up.id };
       }
-      return studioApi("generate", { product: product.slug, config, mode, logo: stored.current.id });
+      // Visitors pass an invisible bot check first; signed-in customers already confirmed their email.
+      const turnstile = signedIn ? null : await turnstileToken();
+      return studioApi("generate", { product: product.slug, config, mode, logo: stored.current.id, turnstile });
     })();
     setPhase("generating");
   };
@@ -172,6 +175,7 @@ export function AiStudio() {
         setCredits(0);
         setModal("limit");
       } else if (reply.error === "busy") setProblem("The Studio is very busy today. Please try again tomorrow, or request a quote and we'll mock it up for you.");
+      else if (reply.error === "bot") setProblem("We couldn't confirm you're a person. Please refresh the page and try again.");
       else if (reply.error === "logo") setProblem("We couldn't use that logo file. Try a PNG or JPG under 10 MB.");
       else setProblem("We couldn't create that design. Nothing was charged. Please try again.");
       return;

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { products } from "@/data/products";
 import { site } from "@/data/site";
 import { AiBadge } from "./AiBadge";
+import { CookieSettingsLink } from "./CookieConsent";
 import { LogoMark } from "./Logo";
 import { Newsletter } from "./Newsletter";
 
@@ -72,11 +73,13 @@ export function Footer() {
                     {site.email}
                   </a>
                 </li>
-                <li>
-                  <a href={site.whatsapp.href} target="_blank" rel="noreferrer" className="link-underline hover:text-ink">
-                    WhatsApp {site.whatsapp.label}
-                  </a>
-                </li>
+                {site.whatsapp && (
+                  <li>
+                    <a href={site.whatsapp.href} target="_blank" rel="noreferrer" className="link-underline hover:text-ink">
+                      WhatsApp {site.whatsapp.label}
+                    </a>
+                  </li>
+                )}
                 <li>{site.location}</li>
               </ul>
             </div>
@@ -87,7 +90,20 @@ export function Footer() {
           <p>
             © {new Date().getFullYear()} {site.name}. All rights reserved.
           </p>
-          <ul className="flex gap-6">
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            <li>
+              <Link href="/privacy" className="link-underline hover:text-ink">
+                Privacy
+              </Link>
+            </li>
+            <li>
+              <Link href="/terms" className="link-underline hover:text-ink">
+                Terms
+              </Link>
+            </li>
+            <li>
+              <CookieSettingsLink className="link-underline hover:text-ink" />
+            </li>
             {site.social.map((s) => (
               <li key={s.name}>
                 <a href={s.href} target="_blank" rel="noreferrer" className="link-underline hover:text-ink">

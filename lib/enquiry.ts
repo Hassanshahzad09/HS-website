@@ -2,6 +2,7 @@
 // Posts to the /api/enquiry route, which validates the request and saves it to the
 // Supabase database (enquiries, plus leads and quotes for quote requests).
 
+import { site } from "@/data/site";
 import { accessToken } from "@/lib/supabase/client";
 
 export type EnquiryPayload = {
@@ -32,7 +33,7 @@ export async function submitEnquiry(payload: EnquiryPayload): Promise<EnquiryRes
     });
     return await res.json();
   } catch {
-    return { ok: false, error: "We couldn't reach the server. Please try again, or message us on WhatsApp." };
+    return { ok: false, error: `We couldn't reach the server. Please try again, or email us at ${site.email}.` };
   }
 }
 

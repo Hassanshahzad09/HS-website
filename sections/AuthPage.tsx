@@ -222,7 +222,19 @@ export function AuthPage() {
                   </button>
                 )}
               </p>
-              {mode === "signup" && <p className="mt-4 text-center text-xs text-muted">By creating an account you agree to our terms and privacy policy.</p>}
+              {mode === "signup" && (
+                <p className="mt-4 text-center text-xs text-muted">
+                  By creating an account you agree to our{" "}
+                  <Link href="/terms" className="underline underline-offset-2 hover:text-ink">
+                    terms
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/privacy" className="underline underline-offset-2 hover:text-ink">
+                    privacy policy
+                  </Link>
+                  .
+                </p>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>

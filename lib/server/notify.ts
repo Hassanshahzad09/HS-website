@@ -77,3 +77,48 @@ export async function notifyTeam(pool: Pool, e: EnquiryRow) {
     console.error("Lead email not sent:", err instanceof Error ? err.message : err);
   }
 }
+
+/**
+ * Confirmation to the customer that their request arrived. Switched off until the domain is
+ * verified in Resend (notifications → confirm_customers), because until then Resend can only
+ * deliver to the account owner's own inbox.
+ */
+export async function confirmCustomer(pool: Pool, e: EnquiryRow) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key || e.type === "newsletter") return;
+  try {
+    const { rows } = await pool.query("select value from public.system_settings where key = 'notifications'");
+    const settings = rows[0]?.value ?? {};
+    if (settings.confirm_customers !== true || !settings.customer_from) return;
+
+    const quote = e.type === "quote";
+    const first = e.name?.split(" ")[0];
+    const subject = quote ? `We've received your quote request (${e.reference})` : `We've received your message (${e.reference})`;
+    const summary = quote ? [e.product, e.quantity ? `${e.quantity.toLocaleString("en-GB")} units` : null, e.material, e.logo_type].filter(Boolean).join(" · ") : "";
+    const lines = [
+      `Hi${first ? ` ${first}` : ""},`,
+      "",
+      quote
+        ? `Thank you for your quote request. Our team will review it and reply with pricing and lead times, usually within one working day.`
+        : `Thank you for getting in touch. We'll reply as soon as we can, usually within one working day.`,
+      ...(summary ? ["", `Your request: ${summary}`] : []),
+      `Reference: ${e.reference}`,
+      "",
+      "If you want to add anything, just reply to this email.",
+      "",
+      `${site.name}`,
+      site.url,
+    ];
+    const html = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#17191c;max-width:560px">${lines.map((l) => (l ? `<p style="margin:0 0 4px">${esc(l)}</p>` : "<br>")).join("")}</div>`;
+
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ from: settings.customer_from, to: [e.email], reply_to: site.email, subject, text: lines.join("\n"), html }),
+      signal: AbortSignal.timeout(8_000),
+    });
+    if (!res.ok) console.error("Customer confirmation not sent:", res.status, (await res.text()).slice(0, 300));
+  } catch (err) {
+    console.error("Customer confirmation not sent:", err instanceof Error ? err.message : err);
+  }
+}
