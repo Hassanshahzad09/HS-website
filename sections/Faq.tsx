@@ -13,7 +13,7 @@ export function Faq({ standalone = false }: { standalone?: boolean }) {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className={cn("bg-bg", standalone ? "pb-24 pt-32 lg:pt-40" : "py-13.5 lg:py-21.5")}>
+    <section id="faq" className={cn("bg-bg", standalone ? "pb-24 pt-28 lg:pt-32" : "py-12 lg:py-16")}>
       <div className="container-x grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <SectionHeading as={standalone ? "h1" : "h2"} eyebrow="FAQ" text="The questions we hear most. If yours is not here, ask us directly.">

@@ -59,7 +59,7 @@ function Statement() {
   }, []);
 
   return (
-    <h2 ref={ref} className="display mx-auto max-w-6xl text-center text-[clamp(2.1rem,4.8vw,4.5rem)]">
+    <h2 ref={ref} className="display mx-auto max-w-6xl text-center text-[clamp(1.9rem,4vw,3.6rem)]">
       {LINES.map((line, li) => (
         <span key={li} className={cn("block", li > 0 && "mt-3 lg:mt-5")}>
           {line.map((word, wi) => {
@@ -84,7 +84,7 @@ function Statement() {
 
 export function BrandStatement() {
   return (
-    <section id="about" className="relative z-10 -mt-[45svh] overflow-hidden rounded-t-[2.5rem] bg-bg2 py-17.5 shadow-[0_-30px_80px_-40px_rgba(0,0,0,.35)] lg:-mt-[60vh] lg:rounded-t-[4rem] lg:py-25.5">
+    <section id="about" className="relative z-10 -mt-[45svh] overflow-hidden rounded-t-[2.5rem] bg-bg2 py-12 shadow-[0_-30px_80px_-40px_rgba(0,0,0,.35)] lg:-mt-[60vh] lg:rounded-t-[4rem] lg:py-16">
       {/* slow background waves */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 opacity-60" aria-hidden="true">
         {[0, 1, 2].map((i) => (

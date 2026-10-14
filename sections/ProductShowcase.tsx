@@ -4,7 +4,7 @@ import { ProductCatalogue } from "@/products/ProductCatalogue";
 
 export function ProductShowcase() {
   return (
-    <section id="products" className="relative bg-bg py-13.5 lg:py-21.5">
+    <section id="products" className="relative bg-bg py-12 lg:py-16">
       <div className="container-x">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading eyebrow="The catalogue">

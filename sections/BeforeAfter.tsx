@@ -10,7 +10,7 @@ export function BeforeAfter() {
   const [pos, setPos] = useState(50);
 
   return (
-    <section className="bg-bg py-13.5 lg:py-21.5">
+    <section className="bg-bg py-12 lg:py-16">
       <div className="container-x">
         <SectionHeading eyebrow="Standard vs branded" text="Same bags, same box, same tags. Drag the handle to see what a logo, a palette and a seal do to them.">
           <SplitText segments={["Small details. ", { text: "Big difference.", gradient: true }]} />

@@ -100,7 +100,7 @@ function TrustBadge() {
 
 export function Testimonials() {
   return (
-    <section className="overflow-hidden bg-bg2 py-13.5 lg:py-21.5">
+    <section className="overflow-hidden bg-bg2 py-12 lg:py-16">
       <div className="container-x">
         <div className="mb-12 lg:mb-14">
           <TrustBadge />

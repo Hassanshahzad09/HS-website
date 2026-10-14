@@ -106,14 +106,14 @@ export function Hero() {
   };
 
   return (
-    <section ref={ref} className="relative h-[150svh] lg:h-[175vh]" aria-label="Introduction">
+    <section ref={ref} className="relative h-[135svh] lg:h-[150vh]" aria-label="Introduction">
       <div className="sticky top-0 h-[100svh] min-h-[640px] overflow-hidden" onMouseMove={onMove}>
         <div className="blob -left-40 top-10 size-[34rem] bg-brand/20" aria-hidden="true" />
         <div className="blob -right-32 bottom-0 size-[30rem] bg-gold/20" aria-hidden="true" />
 
         <div className="container-x relative grid h-full grid-rows-[auto_1fr] items-center gap-4 pb-6 pt-24 lg:grid-cols-[1.08fr_1fr] lg:grid-rows-1 lg:gap-6 lg:pb-10">
           <motion.div style={{ y: textY, opacity: textOpacity }} className="relative z-10 lg:-mt-14">
-            <h1 className="display text-[clamp(2.4rem,5.6vw,5.4rem)]">
+            <h1 className="display text-[clamp(2.2rem,4.8vw,4.4rem)]">
               <SplitText play={ready} delay={0.1} stagger={0.08} segments={["Packaging\nthat makes"]} />
               <span className="block" role="text" aria-label={`brands ${WORDS[0]}`}>
                 {[<span key="brands" className="text-gradient">brands</span>, <TypedWord key="typed" play={ready} />].map((word, i) => (

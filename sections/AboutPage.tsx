@@ -61,13 +61,13 @@ export function AboutPage() {
   return (
     <>
       {/* Intro */}
-      <section className="bg-bg pb-16 pt-32 lg:pb-24 lg:pt-40">
+      <section className="bg-bg pb-16 pt-32 lg:pb-16 lg:pt-40">
         <div className="container-x grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
           <div>
             <Reveal y={12}>
               <p className="eyebrow mb-5">About Heritage Shapes</p>
             </Reveal>
-            <h1 className="display text-[clamp(2.4rem,5.4vw,4.8rem)]">
+            <h1 className="display text-[clamp(2.1rem,4.6vw,3.8rem)]">
               <SplitText segments={["Six years of making packaging ", { text: "people keep.", gradient: true }]} />
             </h1>
             <Reveal delay={0.15}>
@@ -96,7 +96,7 @@ export function AboutPage() {
           {figures.map((f, i) => (
             <Reveal key={f.label} delay={i * 0.08} className="flex flex-col-reverse border-t border-line pt-5">
               <dt className="eyebrow mt-2">{f.label}</dt>
-              <dd className="display text-gradient text-[clamp(2.4rem,5vw,4.2rem)]">
+              <dd className="display text-gradient text-[clamp(2.1rem,4.2vw,3.4rem)]">
                 {f.value}
                 {f.suffix}
               </dd>
@@ -106,7 +106,7 @@ export function AboutPage() {
       </section>
 
       {/* Who we are */}
-      <section className="bg-bg py-16 lg:py-24">
+      <section className="bg-bg py-12 lg:py-16">
         <div className="container-x grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <MaskReveal className="relative order-2 aspect-[4/5] overflow-hidden rounded-[2rem] bg-bg2 lg:order-1">
             <Image src={PHOTOS.labels.src} alt={PHOTOS.labels.alt} fill sizes="(min-width: 1024px) 44vw, 92vw" className="object-cover" />
@@ -127,7 +127,7 @@ export function AboutPage() {
       </section>
 
       {/* Three countries */}
-      <section className="bg-bg2 py-16 lg:py-24">
+      <section className="bg-bg2 py-12 lg:py-16">
         <div className="container-x">
           <SectionHeading eyebrow="How we are set up" text="Each part of the work happens where it is done best, and one team connects them.">
             <SplitText segments={["Three countries, ", { text: "one team.", gradient: true }]} />
@@ -150,7 +150,7 @@ export function AboutPage() {
       <Global />
 
       {/* Manufacturing process */}
-      <section id="manufacturing" className="bg-bg py-16 lg:py-24">
+      <section id="manufacturing" className="bg-bg py-12 lg:py-16">
         <div className="container-x grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionHeading eyebrow="Our manufacturing process" text="Seven stages, from the first conversation to the box arriving at your door. You see and approve the work at every point that matters.">
@@ -178,7 +178,7 @@ export function AboutPage() {
 
 
       {/* Values */}
-      <section className="bg-bg py-16 lg:py-24">
+      <section className="bg-bg py-12 lg:py-16">
         <div className="container-x grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
             <SectionHeading eyebrow="What we stand by">
@@ -205,7 +205,7 @@ export function AboutPage() {
       </section>
 
       {/* Call to action */}
-      <section className="bg-bg pb-24">
+      <section className="bg-bg pb-16">
         <div className="container-x">
           <Reveal className="flex flex-col items-start justify-between gap-6 rounded-[2rem] bg-ink p-8 text-bg sm:flex-row sm:items-center sm:p-12">
             <p className="display max-w-xl text-[clamp(1.6rem,3vw,2.6rem)]">Ready to make packaging your customers keep?</p>

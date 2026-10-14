@@ -129,7 +129,7 @@ export function AuthPage() {
   }[mode];
 
   return (
-    <section className="relative overflow-hidden bg-bg pb-20 pt-28 lg:pt-32">
+    <section className="relative overflow-hidden bg-bg pb-16 pt-28 lg:pt-32">
       <div className="blob -left-40 top-20 size-[32rem] bg-brand/20" aria-hidden="true" />
       <div className="container-x relative grid items-stretch gap-8 lg:grid-cols-[1fr_1.05fr] lg:gap-12">
         {/* Form */}

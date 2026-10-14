@@ -15,7 +15,7 @@ export function BrandKits() {
   const kit = brandKits[active];
 
   return (
-    <section id="kits" className="bg-bg py-13.5 lg:py-21.5">
+    <section id="kits" className="bg-bg py-12 lg:py-16">
       <div className="container-x">
         <SectionHeading eyebrow="Branding kits" text="Everything a brand hands to its customer, designed together and made in one order. Pick your industry to see the kit.">
           <SplitText segments={["One kit, ", { text: "every", serif: true }, " touchpoint."]} />

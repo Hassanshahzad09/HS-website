@@ -16,7 +16,7 @@ export function Ribbon() {
   const draw = useSpring(useTransform(scrollYProgress, [0, 0.85], [0, 1]), { stiffness: 80, damping: 24 });
 
   return (
-    <section ref={ref} className="on-dark relative overflow-hidden bg-bg py-17.5 text-ink lg:py-25.5">
+    <section ref={ref} className="on-dark relative overflow-hidden bg-bg py-12 text-ink lg:py-16">
       <svg viewBox="0 0 1600 420" preserveAspectRatio="none" className="pointer-events-none absolute inset-x-0 top-1/2 h-[70%] w-full -translate-y-1/2" aria-hidden="true">
         <defs>
           <linearGradient id="ribbon-sheen" x1="0" y1="0" x2="1" y2="0">
@@ -38,7 +38,7 @@ export function Ribbon() {
         <Reveal y={12}>
           <p className="eyebrow mb-6">Ribbons</p>
         </Reveal>
-        <h2 className="display max-w-5xl text-[clamp(2rem,4.5vw,4rem)] [text-shadow:0_2px_30px_rgba(0,0,0,.55)]">
+        <h2 className="display max-w-5xl text-[clamp(1.8rem,3.8vw,3.2rem)] [text-shadow:0_2px_30px_rgba(0,0,0,.55)]">
           <SplitText segments={["Details are what make a brand ", { text: "feel premium.", serif: true }]} />
         </h2>
 

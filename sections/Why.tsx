@@ -13,7 +13,7 @@ const ICONS: Record<(typeof benefits)[number]["icon"], LucideIcon> = {
 
 export function Why() {
   return (
-    <section className="bg-bg2 py-13.5 lg:py-21.5">
+    <section className="bg-bg2 py-12 lg:py-16">
       <div className="container-x">
         <SectionHeading eyebrow="Why Heritage Shapes">
           <SplitText segments={["Six reasons brands ", { text: "stay.", serif: true }]} />

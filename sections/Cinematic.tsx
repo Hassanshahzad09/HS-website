@@ -62,10 +62,10 @@ export function Cinematic() {
   const finalEvents = useTransform(p, (v) => (v > 0.84 ? "auto" : "none"));
   const glow = useTransform(p, [0, 0.6, 1], [0.15, 0.5, 0.8]);
 
-  const big = "display mx-auto max-w-5xl text-center text-[clamp(2.2rem,5.6vw,5.2rem)]";
+  const big = "display mx-auto max-w-5xl text-center text-[clamp(2rem,4.6vw,4.2rem)]";
 
   return (
-    <section ref={ref} className="on-dark relative h-[280vh] bg-black text-ink" aria-label="Your brand has a story">
+    <section ref={ref} className="on-dark relative h-[200vh] bg-black text-ink" aria-label="Your brand has a story">
       <div className="sticky top-0 grid h-[100svh] place-items-center overflow-hidden">
         <motion.div className="blob left-1/2 top-1/2 size-[46rem] -translate-x-1/2 -translate-y-1/2 bg-brand/40" style={{ opacity: glow }} aria-hidden="true" />
 

@@ -103,11 +103,11 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
   const Heading = standalone ? "h1" : "h2";
 
   return (
-    <section id="quote" className={cn("relative overflow-hidden bg-bg2", standalone ? "pb-24 pt-32 lg:pt-40" : "py-13.5 lg:py-21.5")}>
+    <section id="quote" className={cn("relative overflow-hidden bg-bg2", standalone ? "pb-24 pt-28 lg:pt-32" : "py-12 lg:py-16")}>
       <div className="blob -left-40 top-20 size-[30rem] bg-brand/15" aria-hidden="true" />
       <div className="container-x relative">
         <p className="eyebrow mb-5">Quote builder</p>
-        <Heading className="display max-w-5xl text-[clamp(1.9rem,4vw,3.5rem)]">
+        <Heading className="display max-w-5xl text-[clamp(1.75rem,3.4vw,2.75rem)]">
           <SplitText segments={["Let’s build something your customers ", { text: "remember.", gradient: true }]} />
         </Heading>
 

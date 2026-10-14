@@ -209,7 +209,7 @@ export function AiStudio() {
   return (
     <>
       {/* S1 — Studio landing */}
-      <section className="relative overflow-hidden bg-bg pb-14 pt-32 lg:pb-20 lg:pt-40">
+      <section className="relative overflow-hidden bg-bg pb-14 pt-32 lg:pb-16 lg:pt-40">
         <div className="blob -left-40 top-10 size-[34rem] bg-brand/25" aria-hidden="true" />
         <div className="blob -right-32 top-40 size-[30rem] bg-gold/20" aria-hidden="true" />
         <div className="container-x relative text-center">
@@ -217,7 +217,7 @@ export function AiStudio() {
             <AiBadge className="text-xs" />
             <span className="eyebrow">AI Packaging Studio · Preview</span>
           </motion.div>
-          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.08, ease: EASE }} className="display mx-auto mt-6 max-w-4xl text-[clamp(2.6rem,6.4vw,5.6rem)]">
+          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.08, ease: EASE }} className="display mx-auto mt-6 max-w-4xl text-[clamp(2.3rem,5vw,4.4rem)]">
             See it on your brand. <span className="text-gradient">Get it made.</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.18, ease: EASE }} className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted">
@@ -341,7 +341,7 @@ export function AiStudio() {
       </section>
 
       {/* Examples + trust */}
-      <section id="examples" className="scroll-mt-20 bg-bg py-14 lg:py-20">
+      <section id="examples" className="scroll-mt-20 bg-bg py-12 lg:py-16">
         <div className="container-x">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>

@@ -25,7 +25,7 @@ export function Showcase() {
   const item = ITEMS[active];
 
   return (
-    <section ref={ref} className="relative bg-bg2" style={{ height: `${ITEMS.length * 32 + 100}vh` }} aria-label="The complete packaging set">
+    <section ref={ref} className="relative bg-bg2" style={{ height: `${ITEMS.length * 22 + 100}vh` }} aria-label="The complete packaging set">
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         <div className="blob left-1/2 top-1/2 size-[40rem] -translate-x-1/2 -translate-y-1/2 bg-brand/15" aria-hidden="true" />
 

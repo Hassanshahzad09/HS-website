@@ -91,7 +91,7 @@ export function PricingPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-bg pb-14 pt-32 lg:pb-20 lg:pt-40">
+      <section className="relative overflow-hidden bg-bg pb-14 pt-32 lg:pb-16 lg:pt-40">
         <div className="blob -right-32 top-10 size-[32rem] bg-brand/20" aria-hidden="true" />
         <div className="container-x relative">
           <div className="mx-auto max-w-3xl text-center">
@@ -99,7 +99,7 @@ export function PricingPage() {
               <AiBadge className="text-xs" />
               <span className="eyebrow">AI Studio pricing</span>
             </div>
-            <h1 className="display mt-6 text-[clamp(2.4rem,5.6vw,4.8rem)]">
+            <h1 className="display mt-6 text-[clamp(2.1rem,4.6vw,3.8rem)]">
               Free to design. <span className="text-gradient">Pay only to make it.</span>
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-muted">Start with free previews. Add credits later if you design a lot. Your packaging order is quoted separately.</p>
@@ -161,7 +161,7 @@ export function PricingPage() {
       </section>
 
       {/* What a credit buys */}
-      <section className="bg-bg2 py-14 lg:py-20">
+      <section className="bg-bg2 py-12 lg:py-16">
         <div className="container-x grid gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
           <SectionHeading eyebrow="How credits work" text="One credit is one mockup. Failed generations are never charged.">
             <SplitText segments={["Simple, ", { text: "predictable.", serif: true }]} />
@@ -181,7 +181,7 @@ export function PricingPage() {
       </section>
 
       {/* Compare */}
-      <section className="bg-bg py-14 lg:py-20">
+      <section className="bg-bg py-12 lg:py-16">
         <div className="container-x">
           <SectionHeading eyebrow="Compare plans">
             <SplitText segments={["Everything, ", { text: "side by side.", gradient: true }]} />
@@ -218,7 +218,7 @@ export function PricingPage() {
       </section>
 
       {/* FAQ + CTA */}
-      <section className="bg-bg2 py-14 lg:py-20">
+      <section className="bg-bg2 py-12 lg:py-16">
         <div className="container-x grid gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
           <SectionHeading eyebrow="Pricing questions">
             <SplitText segments={["Good to ", { text: "know.", serif: true }]} />

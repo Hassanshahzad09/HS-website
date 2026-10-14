@@ -28,7 +28,7 @@ export function Portfolio({ standalone = false }: { standalone?: boolean }) {
   }, [open]);
 
   return (
-    <section id="portfolio" className={cn("bg-bg", standalone ? "pb-24 pt-32 lg:pt-40" : "py-13.5 lg:py-21.5")}>
+    <section id="portfolio" className={cn("bg-bg", standalone ? "pb-24 pt-28 lg:pt-32" : "py-12 lg:py-16")}>
       <div className="container-x">
         <SectionHeading as={standalone ? "h1" : "h2"} eyebrow="Portfolio" text="Concept projects showing how materials and finishes come together across a full brand set.">
           <SplitText segments={["Made for brands. ", { text: "Built to be remembered.", gradient: true }]} />

@@ -124,7 +124,7 @@ export function SectionHeading({
       <Reveal y={12}>
         <p className="eyebrow mb-5">{eyebrow}</p>
       </Reveal>
-      <Heading className="display text-[clamp(1.9rem,4vw,3.5rem)]">{children}</Heading>
+      <Heading className="display text-[clamp(1.75rem,3.4vw,2.75rem)]">{children}</Heading>
       {text && (
         <Reveal delay={0.15}>
           <p className={cn("mt-6 max-w-xl text-lg leading-relaxed text-muted", center && "mx-auto")}>{text}</p>

@@ -9,7 +9,7 @@ export function KitDetail({ kit }: { kit: BrandKit }) {
   const others = brandKits.filter((k) => k.id !== kit.id);
 
   return (
-    <div className="container-x pb-24 pt-28 lg:pt-32">
+    <div className="container-x pb-16 pt-28 lg:pt-32">
       <nav aria-label="Breadcrumb" className="mb-8 text-sm text-muted">
         <ol className="flex flex-wrap items-center gap-1.5">
           <li>
@@ -27,7 +27,7 @@ export function KitDetail({ kit }: { kit: BrandKit }) {
       <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
         <div className="max-w-3xl">
           <p className="eyebrow">Branding kit · {kit.name}</p>
-          <h1 className="display mt-4 text-[clamp(2.3rem,5.2vw,4.5rem)]">{kit.title}</h1>
+          <h1 className="display mt-4 text-[clamp(2rem,4.4vw,3.6rem)]">{kit.title}</h1>
           <p className="mt-6 text-lg leading-relaxed text-muted">{kit.text}</p>
         </div>
         <div className="flex flex-wrap gap-3">

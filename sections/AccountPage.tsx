@@ -92,20 +92,20 @@ export function AccountPage() {
 
   if (loading || !user) {
     return (
-      <section className="bg-bg pb-20 pt-32 lg:pt-40">
+      <section className="bg-bg pb-16 pt-28 lg:pt-32">
         <div className="container-x text-muted">Loading your account…</div>
       </section>
     );
   }
 
   return (
-    <section className="relative overflow-hidden bg-bg pb-20 pt-32 lg:pt-40">
+    <section className="relative overflow-hidden bg-bg pb-16 pt-28 lg:pt-32">
       <div className="blob -right-32 top-10 size-[32rem] bg-brand/20" aria-hidden="true" />
       <div className="container-x relative">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="eyebrow">My account</p>
-            <h1 className="display mt-4 text-[clamp(2.2rem,5vw,4rem)]">Hello{form.full_name ? `, ${form.full_name.split(" ")[0]}` : ""}.</h1>
+            <h1 className="display mt-4 text-[clamp(2rem,4.2vw,3.2rem)]">Hello{form.full_name ? `, ${form.full_name.split(" ")[0]}` : ""}.</h1>
             <p className="mt-2 text-muted">{user.email}</p>
           </div>
           <div className="flex flex-wrap gap-2">
