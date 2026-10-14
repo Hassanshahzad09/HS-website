@@ -8,7 +8,7 @@ export const site = {
   description:
     "Heritage Shapes creates premium custom printing, packaging, labels, stickers and branded products for businesses looking to make a lasting impression.",
   url: "https://www.heritageshapes.com", // PLACEHOLDER domain
-  email: "info@heritageshapes.com",
+  email: "hello@heritageshapes.com",
   whatsapp: { label: "+92 300 0000000", href: "https://wa.me/923000000000" }, // PLACEHOLDER
   location: "Pakistan — shipping worldwide",
   social: [
