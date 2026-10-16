@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { CookieConsent } from "@/components/CookieConsent";
 import { Footer } from "@/components/Footer";
-import { MobileCTA } from "@/components/MobileCTA";
 import { Navbar } from "@/components/Navbar";
 import { Preloader } from "@/components/Preloader";
 import { Providers } from "@/components/Providers";
@@ -64,7 +63,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Navbar />
           <main id="main">{children}</main>
           <Footer />
-          <MobileCTA />
         </Providers>
         <CookieConsent />
       </body>

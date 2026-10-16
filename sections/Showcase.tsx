@@ -48,7 +48,7 @@ export function Showcase() {
               <motion.div
                 key={it.src}
                 className="absolute -translate-x-1/2 -translate-y-1/2"
-                style={{ width: `clamp(${it.w * 2.6}px, ${it.w * 0.75}vw, ${it.w * 11}px)`, zIndex: on ? 10 : 1 }}
+                style={{ width: `clamp(${it.w * 5}px, ${it.w * 0.75}vw, ${it.w * 11}px)`, zIndex: on ? 10 : 1 }}
                 animate={{
                   left: on ? "50%" : `${it.x}%`,
                   top: on ? "46%" : `${it.y}%`,
