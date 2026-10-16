@@ -37,17 +37,17 @@ export function ProductCard({ product, priority = false, compact = false, classN
         href={href}
         data-cursor="EXPLORE"
         aria-label={`Explore ${product.name}`}
-        className={`relative block aspect-square overflow-hidden rounded-[1.75rem] border border-line bg-bg2 transition-[border-color,box-shadow] duration-500 group-hover:border-brand group-hover:shadow-[0_24px_60px_-30px_var(--brand)] ${compact ? "lg:max-xl:rounded-[1.25rem]" : ""}`}
+        className={`relative block aspect-square overflow-hidden rounded-[1.25rem] border sm:rounded-[1.75rem] border-line bg-bg2 transition-[border-color,box-shadow] duration-500 group-hover:border-brand group-hover:shadow-[0_24px_60px_-30px_var(--brand)] ${compact ? "lg:max-xl:rounded-[1.25rem]" : ""}`}
       >
         <Image
           src={product.image}
           alt={`${product.name} — ${product.shortDescription}`}
           fill
           priority={priority}
-          sizes={`(min-width: 1280px) 18vw, (min-width: 1024px) ${compact ? 19 : 23}vw, (min-width: 640px) 45vw, 78vw`}
+          sizes={`(min-width: 1280px) 18vw, (min-width: 1024px) ${compact ? 19 : 23}vw, (min-width: 640px) 45vw, ${compact ? 78 : 48}vw`}
           className="object-cover transition-transform duration-[900ms] ease-[var(--ease-expo)] group-hover:rotate-[0.8deg] group-hover:scale-[1.08]"
         />
-        <span className={cn("glass absolute left-3 top-3 rounded-full px-3 py-1 text-[0.68rem] font-medium uppercase tracking-[0.14em]", compact && "lg:max-xl:left-2 lg:max-xl:top-2 lg:max-xl:max-w-[calc(100%-3.5rem)] lg:max-xl:truncate lg:max-xl:px-2.5 lg:max-xl:text-[0.58rem] lg:max-xl:tracking-[0.1em]")}>{categoryName(product.category)}</span>
+        <span className={cn("glass absolute left-2 top-2 max-w-[calc(100%-3.25rem)] truncate rounded-full px-2 py-0.5 text-[0.55rem] font-medium uppercase tracking-[0.1em] sm:left-3 sm:top-3 sm:max-w-none sm:px-3 sm:py-1 sm:text-[0.68rem] sm:tracking-[0.14em]", compact && "lg:max-xl:left-2 lg:max-xl:top-2 lg:max-xl:max-w-[calc(100%-3.5rem)] lg:max-xl:truncate lg:max-xl:px-2.5 lg:max-xl:text-[0.58rem] lg:max-xl:tracking-[0.1em]")}>{categoryName(product.category)}</span>
         <span className="absolute bottom-3 right-3 grid size-11 translate-y-3 place-items-center rounded-full bg-brand text-onbrand opacity-0 transition-all duration-500 ease-[var(--ease-expo)] group-hover:translate-y-0 group-hover:opacity-100">
           <ArrowUpRight className="size-5" aria-hidden="true" />
         </span>
@@ -58,17 +58,17 @@ export function ProductCard({ product, priority = false, compact = false, classN
         onClick={() => toggle(product.slug)}
         aria-pressed={saved}
         aria-label={saved ? `Remove ${product.name} from saved` : `Save ${product.name}`}
-        className={cn("glass absolute right-3 top-3 grid size-10 place-items-center rounded-full transition-colors", compact && "lg:max-xl:right-2 lg:max-xl:top-2 lg:max-xl:size-8", saved ? "text-brand" : "text-ink hover:text-brand")}
+        className={cn("glass absolute right-2 top-2 grid size-8 place-items-center rounded-full transition-colors sm:right-3 sm:top-3 sm:size-10", compact && "lg:max-xl:right-2 lg:max-xl:top-2 lg:max-xl:size-8", saved ? "text-brand" : "text-ink hover:text-brand")}
       >
         <Heart className={cn("size-[17px]", saved && "fill-current")} />
       </button>
 
-      <div className="px-1 pt-4 transition-transform duration-500 ease-[var(--ease-expo)] group-hover:-translate-y-1">
-        <h3 className={cn("text-lg font-medium tracking-tight", compact && "lg:max-xl:text-base")}>
+      <div className="px-0.5 pt-3 transition-transform sm:px-1 sm:pt-4 duration-500 ease-[var(--ease-expo)] group-hover:-translate-y-1">
+        <h3 className={cn("text-[0.95rem] font-medium leading-tight tracking-tight sm:text-lg", compact && "lg:max-xl:text-base")}>
           <Link href={href}>{product.name}</Link>
         </h3>
-        {!compact && <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted">{product.shortDescription}</p>}
-        <div className={cn("mt-3 flex items-center gap-5 text-sm", compact && "lg:max-xl:flex-wrap lg:max-xl:gap-x-4 lg:max-xl:gap-y-1 lg:max-xl:text-[0.8rem]")}>
+        {!compact && <p className="mt-1 line-clamp-2 hidden text-sm leading-relaxed text-muted sm:block">{product.shortDescription}</p>}
+        <div className={cn("mt-2 flex flex-wrap items-center gap-x-5 gap-y-1 text-[0.8rem] sm:mt-3 sm:text-sm", compact && "lg:max-xl:flex-wrap lg:max-xl:gap-x-4 lg:max-xl:gap-y-1 lg:max-xl:text-[0.8rem]")}>
           <Link href={href} className="link-underline font-medium">
             Explore product →
           </Link>
