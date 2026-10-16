@@ -9,7 +9,7 @@ import { categoryName, type Product } from "@/data/products";
 import { useStoredList, WISHLIST_KEY } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 
-/** `compact` drops the description and tightens the card on laptops, where the home page fits four in a row. */
+/** `compact` drops the description and tightens the card on laptops, where the home page fits five in a row. */
 export function ProductCard({ product, priority = false, compact = false, className }: { product: Product; priority?: boolean; compact?: boolean; className?: string }) {
   const { list, toggle } = useStoredList(WISHLIST_KEY);
   const saved = list.includes(product.slug);
@@ -44,7 +44,7 @@ export function ProductCard({ product, priority = false, compact = false, classN
           alt={`${product.name} — ${product.shortDescription}`}
           fill
           priority={priority}
-          sizes={`(min-width: 1280px) 22vw, (min-width: 1024px) ${compact ? 23 : 30}vw, (min-width: 640px) 45vw, 78vw`}
+          sizes={`(min-width: 1280px) 18vw, (min-width: 1024px) ${compact ? 19 : 23}vw, (min-width: 640px) 45vw, 78vw`}
           className="object-cover transition-transform duration-[900ms] ease-[var(--ease-expo)] group-hover:rotate-[0.8deg] group-hover:scale-[1.08]"
         />
         <span className={cn("glass absolute left-3 top-3 rounded-full px-3 py-1 text-[0.68rem] font-medium uppercase tracking-[0.14em]", compact && "lg:max-xl:left-2 lg:max-xl:top-2 lg:max-xl:max-w-[calc(100%-3.5rem)] lg:max-xl:truncate lg:max-xl:px-2.5 lg:max-xl:text-[0.58rem] lg:max-xl:tracking-[0.1em]")}>{categoryName(product.category)}</span>

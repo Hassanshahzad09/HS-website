@@ -6,7 +6,7 @@ import { Check, ChevronRight, Heart, Minus, Plus } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { Arrow, buttonClass, Magnetic } from "@/components/Button";
-import { MaskReveal, Reveal } from "@/components/Reveal";
+import { Reveal } from "@/components/Reveal";
 import { Swatch } from "@/components/Swatch";
 import { categoryName, products, type Product } from "@/data/products";
 import { RECENT_KEY, useStoredList, WISHLIST_KEY } from "@/lib/storage";
@@ -20,6 +20,8 @@ export function ProductDetail({ product }: { product: Product }) {
   const [material, setMaterial] = useState(0);
   const [finish, setFinish] = useState(0);
   const [logoType, setLogoType] = useState(0);
+  // Mouse position over the main photo (percent), while hovering; drives the zoom.
+  const [zoom, setZoom] = useState<{ x: number; y: number } | null>(null);
   const [colour, setColour] = useState(0);
   const [qty, setQty] = useState(500);
   const wishlist = useStoredList(WISHLIST_KEY);
@@ -29,13 +31,13 @@ export function ProductDetail({ product }: { product: Product }) {
 
   useEffect(() => pushFront(product.slug), [product.slug, pushFront]);
 
-  // Gallery crops first, then one photo per finish or style.
+  // The gallery entries are crops of the same photo, so it appears once, then one photo per finish or style.
   const shots: { src: string; label: string; effect?: string; colour?: string }[] = [
-    ...product.gallery.map((src, i) => ({ src, label: VIEW_LABELS[i] ?? `View ${i + 1}` })),
+    { src: product.gallery[0] ?? product.image, label: VIEW_LABELS[0] },
     ...(product.variants ?? []).map((v) => ({ src: v.image, label: v.label, effect: v.effect, colour: v.colour })),
   ];
   const colours = product.colours ?? [];
-  const variantStart = product.gallery.length;
+  const variantStart = 1;
   const logoTypes = product.logoTypes ?? [];
   // Photos follow the logo type when a product has one, otherwise the finish.
   const linked = logoTypes.length ? { list: logoTypes, index: logoType, set: setLogoType } : { list: product.finishes, index: finish, set: setFinish };
@@ -91,7 +93,7 @@ export function ProductDetail({ product }: { product: Product }) {
     if (f < 0) return;
     (product.logoTypes ? setLogoType : setFinish)(f);
     const v = (product.variants ?? []).findIndex((x) => x.effect === list[f].effect);
-    if (v >= 0) setShot(product.gallery.length + v);
+    if (v >= 0) setShot(1 + v); // finish photos follow the single main photo
   }, [product]);
 
   const mat = product.materials[material];
@@ -118,23 +120,31 @@ export function ProductDetail({ product }: { product: Product }) {
         </ol>
       </nav>
 
-      <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+      <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
         {/* Gallery */}
         <div className="lg:sticky lg:top-24 lg:self-start">
           <button
             type="button"
             onClick={() => pickShot((shot + 1) % shots.length)}
-            data-cursor="VIEW"
+            onPointerMove={(e) => {
+              if (e.pointerType !== "mouse") return;
+              const r = e.currentTarget.getBoundingClientRect();
+              setZoom({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 });
+            }}
+            onPointerLeave={() => setZoom(null)}
+            data-cursor="ZOOM"
             aria-label="Show next photo"
-            className="relative block aspect-[4/3] w-full overflow-hidden rounded-[2rem] border border-line bg-bg2"
+            className="relative block aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-[2rem] border border-line bg-bg2"
           >
             <AnimatePresence initial={false}>
               <motion.div key={shot} className="absolute inset-0" initial={{ opacity: 0, scale: 1.06 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7, ease: EASE }}>
-                <Image src={shots[shot].src} alt={`${product.name} — ${shots[shot].label.toLowerCase()}`} fill priority sizes="(min-width: 1024px) 55vw, 100vw" className="object-cover" />
+                <div className="keep-motion absolute inset-0 transition-transform duration-300 ease-out" style={{ transform: zoom ? "scale(2)" : "scale(1)", transformOrigin: zoom ? `${zoom.x}% ${zoom.y}%` : "50% 50%" }}>
+                  <Image src={shots[shot].src} alt={`${product.name} — ${shots[shot].label.toLowerCase()}`} fill priority sizes="(min-width: 1024px) 100vw, 100vw" className="object-cover" />
+                </div>
               </motion.div>
             </AnimatePresence>
           </button>
-          <div className={cn("mt-4 grid gap-3", shots.length > 3 ? "grid-cols-4" : "grid-cols-3")}>
+          <div className={cn("mt-3 grid gap-2", shots.length > 5 ? "grid-cols-6" : "grid-cols-5")}>
             {shots.map((s, i) => (
               <button
                 key={s.src}
@@ -154,10 +164,10 @@ export function ProductDetail({ product }: { product: Product }) {
         {/* Info + customiser */}
         <div>
           <p className="eyebrow">{categoryName(product.category)}</p>
-          <h1 className="display mt-4 text-[clamp(2.4rem,5vw,4.4rem)]">{product.name}</h1>
-          <p className="mt-6 text-lg leading-relaxed text-muted">{product.description}</p>
+          <h1 className="display mt-2 text-[clamp(2rem,3.4vw,3.2rem)]">{product.name}</h1>
+          <p className="mt-4 leading-relaxed text-muted">{product.description}</p>
 
-          <ul className="mt-8 space-y-3">
+          <ul className="mt-5 space-y-2 text-[0.95rem]">
             {product.why.map((w) => (
               <li key={w} className="flex gap-3">
                 <Check className="mt-1 size-4 shrink-0 text-brand" aria-hidden="true" />
@@ -166,7 +176,7 @@ export function ProductDetail({ product }: { product: Product }) {
             ))}
           </ul>
 
-          <div className="mt-10 rounded-[2rem] border border-line bg-surface p-5 sm:p-7">
+          <div className="mt-6 rounded-[1.75rem] border border-line bg-surface p-5 sm:p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h2 className="text-xl font-medium tracking-tight">Build yours</h2>
@@ -175,7 +185,7 @@ export function ProductDetail({ product }: { product: Product }) {
               <span className="rounded-full border border-line px-3 py-1 text-xs text-muted">{product.moq}</span>
             </div>
 
-            <div className="mt-6 grid gap-6 sm:grid-cols-[150px_1fr]">
+            <div className="mt-5 grid gap-5 sm:grid-cols-[120px_1fr]">
               <div className="mx-auto w-40 sm:w-auto">
                 <Swatch tone={mat.tone} effect={logo?.effect ?? fin.effect} className="aspect-square w-full rounded-2xl border border-line shadow-inner" markClassName="w-[52%]" />
                 <p className="mt-2 text-center text-xs text-muted" aria-live="polite">
@@ -253,7 +263,7 @@ export function ProductDetail({ product }: { product: Product }) {
               </div>
             </div>
 
-            <div className="mt-7 flex flex-wrap items-center gap-3">
+            <div className="mt-6 flex flex-wrap items-center gap-3">
               <Magnetic>
                 <Link href={quoteHref} data-cursor="QUOTE" className={buttonClass("brand")}>
                   Request a Quote <Arrow />
@@ -265,7 +275,7 @@ export function ProductDetail({ product }: { product: Product }) {
             </div>
           </div>
 
-          <dl className="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+          <dl className="mt-8 grid gap-x-8 gap-y-5 sm:grid-cols-2">
             <Spec title="Materials" items={product.materials.map((m) => m.name)} />
             <Spec title={product.finishLabel ?? "Finishes"} items={product.finishes.map((f) => f.name)} />
             {logoTypes.length > 0 && <Spec title="Logo types" items={logoTypes.map((l) => l.name)} />}
@@ -276,24 +286,10 @@ export function ProductDetail({ product }: { product: Product }) {
         </div>
       </div>
 
-      {/* Gallery strip */}
-      <section aria-labelledby="gallery-title" className="mt-24">
-        <h2 id="gallery-title" className="display text-[clamp(1.8rem,3.5vw,3rem)]">
-          A closer look
-        </h2>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {product.gallery.map((src, i) => (
-            <MaskReveal key={src} delay={i * 0.1} className={cn("relative overflow-hidden rounded-[1.75rem] bg-bg2", i === 0 ? "aspect-[4/3] md:col-span-2 md:aspect-auto md:row-span-2" : "aspect-[4/3]")}>
-              <Image src={src} alt={`${product.name}, ${VIEW_LABELS[i].toLowerCase()} view`} fill sizes="(min-width: 768px) 60vw, 100vw" className="object-cover" />
-            </MaskReveal>
-          ))}
-        </div>
-      </section>
-
       {/* One photo per finish or style; picking one selects it in the customiser above. */}
       {product.variants && (
-        <section aria-labelledby="variants-title" className="mt-24">
-          <h2 id="variants-title" className="display text-[clamp(1.8rem,3.5vw,3rem)]">
+        <section aria-labelledby="variants-title" className="mt-16">
+          <h2 id="variants-title" className="display text-[clamp(1.6rem,2.8vw,2.4rem)]">
             Finishes and styles
           </h2>
           <div className={cn("mt-8 grid grid-cols-2 gap-4", product.variants.length === 5 ? "sm:grid-cols-3 lg:grid-cols-5" : "lg:grid-cols-4")}>
@@ -321,7 +317,7 @@ export function ProductDetail({ product }: { product: Product }) {
       <ProductRow title="Pairs well with" items={related} />
       {recentProducts.length > 0 && <ProductRow title="Recently viewed" items={recentProducts} />}
 
-      <Reveal className="mt-24 flex flex-col items-start justify-between gap-6 rounded-[2rem] bg-ink p-8 text-bg sm:flex-row sm:items-center sm:p-12">
+      <Reveal className="mt-16 flex flex-col items-start justify-between gap-6 rounded-[2rem] bg-ink p-7 text-bg sm:flex-row sm:items-center sm:p-10">
         <p className="display max-w-xl text-[clamp(1.6rem,3vw,2.6rem)]">Ready to see {product.name.toLowerCase()} with your brand on them?</p>
         <Link href={quoteHref} data-cursor="QUOTE" className={buttonClass("brand", "shrink-0")}>
           Start Your Project <Arrow />
@@ -345,8 +341,8 @@ function Spec({ title, items }: { title: string; items: string[] }) {
 
 function ProductRow({ title, items }: { title: string; items: Product[] }) {
   return (
-    <section className="mt-24">
-      <h2 className="display text-[clamp(1.8rem,3.5vw,3rem)]">{title}</h2>
+    <section className="mt-16">
+      <h2 className="display text-[clamp(1.6rem,2.8vw,2.4rem)]">{title}</h2>
       <div className="no-scrollbar -mx-5 mt-8 flex snap-x gap-4 overflow-x-auto px-5 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 lg:grid-cols-4">
         {items.map((p) => (
           <ProductCard key={p.id} product={p} className="w-[72vw] shrink-0 snap-center sm:w-auto" />

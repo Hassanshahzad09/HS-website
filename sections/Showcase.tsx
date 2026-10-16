@@ -25,7 +25,7 @@ export function Showcase() {
   const item = ITEMS[active];
 
   return (
-    <section ref={ref} className="relative bg-bg2" style={{ height: `${ITEMS.length * 22 + 100}vh` }} aria-label="The complete packaging set">
+    <section ref={ref} className="relative bg-bg2" style={{ height: `${ITEMS.length * 14 + 100}vh` }} aria-label="The complete packaging set">
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         <div className="blob left-1/2 top-1/2 size-[40rem] -translate-x-1/2 -translate-y-1/2 bg-brand/15" aria-hidden="true" />
 
@@ -48,14 +48,14 @@ export function Showcase() {
               <motion.div
                 key={it.src}
                 className="absolute -translate-x-1/2 -translate-y-1/2"
-                style={{ width: `clamp(${it.w * 3.2}px, ${it.w}vw, ${it.w * 16}px)`, zIndex: on ? 10 : 1 }}
+                style={{ width: `clamp(${it.w * 2.6}px, ${it.w * 0.75}vw, ${it.w * 11}px)`, zIndex: on ? 10 : 1 }}
                 animate={{
                   left: on ? "50%" : `${it.x}%`,
                   top: on ? "46%" : `${it.y}%`,
-                  scale: on ? 2.1 : 1,
-                  opacity: on ? 1 : 0.45,
+                  scale: on ? 1.55 : 1,
+                  opacity: on ? 1 : 0.5,
                 }}
-                transition={{ duration: 1, ease: EASE }}
+                transition={{ duration: 0.7, ease: EASE }}
               >
                 <Image src={`/mockups/cutout-${it.src}.webp`} alt="" width={800} height={800} sizes="40vw" className="h-auto w-full" />
               </motion.div>

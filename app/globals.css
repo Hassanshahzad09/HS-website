@@ -58,6 +58,15 @@ html {
   background: var(--bg);
 }
 
+/* Laptops and desktops: the whole design at 80% of its original scale (what the site looked like
+   at 80% browser zoom). Almost every size is in rem, so this one value scales text, spacing and
+   layout together. Phones and tablets keep the full size so text stays easy to read. */
+@media (min-width: 1024px) {
+  html {
+    font-size: 80%;
+  }
+}
+
 body {
   background: var(--bg);
   color: var(--ink);
@@ -105,18 +114,16 @@ html[data-loaded] .preloader {
 
 @utility container-x {
   width: 100%;
-  max-width: 1480px;
+  max-width: 92.5rem;
   margin-inline: auto;
   padding-inline: clamp(1.25rem, 4vw, 4rem);
 }
 
 @utility text-gradient {
   background-image: linear-gradient(100deg, var(--brand) 0%, var(--brand-2) 50%, var(--brand) 100%);
-  background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: gradient-pan 9s ease-in-out infinite alternate;
   padding-bottom: 0.12em;
 }
 
@@ -129,10 +136,9 @@ html[data-loaded] .preloader {
 /* Liquid-glass pill for buttons and chips: frosted fill, light top edge, soft drop shadow. */
 /* Set --gb to tint it (ink, brand); left unset it is clear glass.                        */
 @utility glass-btn {
-  background: var(--gb, color-mix(in srgb, var(--surface) 36%, transparent));
+  /* No backdrop blur here on purpose: blurring behind every button made scrolling lag. */
+  background: var(--gb, color-mix(in srgb, var(--surface) 62%, transparent));
   border: 1px solid color-mix(in srgb, #fff 34%, var(--line));
-  -webkit-backdrop-filter: blur(8px) saturate(1.5);
-  backdrop-filter: blur(8px) saturate(1.5);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.42),
     inset 0 -1px 0 rgba(0, 0, 0, 0.07),
@@ -193,12 +199,6 @@ html[data-loaded] .preloader {
   pointer-events: none;
   -webkit-mask-image: radial-gradient(closest-side, #000 0%, rgba(0, 0, 0, 0.45) 45%, transparent 100%);
   mask-image: radial-gradient(closest-side, #000 0%, rgba(0, 0, 0, 0.45) 45%, transparent 100%);
-}
-
-@keyframes gradient-pan {
-  to {
-    background-position: 100% 0;
-  }
 }
 
 @keyframes floaty {

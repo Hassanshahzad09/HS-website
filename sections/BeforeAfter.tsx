@@ -17,7 +17,7 @@ export function BeforeAfter() {
         </SectionHeading>
 
         <MaskReveal className="mt-10">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] border border-line bg-bg2 sm:aspect-[21/9]" data-cursor="DRAG">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] border border-line bg-bg2 sm:aspect-[21/9] lg:aspect-auto lg:h-[clamp(22rem,28vw,30rem)]" data-cursor="DRAG">
             <Image src="/mockups/set-branded.webp" alt="Branded packaging set in black and white: shopping bags, gift box with tissue and seal, hang tag, woven label and printed cards" fill sizes="(min-width: 1480px) 1350px, 92vw" className="object-cover" />
             <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
               <Image src="/mockups/set-standard.webp" alt="The same packaging set unbranded: plain kraft bags, box, tag and blank cards" fill sizes="(min-width: 1480px) 1350px, 92vw" className="object-cover" />

@@ -449,7 +449,7 @@ function ProductStep({ items, selected, onPick }: { items: Product[]; selected: 
     <div>
       <h3 className="text-xl font-medium tracking-tight">What are we designing?</h3>
       <p className="mt-1 text-sm text-muted">Only products our factory makes are available.</p>
-      <ul className="mt-5 grid grid-cols-2 gap-3">
+      <ul className="mt-5 grid grid-cols-3 gap-2 sm:gap-2.5">
         {items.map((p) => {
           const on = p.slug === selected.slug;
           return (
@@ -468,9 +468,9 @@ function ProductStep({ items, selected, onPick }: { items: Product[]; selected: 
                     </span>
                   )}
                 </span>
-                <span className="block px-3 py-2.5">
-                  <span className="block text-sm font-medium leading-tight">{p.name}</span>
-                  <span className="block text-xs text-muted">{categoryName(p.category)}</span>
+                <span className="block px-2.5 py-2">
+                  <span className="block text-xs font-medium leading-tight sm:text-[13px]">{p.name}</span>
+                  <span className="hidden text-xs text-muted sm:block">{categoryName(p.category)}</span>
                 </span>
               </button>
             </li>

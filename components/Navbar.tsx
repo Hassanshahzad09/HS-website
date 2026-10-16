@@ -65,8 +65,8 @@ export function Navbar() {
           className={cn(
             "keep-motion pointer-events-auto mx-auto flex items-center justify-between gap-3 rounded-full border sm:gap-6 transition-[margin,height,width,max-width,padding,background-color,border-color,box-shadow] duration-[900ms] ease-[var(--ease-expo)]",
             scrolled || menu
-              ? "mt-3 h-[3.75rem] w-[calc(100%-1.5rem)] max-w-[1180px] border-line bg-[color-mix(in_srgb,var(--glass)_70%,transparent)] px-3 shadow-[0_18px_50px_-24px_rgba(0,0,0,.4),inset_0_1px_0_rgba(255,255,255,.35)] backdrop-blur-md backdrop-saturate-150 sm:pl-6 sm:pr-2.5"
-              : "mt-0 h-[4.5rem] w-full max-w-[1480px] border-transparent bg-transparent px-[clamp(1.25rem,4vw,4rem)] shadow-none",
+              ? "mt-3 h-[3.75rem] w-[calc(100%-1.5rem)] max-w-[73.75rem] border-line bg-[color-mix(in_srgb,var(--glass)_70%,transparent)] px-3 shadow-[0_18px_50px_-24px_rgba(0,0,0,.4),inset_0_1px_0_rgba(255,255,255,.35)] backdrop-blur-md backdrop-saturate-150 sm:pl-6 sm:pr-2.5"
+              : "mt-0 h-[4.5rem] w-full max-w-[92.5rem] border-transparent bg-transparent px-[clamp(1.25rem,4vw,4rem)] shadow-none",
           )}
         >
           <Link
@@ -136,7 +136,7 @@ export function Navbar() {
             transition={{ duration: 0.6, ease: EASE }}
           >
             {/* Same width and side padding as the header capsule, so the menu lines up with the logo. */}
-            <div className="mx-auto flex h-full w-[calc(100%-1.5rem)] max-w-[1180px] flex-col px-3 sm:px-6">
+            <div className="mx-auto flex h-full w-[calc(100%-1.5rem)] max-w-[73.75rem] flex-col px-3 sm:px-6">
             <nav aria-label="Mobile">
               <ul className="space-y-0.5">
                 {nav.map((item, i) => (

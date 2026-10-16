@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from
 import { ButtonLink } from "@/components/Button";
 import { useSiteReady } from "@/components/Preloader";
 import { SplitText } from "@/components/Reveal";
+import { rating, stats } from "@/data/site";
 import { cn, EASE } from "@/lib/utils";
 
 type FloatItem = {
@@ -106,8 +107,8 @@ export function Hero() {
   };
 
   return (
-    <section ref={ref} className="relative h-[135svh] lg:h-[150vh]" aria-label="Introduction">
-      <div className="sticky top-0 h-[100svh] min-h-[640px] overflow-hidden" onMouseMove={onMove}>
+    <section ref={ref} className="relative h-[150svh] lg:h-[175vh]" aria-label="Introduction">
+      <div className="sticky top-0 h-[100svh] min-h-[40rem] overflow-hidden" onMouseMove={onMove}>
         <div className="blob -left-40 top-10 size-[34rem] bg-brand/20" aria-hidden="true" />
         <div className="blob -right-32 bottom-0 size-[30rem] bg-gold/20" aria-hidden="true" />
 
@@ -135,10 +136,11 @@ export function Hero() {
                   Request a Quote
                 </ButtonLink>
               </div>
+              <TrustBadge />
             </motion.div>
           </motion.div>
 
-          <motion.div style={{ scale: visualScale, opacity: visualOpacity }} className="relative mx-auto aspect-square h-full max-h-[42svh] lg:h-auto lg:max-h-none lg:w-full lg:max-w-[680px]" data-cursor="DISCOVER">
+          <motion.div style={{ scale: visualScale, opacity: visualOpacity }} className="relative mx-auto aspect-square h-full max-h-[42svh] lg:h-auto lg:max-h-none lg:w-full lg:max-w-[42.5rem]" data-cursor="DISCOVER">
             {ITEMS.map((item, i) => (
               <Float key={item.src} item={item} i={i} mx={mx} my={my} progress={progress} ready={ready} />
             ))}
@@ -153,5 +155,60 @@ export function Hero() {
         </motion.div>
       </div>
     </section>
+  );
+}
+
+const clients = stats.find((st) => st.label === "Clients");
+const countries = stats.find((st) => st.label === "Countries Reached");
+
+/** Star icon, filled to `fill` (0 to 1) so a 4.8 rating shows the last star 80% full. */
+function Star({ fill }: { fill: number }) {
+  return (
+    <span className="relative inline-block size-3.5" aria-hidden="true">
+      <svg viewBox="0 0 20 20" className="absolute inset-0 size-full fill-line"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z" /></svg>
+      <span className="absolute inset-y-0 left-0 overflow-hidden" style={{ width: `${fill * 100}%` }}>
+        <svg viewBox="0 0 20 20" className="size-3.5 fill-gold"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z" /></svg>
+      </span>
+    </span>
+  );
+}
+
+/** Trust line under the hero buttons. The stars appear only once `rating` in data/site.ts has a real source. */
+function TrustBadge() {
+  if (!clients) return null;
+  return (
+    <div className="glass-btn mt-6 inline-flex items-center gap-3 rounded-full py-1.5 pl-1.5 pr-4 active:scale-100 lg:mt-8">
+      <span className="relative grid size-9 shrink-0 place-items-center rounded-full bg-brand text-onbrand shadow-[0_6px_16px_-6px_var(--brand)]">
+        {/* Small gold star accent on top of the badge (decorative, not a rating). */}
+        <svg viewBox="0 0 20 20" className="absolute -right-1 -top-1 size-4 fill-gold drop-shadow-[0_1px_2px_rgba(0,0,0,.25)]" aria-hidden="true"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z" /></svg>
+        <svg viewBox="0 0 24 24" className="size-[18px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M12 2l7 3v6c0 4.5-3 8.5-7 11-4-2.5-7-6.5-7-11V5z" />
+          <path d="M8.5 12l2.5 2.5 4.5-5" />
+        </svg>
+      </span>
+      {rating && (
+        <span className="flex items-center gap-2 border-r border-line pr-3">
+          <span className="flex gap-0.5" role="img" aria-label={`Rated ${rating.value} out of 5 on ${rating.source}`}>
+            {[0, 1, 2, 3, 4].map((i) => (
+              <Star key={i} fill={Math.max(0, Math.min(1, (rating?.value ?? 0) - i))} />
+            ))}
+          </span>
+          <span className="text-sm font-semibold tabular-nums">{rating.value.toFixed(1)}</span>
+        </span>
+      )}
+      <span className="text-sm leading-tight">
+        <span className="font-semibold">
+          Trusted by {clients.value}
+          {clients.suffix} clients
+        </span>
+        {countries && (
+          <span className="text-muted">
+            {" "}
+            in {countries.value}
+            {countries.suffix} countries
+          </span>
+        )}
+      </span>
+    </div>
   );
 }

@@ -24,7 +24,8 @@ export function MobileCTA() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [pathname]);
 
-  if (pathname.startsWith("/quote")) return null;
+  // Pages with their own buttons along the bottom: the floating bar would cover them.
+  if (["/quote", "/ai-studio", "/login", "/account", "/admin"].some((p) => pathname.startsWith(p))) return null;
 
   return (
     <AnimatePresence>

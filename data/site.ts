@@ -26,20 +26,26 @@ export const nav = [
 ];
 
 /** PLACEHOLDER figures — edit freely. */
+/**
+ * Star rating shown in the hero trust badge. Leave it null until it comes from a real public source
+ * (for example your Google Business Profile or Trustpilot), then set e.g. { value: 4.8, count: 37, source: "Google" }.
+ */
+export const rating: { value: number; count: number; source: string } | null = null;
+
 export const stats = [
-  { value: 50, suffix: "+", label: "Clients" },
+  { value: 150, suffix: "+", label: "Clients" },
   { value: 250, suffix: "+", label: "Projects Delivered" },
   { value: 10, suffix: "+", label: "Custom Products" },
   { value: 9, suffix: "+", label: "Countries Reached" },
 ];
 
 export const benefits = [
-  { icon: "shapes", title: "Custom Solutions", text: "Nothing off the shelf. Size, structure and material are drawn around your product." },
-  { icon: "sparkles", title: "Premium Finishes", text: "Foil, emboss, soft touch and spot UV, layered with a designer's restraint." },
-  { icon: "scan", title: "Quality Focus", text: "Every run is checked against the approved sample before it is packed." },
-  { icon: "layers", title: "Flexible Quantities", text: "Short runs for a launch, larger runs when it works. We size the order to you." },
-  { icon: "factory", title: "Reliable Production", text: "Clear timelines, agreed up front, with updates at each stage." },
-  { icon: "globe", title: "International Shipping", text: "Packed for the journey and shipped to brands across borders." },
+  { icon: "shapes", title: "Custom Solutions", tag: "Made to order", text: "Nothing off the shelf. Size, structure and material are drawn around your product." },
+  { icon: "sparkles", title: "Premium Finishes", tag: "Foil · Emboss · UV", text: "Foil, emboss, soft touch and spot UV, layered with a designer's restraint." },
+  { icon: "scan", title: "Quality Focus", tag: "Sample-matched", text: "Every run is checked against the approved sample before it is packed." },
+  { icon: "layers", title: "Flexible Quantities", tag: "Short or large runs", text: "Short runs for a launch, larger runs when it works. We size the order to you." },
+  { icon: "factory", title: "Reliable Production", tag: "Clear timelines", text: "Clear timelines, agreed up front, with updates at each stage." },
+  { icon: "globe", title: "International Shipping", tag: "Worldwide", text: "Packed for the journey and shipped to brands across borders." },
 ] as const;
 
 // Complete branding kits by industry, each shown as one infographic plus a photo per item.
@@ -127,11 +133,6 @@ export const portfolio = [
   { id: "element-atelier", name: "Élément Atelier", category: "E-commerce", product: "Thank You Card • Envelope", finish: "Letterpress • Cotton Stock", text: "Letterpress thank-you cards on textured cotton stock, paired with kraft envelopes for every order.", ratio: "4 / 5", photo: "/images/portfolio-element-atelier-photo.webp" },
   { id: "kura-monogram", name: "Kura Monogram", category: "Lifestyle", product: "Tote Bag", finish: "White Screen Print • Black Canvas", text: "A black canvas tote with a bold white monogram, printed edge-sharp on heavy cotton.", ratio: "4 / 5", photo: "/images/portfolio-kura-monogram-photo.webp" },
   { id: "aurelia-vendome-bag", name: "Aurelia Vendôme", category: "Fine Jewellery", product: "Shopping Bag", finish: "Gold Foil • Grosgrain Handles", text: "The house carrier bag on its own: charcoal board, a small gold foil monogram and grosgrain handles.", ratio: "2000 / 1091", photo: "/images/portfolio-aurelia-vendome-bag-photo.webp" },
-  { id: "forma-skin", name: "Forma Skin", category: "Beauty", product: "Pouch • Card", finish: "Matte • Deboss", text: "Blush board and terracotta ink for a skincare line that wanted to feel warm, not clinical.", ratio: "1 / 1" },
-  { id: "roast-and-ritual", name: "Roast & Ritual", category: "Food", product: "Stand-up Pouch • Stickers", finish: "Kraft • Matte", text: "Kraft pouches with a deep green label, designed to look right beside the grinder.", ratio: "4 / 5" },
-  { id: "northline", name: "Northline", category: "Lifestyle", product: "Bag • Woven Label", finish: "Matte • Emboss", text: "One cobalt blue, held consistently across paper and thread.", ratio: "4 / 3" },
-  { id: "atelier-27", name: "Atelier 27", category: "Fashion", product: "Woven Label • Care Label • Tag", finish: "High-density Weave", text: "A full trim set for a small studio: neck label, care label and a moulded hang tag.", ratio: "1 / 1" },
-  { id: "velora", name: "Velora", category: "E-commerce", product: "Mailer Box • Card • Sticker", finish: "Soft Touch • Gloss", text: "An unboxing built for the doorstep, with a card and seal in every order.", ratio: "4 / 5" },
 ].map((p) => ({ ...p, image: p.photo ?? `/images/portfolio-${p.id}.webp` }));
 
 /** The reviews section stays hidden until the sample reviews below are replaced with real client quotes. */
