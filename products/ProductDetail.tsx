@@ -23,6 +23,7 @@ export function ProductDetail({ product }: { product: Product }) {
   // Mouse position over the main photo (percent), while hovering; drives the zoom.
   const [zoom, setZoom] = useState<{ x: number; y: number } | null>(null);
   const [colour, setColour] = useState(0);
+  const [size, setSize] = useState(0);
   const [qty, setQty] = useState(500);
   const wishlist = useStoredList(WISHLIST_KEY);
   const recent = useStoredList(RECENT_KEY);
@@ -37,6 +38,7 @@ export function ProductDetail({ product }: { product: Product }) {
     ...(product.variants ?? []).map((v) => ({ src: v.image, label: v.label, effect: v.effect, colour: v.colour })),
   ];
   const colours = product.colours ?? [];
+  const sizes = product.sizes ?? [];
   const variantStart = 1;
   const logoTypes = product.logoTypes ?? [];
   // Photos follow the logo type when a product has one, otherwise the finish.
@@ -99,7 +101,7 @@ export function ProductDetail({ product }: { product: Product }) {
   const mat = product.materials[material];
   const fin = product.finishes[finish];
   const logo = logoTypes[logoType];
-  const quoteHref = `/quote?product=${product.slug}&material=${encodeURIComponent(mat.name)}&finish=${encodeURIComponent(fin.name)}${logo ? `&logo=${encodeURIComponent(logo.name)}` : ""}${colours.length ? `&colour=${encodeURIComponent(colours[colour])}` : ""}&qty=${qty}`;
+  const quoteHref = `/quote?product=${product.slug}&material=${encodeURIComponent(mat.name)}&finish=${encodeURIComponent(fin.name)}${logo ? `&logo=${encodeURIComponent(logo.name)}` : ""}${colours.length ? `&colour=${encodeURIComponent(colours[colour])}` : ""}${sizes.length ? `&size=${encodeURIComponent(sizes[size])}` : ""}&qty=${qty}`;
 
   const related = [...products.filter((p) => p.category === product.category && p.slug !== product.slug), ...products.filter((p) => p.category !== product.category && p.featured)].slice(0, 4);
   const recentProducts = recent.list.filter((s) => s !== product.slug).map((s) => products.find((p) => p.slug === s)).filter((p): p is Product => Boolean(p)).slice(0, 4);
@@ -191,6 +193,7 @@ export function ProductDetail({ product }: { product: Product }) {
                 <p className="mt-2 text-center text-xs text-muted" aria-live="polite">
                   {mat.name} · {fin.name}
                   {logo && ` · ${logo.name}`}
+                  {sizes.length > 0 && ` · ${sizes[size]}`}
                   {colours.length > 0 && ` · ${colours[colour]}`}
                 </p>
               </div>
@@ -216,9 +219,21 @@ export function ProductDetail({ product }: { product: Product }) {
                     ))}
                   </div>
                 </fieldset>
+                {sizes.length > 0 && (
+                  <fieldset>
+                    <legend className="eyebrow mb-2.5">Size</legend>
+                    <div className="flex flex-wrap gap-2">
+                      {sizes.map((s, i) => (
+                        <button key={s} type="button" aria-pressed={size === i} onClick={() => setSize(i)} className={chip(size === i)}>
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  </fieldset>
+                )}
                 {colours.length > 0 && (
                   <fieldset>
-                    <legend className="eyebrow mb-2.5">Colour</legend>
+                    <legend className="eyebrow mb-2.5">{product.colourLabel ?? "Colour"}</legend>
                     <div className="flex flex-wrap gap-2">
                       {colours.map((c, i) => (
                         <button key={c} type="button" aria-pressed={colour === i} onClick={() => pickColour(i)} className={chip(colour === i)}>
@@ -279,7 +294,8 @@ export function ProductDetail({ product }: { product: Product }) {
             <Spec title="Materials" items={product.materials.map((m) => m.name)} />
             <Spec title={product.finishLabel ?? "Finishes"} items={product.finishes.map((f) => f.name)} />
             {logoTypes.length > 0 && <Spec title="Logo types" items={logoTypes.map((l) => l.name)} />}
-            {colours.length > 0 && <Spec title="Colours" items={colours} />}
+            {sizes.length > 0 && <Spec title="Sizes" items={sizes} />}
+            {colours.length > 0 && <Spec title={product.colourLabel ? `${product.colourLabel}s` : "Colours"} items={colours} />}
             <Spec title="Customisation" items={product.customization} />
             <Spec title="Applications" items={product.applications} />
           </dl>

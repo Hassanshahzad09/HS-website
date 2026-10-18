@@ -38,6 +38,7 @@ export async function notifyTeam(pool: Pool, e: EnquiryRow) {
             ["Finishes", e.finishes?.length ? e.finishes.join(", ") : null],
             ["Logo type", e.logo_type],
             ["Colour", e.colour],
+            ["Size", e.size],
             ["Artwork file", e.file_name],
           ] as [string, string | null][])
         : []),

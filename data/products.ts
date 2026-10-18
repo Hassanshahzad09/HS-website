@@ -33,6 +33,10 @@ export type Product = {
   logoTypes?: Finish[];
   /** Stock colours the customer chooses between. */
   colours?: string[];
+  /** Heading for the colour chips when "Colour" is the wrong word, e.g. "Printing colour". */
+  colourLabel?: string;
+  /** Standard sizes offered as chips on the product page and in the quote form. */
+  sizes?: string[];
   featured?: boolean;
   tags: string[];
 };
@@ -180,15 +184,25 @@ export const products: Product[] = [
     name: "Zippers",
     slug: "zippers",
     category: "accessories",
-    shortDescription: "Metal and nylon zippers with custom pullers carrying your mark.",
+    shortDescription: "Frosted and black zipper bags printed with your logo, resealable and reusable.",
     description:
-      "A branded puller is one of the quietest signs of a considered garment. Choose the tape, teeth and slider, and we cast or mould a puller with your logo.",
+      "A zipper bag keeps a garment clean, folded and on-brand from the warehouse to the customer's hands. Choose frosted or black, the print finish and colour, and the size that fits your product.",
     ...photo("zippers"),
-    why: ["Custom logo pullers in metal or rubber", "Teeth in gold, silver, gunmetal or matched colour", "Cut to length for your patterns"],
-    materials: [M.nylon, M.metal],
-    finishes: [F.matte, F.gloss, F.emboss, F.deboss],
-    customization: ["Length and gauge", "Teeth finish", "Puller shape", "Tape colour"],
-    applications: ["Jackets", "Bags", "Denim", "Leather goods"],
+    why: ["Frosted or black film", "Matte or shiny colour print", "Resealable slider zip"],
+    materials: [
+      { name: "Frosted", tone: "clear" },
+      { name: "Black", tone: "silicone" },
+    ],
+    finishLabel: "Colour printing",
+    finishes: [
+      { name: "Matte", effect: "matte" },
+      { name: "Shiny", effect: "gloss" },
+    ],
+    sizes: ["15 × 20 cm", "20 × 25 cm", "25 × 35 cm", "30 × 40 cm", "35 × 45 cm", "Custom"],
+    colourLabel: "Printing colour",
+    colours: ["Black", "White", "Gold", "Silver", "Red", "Navy", "Green"],
+    customization: ["Any size", "One or two-sided print", "Hang hole", "Air vents"],
+    applications: ["Clothing", "Accessories", "Cosmetics", "E-commerce"],
     moq: "From 500 units",
     tags: ["zipper", "zippers", "zip", "puller", "trims"],
   },

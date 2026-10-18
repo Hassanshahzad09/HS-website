@@ -28,6 +28,7 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
   const [material, setMaterial] = useState("");
   const [finishes, setFinishes] = useState<string[]>([]);
   const [colour, setColour] = useState("");
+  const [size, setSize] = useState("");
   const [logoType, setLogoType] = useState("");
   const [fileName, setFileName] = useState("");
   const [contact, setContact] = useState<Contact>(EMPTY);
@@ -47,6 +48,7 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
     const f = p.finishes.find((x) => x.name === q.get("finish"));
     if (f) setFinishes([f.name]);
     setColour(p.colours?.find((c) => c === q.get("colour")) ?? "");
+    setSize(p.sizes?.find((s) => s === q.get("size")) ?? "");
     setLogoType(p.logoTypes?.find((l) => l.name === q.get("logo"))?.name ?? "");
     const n = Number(q.get("qty"));
     if (n > 0) setQty(n);
@@ -59,6 +61,7 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
     setMaterial(p.materials[0].name);
     setFinishes([]);
     setColour("");
+    setSize("");
     setLogoType("");
     setErrors({});
   };
@@ -78,7 +81,7 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
     if (!isEmail(contact.email)) errs.email = "Enter a valid email so we can send the quote.";
     if (Object.keys(errs).length) return setErrors(errs);
     setStatus("busy");
-    const res = await submitEnquiry({ type: "quote", ...contact, product: product?.name, quantity: qty, material, finishes, colour: colour || undefined, logoType: logoType || undefined, fileName });
+    const res = await submitEnquiry({ type: "quote", ...contact, product: product?.name, quantity: qty, material, finishes, colour: colour || undefined, size: size || undefined, logoType: logoType || undefined, fileName });
     if (res.ok) {
       setReference(res.reference ?? "");
       setStatus("done");
@@ -93,6 +96,7 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
     setSlug("");
     setFinishes([]);
     setColour("");
+    setSize("");
     setLogoType("");
     setFileName("");
     setContact(EMPTY);
@@ -206,9 +210,21 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
                               </button>
                             </div>
                           </fieldset>
+                          {product.sizes && (
+                            <fieldset>
+                              <legend className="text-2xl font-medium tracking-tight">Which size?</legend>
+                              <div className="mt-5 flex flex-wrap gap-2">
+                                {product.sizes.map((s) => (
+                                  <button key={s} type="button" aria-pressed={size === s} onClick={() => setSize(s)} className={chip(size === s)}>
+                                    {s}
+                                  </button>
+                                ))}
+                              </div>
+                            </fieldset>
+                          )}
                           {product.colours && (
                             <fieldset>
-                              <legend className="text-2xl font-medium tracking-tight">Which colour?</legend>
+                              <legend className="text-2xl font-medium tracking-tight">{product.colourLabel ? `Which ${product.colourLabel.toLowerCase()}?` : "Which colour?"}</legend>
                               <div className="mt-5 flex flex-wrap gap-2">
                                 {product.colours.map((c) => (
                                   <button key={c} type="button" aria-pressed={colour === c} onClick={() => setColour(c)} className={chip(colour === c)}>
@@ -331,7 +347,8 @@ export function QuoteBuilder({ standalone = false }: { standalone?: boolean }) {
               <Row label="Material" value={product ? material : undefined} />
               <Row label={product?.finishLabel ?? "Finishes"} value={finishes.length ? finishes.join(", ") : undefined} />
               {product?.logoTypes && <Row label="Logo type" value={logoType || undefined} />}
-              {product?.colours && <Row label="Colour" value={colour || undefined} />}
+              {product?.sizes && <Row label="Size" value={size || undefined} />}
+              {product?.colours && <Row label={product.colourLabel ?? "Colour"} value={colour || undefined} />}
               <Row label="Artwork" value={fileName || undefined} />
             </dl>
             <p className="mt-5 text-xs leading-relaxed text-muted">No payment, no commitment. A quote is a conversation starter.</p>

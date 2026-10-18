@@ -34,6 +34,7 @@ export async function POST(req: Request) {
       finishes: Array.isArray(body.finishes) ? body.finishes.map((f: unknown) => text(f, 60)).filter(Boolean).slice(0, 12) : null,
       logo_type: text(body.logoType, 60),
       colour: text(body.colour, 60),
+      size: text(body.size, 60),
       file_name: text(body.fileName, 200),
       message: text(body.message, 4000),
     };

@@ -16,6 +16,7 @@ export type EnquiryPayload = {
   material?: string;
   finishes?: string[];
   colour?: string;
+  size?: string;
   logoType?: string;
   fileName?: string;
   message?: string;

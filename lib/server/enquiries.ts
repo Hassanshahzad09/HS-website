@@ -14,6 +14,7 @@ export type EnquiryRow = {
   finishes: string[] | null;
   logo_type: string | null;
   colour: string | null;
+  size: string | null;
   file_name: string | null;
   message: string | null;
 };
@@ -67,8 +68,9 @@ export async function saveEnquiry(pool: Pool, e: EnquiryRow, userId: string | nu
           quote_id: quote.rows[0].id,
           product_slug: e.product,
           quantity: e.quantity,
+          size_text: e.size,
           notes: e.file_name ? `Artwork file: ${e.file_name}` : null,
-          config_snapshot: JSON.stringify({ product: e.product, material: e.material, finishes: e.finishes ?? [], logoType: e.logo_type, colour: e.colour }),
+          config_snapshot: JSON.stringify({ product: e.product, material: e.material, finishes: e.finishes ?? [], logoType: e.logo_type, colour: e.colour, size: e.size }),
         });
       }
       // Bonus credits for a customer's first quote request (the unique index makes it once only).
