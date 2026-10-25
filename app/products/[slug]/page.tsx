@@ -25,16 +25,19 @@ export default async function ProductPage({ params }: Props) {
 
   const url = `${site.url}/products/${product.slug}`;
   const schema = [
+    // Described as a made-to-order service, not a "Product": Google's product results require a fixed
+    // price, ratings or reviews, and products here are priced by quotation, which it reports as an error.
     {
       "@context": "https://schema.org",
-      "@type": "Product",
-      name: product.name,
+      "@type": "Service",
+      name: `Custom ${product.name}`,
+      serviceType: `Custom ${product.name.toLowerCase()} manufacturing`,
       description: product.description,
       category: categoryName(product.category),
-      image: product.gallery.map((g) => site.url + g),
-      brand: { "@type": "Brand", name: site.name },
-      material: product.materials.map((m) => m.name).join(", "),
+      image: site.url + product.image,
       url,
+      provider: { "@type": "Organization", name: site.name, url: site.url },
+      areaServed: "Worldwide",
     },
     {
       "@context": "https://schema.org",
